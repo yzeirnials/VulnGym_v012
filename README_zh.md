@@ -34,6 +34,7 @@
 ---
 
 ## 📢 最新动态
+- **2026-06-08** — 🧭 conversion workflow：新增 conversion-table schema 与 exporter，用于将原始工具 findings 转成 pair-level、entry-point-only、critical-operation-only 三种 evaluator 输入。
 - **2026-06-08** — 🧹 cleaned fork：仅保留 `verify = 1` 的人工审计入口，数据集规模调整为 **137 reports / 274 entries**；部分 verified 的 advisory 已按保留 entry 重新计算 `entry_ids` 和 `num_entries`。
 - **2026-05-31** — 🔧 v0.1.2 数据更新：人工审计通过数量大幅提升，已审计 entry 从 **113 条增至 274 / 408 条 (67.2%)**，覆盖 advisory 从 **61 条增至 137 / 184 条 (74.5%)**。此外，对 80 条 entry 的 `entry_point` / `critical_operation` / `trace` 标注进行了精度优化。
 - **2026-05-17** — 🔧 v0.1.1 数据更新：为每条 entry 新增 `verify` 字段以标记人工审计状态；目前已有 **113 / 408 条 entry**（覆盖 **61 / 184 条 advisory**）通过人工审计。同时对部分 `entry_point` / `critical_operation` / `trace` 字段值做了优化。
@@ -185,7 +186,10 @@ VulnGym/
     ├── example_result.jsonl
     ├── evaluate.py                      # pair-level 召回评测
     ├── evaluate_entry_points.py         # entry_point anchor 召回评测
-    └── evaluate_critical_operations.py  # critical_operation anchor 召回评测
+    ├── evaluate_critical_operations.py  # critical_operation anchor 召回评测
+    ├── conversion_table.schema.json     # conversion-table JSON Schema
+    ├── conversion_table_to_eval_inputs.py # 从 conversion table 导出 evaluator 输入
+    └── example_conversion_table.jsonl   # conversion-table 示例
 ```
 
 ---
@@ -242,8 +246,34 @@ ds = load_dataset("json", data_files={
 
 ## 📊 评测你的工具
 
-将工具检出结果写入一个 JSONL 文件（每行一条 finding）。当前 cleaned fork
-提供三个 recall-only evaluator：
+先将工具的原始 finding 规范化为 conversion-table JSONL。这个中间表用于保留
+每条原始 finding 如何映射到 VulnGym 的 `entry_point` 和
+`critical_operation`，包括 direct、source-resolved、semantic-assisted、
+partial 和 failed conversion。格式参考
+`examples/conversion_table.schema.json` 与
+`examples/example_conversion_table.jsonl`。
+
+将 conversion table 转成 evaluator 可直接读取的输入：
+
+```bash
+python3 examples/conversion_table_to_eval_inputs.py examples/example_conversion_table.jsonl --out-dir /tmp/vulngym_eval_inputs
+```
+
+导出文件：
+
+- `/tmp/vulngym_eval_inputs/pair_findings.jsonl`
+- `/tmp/vulngym_eval_inputs/entry_point_findings.jsonl`
+- `/tmp/vulngym_eval_inputs/critical_operation_findings.jsonl`
+- `/tmp/vulngym_eval_inputs/conversion_manifest.json`
+- `/tmp/vulngym_eval_inputs/conversion_skipped.jsonl`
+
+pair-level 导出采用保守策略：显式 `candidate_pairs` 会被保留；没有显式
+pair 时，只有恰好 1 个可用 `entry_point` candidate 和 1 个可用
+`critical_operation` candidate 的行会被自动配对。脚本不会对多候选行生成
+笛卡尔积。
+
+当前 cleaned fork 提供三个 recall-only evaluator：
+
 
 ```bash
 # 严格 pair-level 路径重建：entry_point + critical_operation
@@ -259,8 +289,9 @@ python3 examples/evaluate_critical_operations.py path/to/your_findings.jsonl -v
 pair-level 评估要求每条 finding 至少包含 `repo_url`、`commit`、`entry_point`
 （外部可达入口）和 `critical_operation`（核心缺陷位置）。entry-point-only 评估只要求
 `entry_point`；critical-operation-only 评估只要求 `critical_operation`。`trace`
-（跨模块推理链路）可选，三个 matcher 都不使用 `trace`。完整格式参考
-`examples/example_result.jsonl`。
+（跨模块推理链路）可选，三个 matcher 都不使用 `trace`。evaluator-ready 格式参考
+`examples/example_result.jsonl`；推荐的 conversion-table 格式参考
+`examples/example_conversion_table.jsonl`。
 
 pair-level 脚本报告：
 

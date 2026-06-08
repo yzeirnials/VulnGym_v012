@@ -34,6 +34,7 @@
 ---
 
 ## 📢 What's New
+- **2026-06-08** — 🧭 conversion workflow: added a conversion-table schema and exporter to turn raw tool findings into pair-level, entry-point-only, and critical-operation-only evaluator inputs.
 - **2026-06-08** — 🧹 cleaned fork: retained only human-audited `verify = 1` entries, reducing the dataset to **137 reports / 274 entries**; partially verified advisories were re-aggregated to the retained `entry_ids` and `num_entries`.
 - **2026-05-31** — 🔧 v0.1.2 data refresh: human-audited entries grew from **113 → 274 / 408 (67.2 %)**, covering **137 / 184 advisories (74.5 %)**. Additionally, `entry_point` / `critical_operation` / `trace` annotations were refined on 80 entries for improved accuracy.
 - **2026-05-17** — 🔧 v0.1.1 data refresh: added a `verify` field on every entry to mark human-audit status; **113 / 408 entries** (covering **61 / 184 advisories**) are now human-verified. Selected `entry_point` / `critical_operation` / `trace` values were also refined.
@@ -198,7 +199,10 @@ VulnGym/
     ├── example_result.jsonl
     ├── evaluate.py                      # pair-level recall evaluator
     ├── evaluate_entry_points.py         # entry_point anchor recall evaluator
-    └── evaluate_critical_operations.py  # critical_operation anchor recall evaluator
+    ├── evaluate_critical_operations.py  # critical_operation anchor recall evaluator
+    ├── conversion_table.schema.json     # conversion-table JSON Schema
+    ├── conversion_table_to_eval_inputs.py # exporter from conversion table to evaluator inputs
+    └── example_conversion_table.jsonl   # sample conversion-table rows
 ```
 
 ---
@@ -255,8 +259,34 @@ ds = load_dataset("json", data_files={
 
 ## 📊 Evaluating your tool
 
-Write your tool's findings to a JSONL file (one finding per line). The
-cleaned fork provides three recall-only evaluator entry points:
+Write your tool's raw findings to a conversion-table JSONL file first. The
+conversion table preserves how each original finding was mapped into VulnGym's
+`entry_point` and `critical_operation` concepts, including direct,
+source-resolved, semantic-assisted, partial, and failed conversions. See
+`examples/conversion_table.schema.json` and
+`examples/example_conversion_table.jsonl`.
+
+Convert that table into evaluator-ready inputs:
+
+```bash
+python3 examples/conversion_table_to_eval_inputs.py examples/example_conversion_table.jsonl --out-dir /tmp/vulngym_eval_inputs
+```
+
+The exporter writes:
+
+- `/tmp/vulngym_eval_inputs/pair_findings.jsonl`
+- `/tmp/vulngym_eval_inputs/entry_point_findings.jsonl`
+- `/tmp/vulngym_eval_inputs/critical_operation_findings.jsonl`
+- `/tmp/vulngym_eval_inputs/conversion_manifest.json`
+- `/tmp/vulngym_eval_inputs/conversion_skipped.jsonl`
+
+Pair-level export is conservative: explicit `candidate_pairs` are honored, and
+rows without explicit pairs are auto-paired only when they contain exactly one
+usable `entry_point` candidate and one usable `critical_operation` candidate.
+The script does not generate a Cartesian product for multi-candidate rows.
+
+The cleaned fork provides three recall-only evaluator entry points:
+
 
 ```bash
 # Strict pair-level path reconstruction: entry_point + critical_operation
@@ -274,7 +304,7 @@ For pair-level evaluation, each finding must carry at least `repo_url`,
 (core defect location). For entry-point-only evaluation, `entry_point` is
 required. For critical-operation-only evaluation, `critical_operation` is
 required. `trace` (cross-module reasoning chain) is optional and ignored by all
-three matchers. See `examples/example_result.jsonl` for a working sample.
+three matchers. See `examples/example_result.jsonl` for the evaluator-ready shape and `examples/example_conversion_table.jsonl` for the recommended conversion-table shape.
 
 The pair-level script reports:
 

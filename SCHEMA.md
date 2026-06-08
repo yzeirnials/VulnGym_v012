@@ -48,6 +48,92 @@ reconstruction.
 
 ---
 
+
+## Tool-output conversion table
+
+Raw tool outputs should be normalized into a conversion table before they are
+passed to the evaluators. This intermediate table records both successful and
+failed mappings from tool-specific findings into VulnGym's evaluator terms.
+The machine-readable schema is:
+
+```text
+examples/conversion_table.schema.json
+```
+
+The example table is:
+
+```text
+examples/example_conversion_table.jsonl
+```
+
+One conversion-table row corresponds to one original tool finding.
+
+| field | type | required | description |
+|---|---|---|---|
+| `conversion_row_id` | `string` | yes | Stable id for the conversion-table row. |
+| `finding_id` | `string` | yes | Original tool finding id. |
+| `tool` | `string` | no | Tool name. |
+| `model` | `string` | no | Model name or backend label used by the tool. |
+| `run_id` | `string` | no | Experiment run id. |
+| `repo_url` | `string` | yes | Repository URL to carry into evaluator input. |
+| `commit` | `string` | yes | Vulnerable commit SHA to carry into evaluator input. |
+| `source_artifact` | `object` | yes | Pointer to the raw finding evidence, e.g. `{path, locator, format, sha256}`. Do not store secrets. |
+| `candidate_entry_points` | `object[]` | yes | Candidate reachable-entry locations derived from the finding. |
+| `candidate_critical_operations` | `object[]` | yes | Candidate core-defect locations derived from the finding. |
+| `candidate_pairs` | `object[]` | no | Explicit pair bindings between entry-point and critical-operation candidate ids. |
+| `candidate_trace` | `object[]` | no | Optional trace evidence retained for review; current evaluators ignore it. |
+| `conversion_status` | `string` | yes | `converted`, `partially-converted`, or `not-converted`. |
+| `rationale` | `string` | yes | Short explanation of the conversion decision. |
+| `source_categories` | `string[]` | no | Tool-native category labels. |
+| `vuln_category_l1_values` / `vuln_category_l2_values` | `string[]` | no | Category labels carried forward for later analysis. |
+| `confidence` | `number|string|null` | no | Optional tool or reviewer confidence. |
+| `review_notes` | `string|null` | no | Optional reviewer notes. |
+
+Each candidate endpoint has:
+
+| field | type | required | description |
+|---|---|---|---|
+| `candidate_id` | `string` | yes | Stable id within the row, e.g. `ep-1` or `co-1`. |
+| `endpoint` | `object|null` | no | `{file, line, code?}` when a usable location exists; `null` for retained failed attempts. |
+| `conversion_method` | `string` | yes | `direct`, `source-resolved`, `semantic-assisted`, or `not-converted`. |
+| `rationale` | `string` | no | Candidate-specific conversion explanation. |
+| `confidence` | `number|string|null` | no | Optional candidate-level confidence. |
+
+Conversion methods:
+
+- `direct` — the tool already reports a usable repository-relative file and
+  line span for the endpoint.
+- `source-resolved` — the tool reports a symbol, snippet, URL, stack frame, or
+  other source clue that is resolved against the vulnerable commit.
+- `semantic-assisted` — a reviewer or model maps descriptive language to a
+  concrete endpoint by understanding the vulnerability semantics.
+- `not-converted` — no evaluator-usable endpoint was recovered.
+
+Export conversion-table rows with:
+
+```bash
+python3 examples/conversion_table_to_eval_inputs.py examples/example_conversion_table.jsonl --out-dir /tmp/vulngym_eval_inputs
+```
+
+The exporter writes:
+
+```text
+pair_findings.jsonl
+entry_point_findings.jsonl
+critical_operation_findings.jsonl
+conversion_manifest.json
+conversion_skipped.jsonl
+```
+
+Pair-level output is intentionally conservative. Explicit `candidate_pairs` are
+honored. If a row has no `candidate_pairs`, it is auto-paired only when it has
+exactly one usable `entry_point` candidate and exactly one usable
+`critical_operation` candidate. Multi-candidate rows without explicit pairs are
+not expanded into a Cartesian product; they are recorded in
+`conversion_skipped.jsonl`.
+
+---
+
 ## `entries.jsonl` row
 
 | field | type | required | description |

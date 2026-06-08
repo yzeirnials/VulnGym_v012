@@ -25,6 +25,8 @@ benchmark runs.
 - Endpoint-level ground-truth views: `data/entry_points.jsonl` (236 anchors) and `data/critical_operations.jsonl` (241 anchors).
 - Endpoint-level recall evaluators: `examples/evaluate_entry_points.py` and `examples/evaluate_critical_operations.py`.
 - Endpoint generation records under `records/endpoint_ground_truth_20260608.*`.
+- Conversion-table schema, example, and exporter for turning raw tool findings into the three evaluator input formats.
+- Conversion schema record: `records/conversion_table_schema_20260608.md`.
 
 ## [0.1.2] — 2026-05-31
 
