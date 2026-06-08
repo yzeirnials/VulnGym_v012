@@ -5,10 +5,12 @@ a single self-contained JSON object (no trailing comma, `\n`-terminated,
 UTF-8). Field order in each row is stable (sorted alphabetically) so
 `diff` is useful across releases.
 
-- `data/reports.jsonl` — 184 rows, one per GitHub Advisory (report-level).
-- `data/entries.jsonl` — 408 rows, one per reachable entry point.
+- `data/reports.jsonl` — 137 rows, one per retained GitHub Advisory (report-level).
+- `data/entries.jsonl` — 274 rows, one per retained human-verified reachable entry point.
 
 Join key: `entries.report_id == reports.report_id`.
+
+Cleaned fork note: this branch filters upstream v0.1.2 to entries with `verify == 1`. Reports with no retained verified entries are removed; partially verified reports are re-aggregated so `entry_ids` and `num_entries` refer only to retained entries.
 
 ---
 

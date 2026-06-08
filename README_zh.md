@@ -34,6 +34,7 @@
 ---
 
 ## 📢 最新动态
+- **2026-06-08** — 🧹 cleaned fork：仅保留 `verify = 1` 的人工审计入口，数据集规模调整为 **137 reports / 274 entries**；部分 verified 的 advisory 已按保留 entry 重新计算 `entry_ids` 和 `num_entries`。
 - **2026-05-31** — 🔧 v0.1.2 数据更新：人工审计通过数量大幅提升，已审计 entry 从 **113 条增至 274 / 408 条 (67.2%)**，覆盖 advisory 从 **61 条增至 137 / 184 条 (74.5%)**。此外，对 80 条 entry 的 `entry_point` / `critical_operation` / `trace` 标注进行了精度优化。
 - **2026-05-17** — 🔧 v0.1.1 数据更新：为每条 entry 新增 `verify` 字段以标记人工审计状态；目前已有 **113 / 408 条 entry**（覆盖 **61 / 184 条 advisory**）通过人工审计。同时对部分 `entry_point` / `critical_operation` / `trace` 字段值做了优化。
 - **2026-05-15** — 🎉 VulnGym v0.1.0 版本正式开源！
@@ -79,90 +80,73 @@
 
 | 指标 | 数值 |
 |---|---|
-| Advisory 数（reports） | **184** |
-| 可达入口数（entries） | **408** |
-| 涉及项目数 | 38 |
+| Advisory 数（reports） | **137** |
+| 可达入口数（entries） | **274** |
+| 涉及项目数 | 30 |
 | 涉及仓库数 | 23 |
-| 人工审计通过的入口（`verify = 1`） | **113 / 408 (27.7%)** |
-| 人工审计通过的 advisory（至少一条入口已审计） | **61 / 184 (33.2%)** |
+| 人工审计通过的入口（`verify = 1`） | **274 / 274 (100.0%)** |
+| 人工审计通过的 advisory（至少一条入口已审计） | **137 / 137 (100.0%)** |
 
 ### 人工审计状态
 
-自 v0.1.1 起，`entries.jsonl` 中每条记录均包含 `verify` 字段（`int`，取值 `0` 或 `1`）：
+自 v0.1.1 起，`entries.jsonl` 中每条记录均包含 `verify` 字段（`int`，取值 `0` 或 `1`）。
 
-- `verify == 1` —— 该入口的 `entry_point`、`critical_operation`、`trace`
-  已经过人工审计确认，可作为高置信 ground truth；推荐在严格、可复现的
-  评测中优先使用此子集。
-- `verify == 0` —— 自动标注，尚未经过人工确认。可用于规模化或召回类
-  研究，但其字段值在后续版本中仍可能继续优化。
+当前 cleaned fork 已经将 `data/entries.jsonl` 过滤为仅包含 `verify == 1` 的人工审计入口；
+`data/reports.jsonl` 也已重新聚合，使 `entry_ids` 和 `num_entries` 仅指向保留的 verified entries。
+上游 v0.1.2 中 `verify == 0` 的入口不包含在本分支的数据文件中，删除和保留明细记录在
+`records/cleaned_verify1_20260608.md` 与 `records/cleaned_verify1_20260608_summary.json`。
 
-在全部 **184** 条 advisory 中，**50** 条 advisory 的所有入口均已审计通过，
-**11** 条为部分审计通过，合计 **61** 条 advisory 至少包含一条人工审计入口。
-后续版本将持续扩充已审计子集。
+过滤前，上游 v0.1.2 包含 **184 reports / 408 entries**，
+其中 **274** 条 entry、**137** 条 report 至少包含一条 verified entry。
+过滤后，本分支保留 **137 reports / 274 entries**。
+其中 **29** 条原本部分 verified 的 report 已删除未验证 entry 并重算聚合字段。
 
 ### 漏洞类型分布
 
 每条数据包含两级分类字段：`vuln_category_l1`（粗粒度类型）和
-`vuln_category_l2`（细粒度子类型）。**71.2%** 的漏洞为业务逻辑类，
-按 **12 类 + 1 兜底** 的二级标签体系分类（见下表）；其余 28.8% 覆盖传统漏洞类型。
-完整数据模型与字段定义详见 [`SCHEMA.md`](SCHEMA.md)。
-
-首期（v0.1.0）样本主要来源于近期高 Star 开源项目，以高频出现的业务逻辑漏洞为主；后续版本将持续扩展更多漏洞类别与项目场景。
+`vuln_category_l2`（细粒度子类型）。在当前 cleaned subset 中，**105 / 137 (76.6%)** 的漏洞为业务逻辑类，其余 **32 / 137 (23.4%)** 覆盖传统漏洞类型。完整数据模型与字段定义详见 [`SCHEMA.md`](SCHEMA.md)。
 
 > 注：一个漏洞（Advisory）可能对应多个入口（Entry）——下表按 **漏洞数** 统计，而非入口数。
 
-**业务逻辑类 (131 / 184, 71.2%) — `vuln_category_l2` 分布：**
+**业务逻辑类 (105 / 137, 76.6%) — `vuln_category_l2` 分布：**
 
 | 二级分类 | 漏洞数 | 占比 |
-|---|---|---|
-| BL-AUTHZ-BROKEN — 授权逻辑错误 | 31 | 23.7% |
-| BL-AUTHZ-MISSING — 授权缺失 | 23 | 17.6% |
-| BL-AGENT-CAPABILITY — AI/Agent 能力边界绕过 | 20 | 15.3% |
-| BL-PRIV-ESC — 特权提升 | 13 | 9.9% |
-| BL-AUTH-BYPASS — 身份认证绕过 | 11 | 8.4% |
-
-<details>
-<summary>其余 7 类（共 33 个，占业务逻辑类 25.2%）</summary>
-
-| 二级分类 | 漏洞数 | 占比 |
-|---|---|---|
-| BL-ORIGIN-INTEGRITY — 来源/签名/完整性校验缺失 | 8 | 6.1% |
-| BL-WORKFLOW-VIOLATION — 业务流程/状态机违规 | 7 | 5.3% |
-| BL-INSECURE-DEFAULT — 不安全默认配置 | 6 | 4.6% |
-| BL-RACE-LOGIC — 业务层竞争条件 | 4 | 3.1% |
-| BL-MULTI-TENANT — 多租户/隔离失效 | 3 | 2.3% |
-| BL-MASS-ASSIGNMENT — 参数/属性污染 | 3 | 2.3% |
-| BL-TRUST-BOUNDARY — 隐式信任内部输入 | 2 | 1.5% |
-
-</details>
+| --- | --- | --- |
+| BL-AUTHZ-BROKEN | 23 | 21.9% |
+| BL-AUTHZ-MISSING | 18 | 17.1% |
+| BL-AGENT-CAPABILITY | 17 | 16.2% |
+| BL-PRIV-ESC | 12 | 11.4% |
+| BL-AUTH-BYPASS | 8 | 7.6% |
+| BL-ORIGIN-INTEGRITY | 7 | 6.7% |
+| BL-WORKFLOW-VIOLATION | 6 | 5.7% |
+| BL-INSECURE-DEFAULT | 5 | 4.8% |
+| BL-RACE-LOGIC | 4 | 3.8% |
+| BL-MASS-ASSIGNMENT | 2 | 1.9% |
+| BL-TRUST-BOUNDARY | 2 | 1.9% |
+| BL-MULTI-TENANT | 1 | 1.0% |
 
 <br>
 
-**传统漏洞类 (53 / 184, 28.8%) — 主要 `vuln_category_l1` 分布：**
+**传统漏洞类 (32 / 137, 23.4%) — 主要 `vuln_category_l1` 分布：**
 
 | 类别 | 漏洞数 | 占比 |
-|---|---|---|
-| 代码注入（Code Injection） | 12 | 22.6% |
-| 路径穿越/文件操作（Path Traversal） | 9 | 17.0% |
-| 命令注入（Command Injection） | 8 | 15.1% |
-| XSS | 5 | 9.4% |
-| 沙箱逃逸（Sandbox Escape） | 5 | 9.4% |
-
-<details>
-<summary>其余 4 类（共 14 个，占传统漏洞类 26.4%）</summary>
-
-| 类别 | 漏洞数 | 占比 |
-|---|---|---|
-| SSRF | 4 | 7.5% |
-| 认证绕过（Authentication Bypass） | 3 | 5.7% |
-| 反序列化（Deserialization） | 2 | 3.8% |
-| 其他（模板注入、RCE、供应链等） | 5 | 9.4% |
-
-</details>
+| --- | --- | --- |
+| 路径穿越/文件操作 | 8 | 25.0% |
+| XSS | 4 | 12.5% |
+| 代码注入 | 4 | 12.5% |
+| 命令注入 | 3 | 9.4% |
+| SSRF | 3 | 9.4% |
+| 反序列化 | 2 | 6.2% |
+| 模板注入 | 1 | 3.1% |
+| 权限绕过 | 1 | 3.1% |
+| 注入类 | 1 | 3.1% |
+| 沙箱逃逸 | 1 | 3.1% |
+| 认证绕过 | 1 | 3.1% |
+| 供应链 | 1 | 3.1% |
+| 注入与反序列化 | 1 | 3.1% |
+| 原型链污染 | 1 | 3.1% |
 
 > 后续版本将持续扩展更多漏洞类别与项目覆盖
-
-
 
 ## 📈 基线评测结果
 

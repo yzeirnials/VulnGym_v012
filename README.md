@@ -34,6 +34,7 @@
 ---
 
 ## 📢 What's New
+- **2026-06-08** — 🧹 cleaned fork: retained only human-audited `verify = 1` entries, reducing the dataset to **137 reports / 274 entries**; partially verified advisories were re-aggregated to the retained `entry_ids` and `num_entries`.
 - **2026-05-31** — 🔧 v0.1.2 data refresh: human-audited entries grew from **113 → 274 / 408 (67.2 %)**, covering **137 / 184 advisories (74.5 %)**. Additionally, `entry_point` / `critical_operation` / `trace` annotations were refined on 80 entries for improved accuracy.
 - **2026-05-17** — 🔧 v0.1.1 data refresh: added a `verify` field on every entry to mark human-audit status; **113 / 408 entries** (covering **61 / 184 advisories**) are now human-verified. Selected `entry_point` / `critical_operation` / `trace` values were also refined.
 - **2026-05-15** — 🎉 VulnGym v0.1.0 officially open-sourced!
@@ -82,97 +83,83 @@ full vulnerable source tree for the corresponding version.
 
 | Metric | Value |
 |---|---|
-| Advisories (reports) | **184** |
-| Reachable entry points (entries) | **408** |
-| Distinct projects | 38 |
+| Advisories (reports) | **137** |
+| Reachable entry points (entries) | **274** |
+| Distinct projects | 30 |
 | Distinct repositories | 23 |
-| Human-audited entries (`verify = 1`) | **113 / 408 (27.7 %)** |
-| Human-audited advisories (≥ 1 verified entry) | **61 / 184 (33.2 %)** |
+| Human-audited entries (`verify = 1`) | **274 / 274 (100.0 %)** |
+| Human-audited advisories (≥ 1 verified entry) | **137 / 137 (100.0 %)** |
 
 ### Human audit status
 
 Starting in v0.1.1, every row in `entries.jsonl` carries a `verify` field
-(`int`, `0` or `1`):
+(`int`, `0` or `1`).
 
-- `verify == 1` — the entry's `entry_point`, `critical_operation`, and
-  `trace` have been reviewed and confirmed by a human annotator. These
-  rows form a high-confidence ground-truth subset and are recommended
-  for strict, reproducible benchmarking.
-- `verify == 0` — automatically annotated; not yet human-confirmed.
-  Useful for scale and recall studies, but values may still be refined
-  in future releases.
+This cleaned fork has already filtered `data/entries.jsonl` to rows with
+`verify == 1`. `data/reports.jsonl` has also been re-aggregated so that
+`entry_ids` and `num_entries` refer only to retained verified entries. Upstream
+v0.1.2 rows with `verify == 0` are not present in this branch's data files;
+retained and removed rows are recorded in `records/cleaned_verify1_20260608.md`
+and `records/cleaned_verify1_20260608_summary.json`.
 
-Of the **184** advisories, **50** have all of their entries verified and
-**11** are partially verified, for a total of **61** advisories with at
-least one human-audited entry. Future releases will continue to expand
-the verified subset.
+Before filtering, upstream v0.1.2 contained **184 reports /
+408 entries**, with **274**
+verified entries across **137** reports. After
+filtering, this branch retains **137 reports /
+274 entries**. The **29**
+originally partially verified reports have had unverified entries removed and
+their aggregate fields recomputed.
 
 ### Vulnerability type distribution
 
 Every entry carries a two-level classification: `vuln_category_l1`
-(coarse type) and `vuln_category_l2` (fine-grained sub-type). **71.2 %** of
-advisories are business-logic vulnerabilities, classified with a
-**12-class + 1 fallback** taxonomy (see below). The remaining 28.8 %
-cover traditional vulnerability types. Full data model and field
-definitions are in [`SCHEMA.md`](SCHEMA.md).
-
-The initial release (v0.1.0) draws primarily from recent high-star open-source projects and focuses on frequently occurring business-logic vulnerabilities; future releases will continue expanding vulnerability categories and project coverage.
+(coarse type) and `vuln_category_l2` (fine-grained sub-type). In this
+cleaned subset, **105 / 137 (76.6%)** advisories are business-logic
+vulnerabilities; the remaining **32 / 137 (23.4%)** cover traditional vulnerability
+types. Full data model and field definitions are in [`SCHEMA.md`](SCHEMA.md).
 
 > Note: one advisory may map to multiple entries — the counts below
 > are by **advisory (vulnerability)**, not by entry.
 
-**Business-logic advisories (131 / 184, 71.2 %) — `vuln_category_l2` breakdown:**
+**Business-logic advisories (105 / 137, 76.6%) — `vuln_category_l2` breakdown:**
 
 | Sub-category | Advisories | % of BL |
-|---|---|---|
-| BL-AUTHZ-BROKEN — broken authorization logic | 31 | 23.7 % |
-| BL-AUTHZ-MISSING — missing authorization | 23 | 17.6 % |
-| BL-AGENT-CAPABILITY — AI / Agent capability boundary bypass | 20 | 15.3 % |
-| BL-PRIV-ESC — privilege escalation | 13 | 9.9 % |
-| BL-AUTH-BYPASS — authentication bypass | 11 | 8.4 % |
-
-<details>
-<summary>7 more sub-categories (33 advisories, 25.2 % of BL)</summary>
-
-| Sub-category | Advisories | % of BL |
-|---|---|---|
-| BL-ORIGIN-INTEGRITY — origin / signature / integrity check missing | 8 | 6.1 % |
-| BL-WORKFLOW-VIOLATION — workflow / state-machine violation | 7 | 5.3 % |
-| BL-INSECURE-DEFAULT — insecure default configuration | 6 | 4.6 % |
-| BL-RACE-LOGIC — business-layer race condition | 4 | 3.1 % |
-| BL-MULTI-TENANT — multi-tenant / isolation failure | 3 | 2.3 % |
-| BL-MASS-ASSIGNMENT — mass assignment / parameter pollution | 3 | 2.3 % |
-| BL-TRUST-BOUNDARY — implicit trust in internal input | 2 | 1.5 % |
-
-</details>
+| --- | --- | --- |
+| BL-AUTHZ-BROKEN | 23 | 21.9% |
+| BL-AUTHZ-MISSING | 18 | 17.1% |
+| BL-AGENT-CAPABILITY | 17 | 16.2% |
+| BL-PRIV-ESC | 12 | 11.4% |
+| BL-AUTH-BYPASS | 8 | 7.6% |
+| BL-ORIGIN-INTEGRITY | 7 | 6.7% |
+| BL-WORKFLOW-VIOLATION | 6 | 5.7% |
+| BL-INSECURE-DEFAULT | 5 | 4.8% |
+| BL-RACE-LOGIC | 4 | 3.8% |
+| BL-MASS-ASSIGNMENT | 2 | 1.9% |
+| BL-TRUST-BOUNDARY | 2 | 1.9% |
+| BL-MULTI-TENANT | 1 | 1.0% |
 
 <br>
 
-**Traditional vulnerability advisories (53 / 184, 28.8 %) — top `vuln_category_l1`:**
+**Traditional vulnerability advisories (32 / 137, 23.4%) — top `vuln_category_l1`:**
 
 | Category | Advisories | % of Trad. |
-|---|---|---|
-| Code Injection | 12 | 22.6 % |
-| Path Traversal / File ops | 9 | 17.0 % |
-| Command Injection | 8 | 15.1 % |
-| XSS | 5 | 9.4 % |
-| Sandbox Escape | 5 | 9.4 % |
-
-<details>
-<summary>4 more categories (14 advisories, 26.4 % of Trad.)</summary>
-
-| Category | Advisories | % of Trad. |
-|---|---|---|
-| SSRF | 4 | 7.5 % |
-| Authentication Bypass | 3 | 5.7 % |
-| Deserialization | 2 | 3.8 % |
-| Other (Template Injection, RCE, Supply Chain, etc.) | 5 | 9.4 % |
-
-</details>
+| --- | --- | --- |
+| Path Traversal / File ops | 8 | 25.0% |
+| XSS | 4 | 12.5% |
+| Code Injection | 4 | 12.5% |
+| Command Injection | 3 | 9.4% |
+| SSRF | 3 | 9.4% |
+| Deserialization | 2 | 6.2% |
+| Template Injection | 1 | 3.1% |
+| Authorization Bypass | 1 | 3.1% |
+| Injection | 1 | 3.1% |
+| Sandbox Escape | 1 | 3.1% |
+| Authentication Bypass | 1 | 3.1% |
+| Supply Chain | 1 | 3.1% |
+| Injection / Deserialization | 1 | 3.1% |
+| Prototype Pollution | 1 | 3.1% |
 
 > Future releases will continue expanding vulnerability categories and project coverage.
-
-
 
 ## 📈 Baseline evaluation results
 

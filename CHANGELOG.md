@@ -4,6 +4,23 @@ All notable changes to VulnGym are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.2-cleaned-verify1] — 2026-06-08
+
+Experiment fork cleanup — retain only human-audited VulnGym entries for formal
+benchmark runs.
+
+### Changed
+- Filtered `data/entries.jsonl` from **408 → 274**
+  rows by keeping only `verify = 1`.
+- Filtered `data/reports.jsonl` from **184 → 137**
+  rows by removing reports with no retained verified entries.
+- Recomputed `entry_ids` and `num_entries` for **29**
+  originally partially verified reports.
+
+### Records
+- `records/cleaned_verify1_20260608.md`
+- `records/cleaned_verify1_20260608_summary.json`
+
 ## [0.1.2] — 2026-05-31
 
 Data refresh — significant expansion of human-audited coverage and annotation refinements.
