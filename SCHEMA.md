@@ -6,11 +6,45 @@ UTF-8). Field order in each row is stable (sorted alphabetically) so
 `diff` is useful across releases.
 
 - `data/reports.jsonl` — 137 rows, one per retained GitHub Advisory (report-level).
-- `data/entries.jsonl` — 274 rows, one per retained human-verified reachable entry point.
+- `data/entries.jsonl` — 274 rows, one per retained human-verified pair-level entry.
+- `data/entry_points.jsonl` — 236 rows, one per deduplicated human-verified reachable entry-point anchor.
+- `data/critical_operations.jsonl` — 241 rows, one per deduplicated human-verified critical-operation anchor.
 
 Join key: `entries.report_id == reports.report_id`.
 
 Cleaned fork note: this branch filters upstream v0.1.2 to entries with `verify == 1`. Reports with no retained verified entries are removed; partially verified reports are re-aggregated so `entry_ids` and `num_entries` refer only to retained entries.
+
+---
+
+
+## Endpoint-level rows
+
+`data/entry_points.jsonl` and `data/critical_operations.jsonl` are derived
+views over `data/entries.jsonl`.
+
+Both files use one JSON object per deduplicated anchor. Each row contains:
+
+| field | type | description |
+|---|---|---|
+| `anchor_id` | `string` | Stable id within the file, e.g. `entry-point-00001`. |
+| `anchor_kind` | `string` | Either `entry_point` or `critical_operation`. |
+| `repo_url` | `string` | Same repository key used by pair-level evaluation. |
+| `commit` | `string` | Vulnerable commit SHA. |
+| `entry_point` / `critical_operation` | `object` | The anchor object `{file, line, code}`. Only the field named by `anchor_kind` is present. |
+| `source_entry_ids` | `string[]` | Pair-level `entry_id` rows that produced this anchor. |
+| `source_report_ids` | `string[]` | Advisory/report ids reachable from `source_entry_ids`. |
+| `projects` | `string[]` | Source project labels for the anchor. |
+| `source_links` | `string[]` | Advisory URLs associated with the anchor. |
+| `vuln_ids` | `string[]` | Union of vulnerability ids associated with source entries. |
+| `vuln_titles` | `string[]` | Source vulnerability titles. |
+| `vuln_category_l1` / `vuln_category_l2` | `string[]` | Source category labels. |
+| `source_endpoint_codes` | `string[]` | Source code snippets observed at this anchor location. |
+| `verify` | `int` | Always `1` in this cleaned fork because source entries are filtered to `verify == 1`. |
+
+The endpoint files are for localization-only evaluation. They do not encode the
+full pair relation between reachable entry point and critical operation; use
+`data/entries.jsonl` and `examples/evaluate.py` for strict pair-level path
+reconstruction.
 
 ---
 

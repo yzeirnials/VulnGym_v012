@@ -148,6 +148,18 @@
 
 > 后续版本将持续扩展更多漏洞类别与项目覆盖
 
+### 单点粒度 Ground Truth
+
+除 pair-level `data/entries.jsonl` 外，本 cleaned fork 还从同一批 verified entries
+派生了两个单点粒度 ground-truth 文件：
+
+- `data/entry_points.jsonl` — 去重后的可达入口 anchor
+- `data/critical_operations.jsonl` — 去重后的核心缺陷操作 anchor
+
+这两个文件中的每个 anchor 都保留 `source_entry_ids` 和 `source_report_ids`，
+用于回溯到原始 pair-level entries。当前规模为 **236** 个 entry-point anchors
+和 **241** 个 critical-operation anchors。
+
 ## 📈 基线评测结果
 
 > 🚧 **即将发布** — 我们正在对主流工具和 AI Agent 进行系统评测，结果将随技术报告一并公布。
@@ -164,12 +176,16 @@ VulnGym/
 ├── CITATION.cff
 ├── LICENSE                      # CC-BY-4.0
 ├── data/
-│   ├── reports.jsonl            # 184 行 —— 每行一条 GitHub Advisory
-│   └── entries.jsonl            # 408 行 —— 每行一个入口点，含人工审计标记 verify
+│   ├── reports.jsonl             # 137 行 —— 每行一条保留的 GitHub Advisory
+│   ├── entries.jsonl             # 274 行 —— pair-level verified entries
+│   ├── entry_points.jsonl        # 236 行 —— 去重后的入口 anchor
+│   └── critical_operations.jsonl # 241 行 —— 去重后的核心操作 anchor
 └── examples/
-    ├── load_dataset.py          # stdlib / pandas / HuggingFace datasets 加载器
-    ├── example_result.jsonl     # 工具提交结果的示例
-    └── evaluate.py              # 覆盖率 / 召回率 评测脚本
+    ├── load_dataset.py
+    ├── example_result.jsonl
+    ├── evaluate.py                      # pair-level 召回评测
+    ├── evaluate_entry_points.py         # entry_point anchor 召回评测
+    └── evaluate_critical_operations.py  # critical_operation anchor 召回评测
 ```
 
 ---
@@ -226,30 +242,48 @@ ds = load_dataset("json", data_files={
 
 ## 📊 评测你的工具
 
-将工具检出结果写入一个 JSONL 文件（每行一条 finding），然后运行：
+将工具检出结果写入一个 JSONL 文件（每行一条 finding）。当前 cleaned fork
+提供三个 recall-only evaluator：
 
 ```bash
+# 严格 pair-level 路径重建：entry_point + critical_operation
 python3 examples/evaluate.py path/to/your_findings.jsonl -v
+
+# 仅评估可达入口定位
+python3 examples/evaluate_entry_points.py path/to/your_findings.jsonl -v
+
+# 仅评估核心缺陷位置定位
+python3 examples/evaluate_critical_operations.py path/to/your_findings.jsonl -v
 ```
 
-每条 finding 至少需要包含 `repo_url`、`commit`、`entry_point`（外部可达入口）和
-`critical_operation`（核心缺陷位置）。`trace`（跨模块推理链路）可选，当前评测器不参与匹配。
-完整格式参考 `examples/example_result.jsonl`。
+pair-level 评估要求每条 finding 至少包含 `repo_url`、`commit`、`entry_point`
+（外部可达入口）和 `critical_operation`（核心缺陷位置）。entry-point-only 评估只要求
+`entry_point`；critical-operation-only 评估只要求 `critical_operation`。`trace`
+（跨模块推理链路）可选，三个 matcher 都不使用 `trace`。完整格式参考
+`examples/example_result.jsonl`。
 
-评测脚本输出两个指标：
+pair-level 脚本报告：
 
-- **Advisory 级召回率**（主指标）—— `命中的 advisory 数 / 可用 advisory 数`。
-  一个 advisory 只要**任意一条** entry 被命中，即视为覆盖。
-- **Entry 级召回率**（副指标）—— `命中的 entry 数 / 可用 entry 数`。
+- **Advisory-level recall**（主指标）— `covered_advisories /
+  usable_advisories`。如果某个 advisory 至少有一条 entry 被匹配，则视为覆盖。
+- **Entry-level recall**（辅助指标）— `matched_entries / usable_entries`。
+
+两个单点粒度脚本报告：
+
+- **Anchor-level recall**（主指标）— 命中的 `entry_point` 或 `critical_operation`
+  anchors / usable anchors。
+- **Report-level recall**（补充指标）— 通过 matched anchors 覆盖到的 reports。
+- **Source-entry coverage**（补充指标）— 通过 matched anchors 覆盖到的原始
+  pair-level entries。
 
 **默认匹配策略**
 
 | 维度 | 默认值 |
 |---|---|
 | 路径匹配 | 归一化后严格相等 |
-| 行号容差 | entry_point 与 critical_operation 均满足 `|Δline| ≤ 5` |
-| 方向 | 严格（entry_point 对 entry_point，critical_operation 对 critical_operation） |
-| ground truth 中 `line == 0` | 同时从分子分母中剔除 |
+| 行号容差 | `int` 或 `"start-end"` span；默认容差 `+/-5` |
+| 方向 | pair-level 严格匹配 entry_point 对 entry_point、critical_operation 对 critical_operation；单点评估只匹配对应 anchor |
+| 不可用 ground truth line | 同时从分子分母中剔除 |
 
 所有策略均有文档说明，并可通过 CLI 参数调整（`--line-tolerance` 等）。
 

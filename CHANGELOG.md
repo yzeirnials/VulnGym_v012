@@ -21,6 +21,11 @@ benchmark runs.
 - `records/cleaned_verify1_20260608.md`
 - `records/cleaned_verify1_20260608_summary.json`
 
+### Added
+- Endpoint-level ground-truth views: `data/entry_points.jsonl` (236 anchors) and `data/critical_operations.jsonl` (241 anchors).
+- Endpoint-level recall evaluators: `examples/evaluate_entry_points.py` and `examples/evaluate_critical_operations.py`.
+- Endpoint generation records under `records/endpoint_ground_truth_20260608.*`.
+
 ## [0.1.2] — 2026-05-31
 
 Data refresh — significant expansion of human-audited coverage and annotation refinements.

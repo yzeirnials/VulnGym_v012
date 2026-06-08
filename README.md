@@ -161,6 +161,18 @@ types. Full data model and field definitions are in [`SCHEMA.md`](SCHEMA.md).
 
 > Future releases will continue expanding vulnerability categories and project coverage.
 
+### Endpoint-Level Ground Truth
+
+In addition to pair-level `data/entries.jsonl`, this cleaned fork derives two
+single-anchor ground-truth files from the same verified entries:
+
+- `data/entry_points.jsonl` — deduplicated reachable-entry anchors
+- `data/critical_operations.jsonl` — deduplicated core defect-operation anchors
+
+Every anchor keeps `source_entry_ids` and `source_report_ids` so it can be
+traced back to the original pair-level entries. The current cleaned subset
+contains **236** entry-point anchors and **241** critical-operation anchors.
+
 ## 📈 Baseline evaluation results
 
 > 🚧 **Coming soon** — We are systematically evaluating mainstream tools and AI agents. Results will be published alongside the technical report.
@@ -177,12 +189,16 @@ VulnGym/
 ├── CITATION.cff
 ├── LICENSE                      # CC-BY-4.0
 ├── data/
-│   ├── reports.jsonl            # 184 rows — one GitHub Advisory per row
-│   └── entries.jsonl            # 408 rows — one entry point per row, with human-audit flag (verify)
+│   ├── reports.jsonl             # 137 rows — one retained GitHub Advisory per row
+│   ├── entries.jsonl             # 274 rows — pair-level verified entries
+│   ├── entry_points.jsonl        # 236 rows — deduplicated reachable-entry anchors
+│   └── critical_operations.jsonl # 241 rows — deduplicated critical-operation anchors
 └── examples/
-    ├── load_dataset.py          # stdlib / pandas / HuggingFace datasets loader
-    ├── example_result.jsonl     # illustrative tool-findings submission
-    └── evaluate.py              # coverage / recall evaluator
+    ├── load_dataset.py
+    ├── example_result.jsonl
+    ├── evaluate.py                      # pair-level recall evaluator
+    ├── evaluate_entry_points.py         # entry_point anchor recall evaluator
+    └── evaluate_critical_operations.py  # critical_operation anchor recall evaluator
 ```
 
 ---
@@ -239,32 +255,51 @@ ds = load_dataset("json", data_files={
 
 ## 📊 Evaluating your tool
 
-Write your tool's findings to a JSONL file (one finding per line) and run:
+Write your tool's findings to a JSONL file (one finding per line). The
+cleaned fork provides three recall-only evaluator entry points:
 
 ```bash
+# Strict pair-level path reconstruction: entry_point + critical_operation
 python3 examples/evaluate.py path/to/your_findings.jsonl -v
+
+# Reachable-entry localization only
+python3 examples/evaluate_entry_points.py path/to/your_findings.jsonl -v
+
+# Core defect-location localization only
+python3 examples/evaluate_critical_operations.py path/to/your_findings.jsonl -v
 ```
 
-Each finding must carry at least `repo_url`, `commit`, `entry_point`
-(reachable entry point), and `critical_operation` (core defect location).
-`trace` (cross-module reasoning chain) is optional and ignored by the
-matcher. See `examples/example_result.jsonl` for a working sample.
+For pair-level evaluation, each finding must carry at least `repo_url`,
+`commit`, `entry_point` (reachable entry point), and `critical_operation`
+(core defect location). For entry-point-only evaluation, `entry_point` is
+required. For critical-operation-only evaluation, `critical_operation` is
+required. `trace` (cross-module reasoning chain) is optional and ignored by all
+three matchers. See `examples/example_result.jsonl` for a working sample.
 
-The script reports two metrics:
+The pair-level script reports:
 
 - **Advisory-level recall** (primary) — `covered_advisories /
   usable_advisories`. An advisory is covered if **at least one** of its
   entries is matched.
 - **Entry-level recall** (secondary) — `matched_entries / usable_entries`.
 
+The single-anchor scripts report:
+
+- **Anchor-level recall** (primary) — matched `entry_point` or
+  `critical_operation` anchors over usable anchors.
+- **Report-level recall** (supplemental) — reports covered through matched
+  anchors.
+- **Source-entry coverage** (supplemental) — original pair-level entries covered
+  through matched anchors.
+
 **Default matching policy**
 
 | Aspect | Default |
 |---|---|
 | Path match | normalized, exact |
-| Line tolerance | `\|Δline\| ≤ 5` on entry_point **and** critical_operation |
-| Direction | strict (entry_point-to-entry_point, critical_operation-to-critical_operation) |
-| `line == 0` in ground truth | excluded from numerator and denominator |
+| Line tolerance | `int` or `"start-end"` span; default tolerance `+/-5` |
+| Direction | pair-level is strict entry_point-to-entry_point and critical_operation-to-critical_operation; single-anchor evaluators match only their corresponding anchor |
+| Unusable ground-truth line | excluded from numerator and denominator |
 
 All policies are documented and configurable via CLI arguments
 (`--line-tolerance`, etc.).
