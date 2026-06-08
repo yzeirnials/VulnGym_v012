@@ -32,18 +32,19 @@ BOTH of the following hold:
 
   1. Paths are equal after normalization (strip leading './', unify '\\' to
      '/', collapse repeated slashes, case-sensitive).
-  2. |line_F - line_E| <= tolerance, default 5.
+  2. The reported line span overlaps the ground-truth line span after applying
+     tolerance, default 5. A line may be either an integer or a "start-end"
+     range string.
 
 Direction is strict: F.entry_point is compared to E.entry_point,
 F.critical_operation to E.critical_operation.
 If the tool reports the roles swapped, it counts as a miss. Use your tool's
 configuration to align semantics before evaluating.
 
-`line == 0` in ground truth means "unknown" (see SCHEMA.md); any entry
-whose entry_point or critical_operation has line == 0 is dropped from both
-numerator AND denominator (neither "usable" nor "covered"). Findings are NOT compared
-across repo/commit — only entries sharing the same (repo_url, commit) as
-the finding are candidates.
+Ground-truth entries with an invalid, missing, or zero line are dropped from
+both numerator AND denominator (neither "usable" nor "covered"). Findings are
+NOT compared across repo/commit; only entries sharing the same (repo_url,
+commit) as the finding are candidates.
 
 Input format (tool findings, JSONL)
 -----------------------------------
@@ -53,7 +54,7 @@ Each line is a self-contained JSON object:
       "repo_url": "https://github.com/org/repo",
       "commit":   "<40-hex sha>",
       "entry_point":          {"file": "...", "line": 123},
-      "critical_operation":   {"file": "...", "line": 456},
+      "critical_operation":   {"file": "...", "line": "456-459"},
       "trace":    [ ... ]        // optional; ignored by the matcher
     }
 
@@ -86,6 +87,7 @@ DEFAULT_TOLERANCE = 5
 # ---------------------------------------------------------------------------
 _LEADING_DOT_SLASH = re.compile(r"^(?:\./)+")
 _MULTI_SLASH = re.compile(r"/+")
+_LINE_RANGE = re.compile(r"^\s*(\d+)\s*-\s*(\d+)\s*$")
 
 
 def normalize_path(p: str) -> str:
@@ -94,7 +96,7 @@ def normalize_path(p: str) -> str:
     - Convert backslashes to forward slashes.
     - Strip one or more leading './'.
     - Collapse repeated slashes.
-    - Do NOT lowercase — we target case-sensitive filesystems (Linux) which
+    - Do NOT lowercase; we target case-sensitive filesystems (Linux) which
       are the norm for server-side code.
     """
     if not isinstance(p, str):
@@ -146,6 +148,40 @@ def load_jsonl(path: Path) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Matching
 # ---------------------------------------------------------------------------
+def normalize_line_span(value: Any) -> tuple[int, int] | None:
+    """Normalize an int or "start-end" line value to an inclusive span."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        if value < 1:
+            return None
+        return (value, value)
+    if isinstance(value, str):
+        value = value.strip()
+        if value.isdigit():
+            line = int(value)
+            return (line, line) if line >= 1 else None
+        m = _LINE_RANGE.match(value)
+        if not m:
+            return None
+        start, end = int(m.group(1)), int(m.group(2))
+        if start < 1 or end < start:
+            return None
+        return (start, end)
+    return None
+
+
+def line_spans_match(
+    finding_span: tuple[int, int],
+    entry_span: tuple[int, int],
+    tolerance: int,
+) -> bool:
+    """Return true when spans overlap after expanding entry by tolerance."""
+    f_start, f_end = finding_span
+    e_start, e_end = entry_span
+    return f_end >= e_start - tolerance and f_start <= e_end + tolerance
+
+
 def _endpoint_match(
     f_ep: dict, e_ep: dict, tolerance: int
 ) -> bool:
@@ -157,23 +193,18 @@ def _endpoint_match(
     e_file = normalize_path(e_ep.get("file", ""))
     if not f_file or f_file != e_file:
         return False
-    try:
-        f_line = int(f_ep.get("line", 0))
-        e_line = int(e_ep.get("line", 0))
-    except (TypeError, ValueError):
+    f_span = normalize_line_span(f_ep.get("line"))
+    e_span = normalize_line_span(e_ep.get("line"))
+    if f_span is None or e_span is None:
         return False
-    # line == 0 on the ground-truth side is handled upstream (that entry is
-    # excluded). Defense-in-depth: reject a zero line here too.
-    if e_line == 0:
-        return False
-    return abs(f_line - e_line) <= tolerance
+    return line_spans_match(f_span, e_span, tolerance)
 
 
 def finding_matches_entry(
     finding: dict, entry: dict, tolerance: int
 ) -> bool:
-    """Strict-direction match: entry_point↔entry_point AND
-    critical_operation↔critical_operation within tolerance."""
+    """Strict-direction match: entry_point to entry_point AND
+    critical_operation to critical_operation within tolerance."""
     return (
         _endpoint_match(finding.get("entry_point", {}), entry.get("entry_point", {}), tolerance)
         and _endpoint_match(finding.get("critical_operation", {}), entry.get("critical_operation", {}), tolerance)
@@ -192,9 +223,9 @@ def evaluate(
     usable_entries: list[dict] = []
     skipped_entries: list[dict] = []
     for e in entries:
-        src_line = e.get("entry_point", {}).get("line", 0)
-        sink_line = e.get("critical_operation", {}).get("line", 0)
-        if src_line == 0 or sink_line == 0:
+        src_span = normalize_line_span(e.get("entry_point", {}).get("line"))
+        sink_span = normalize_line_span(e.get("critical_operation", {}).get("line"))
+        if src_span is None or sink_span is None:
             skipped_entries.append(e)
         else:
             usable_entries.append(e)
@@ -270,11 +301,13 @@ def evaluate(
             "line_tolerance": tolerance,
             "match_path": "normalized_exact",
             "direction": "strict",
-            "line_zero_policy": "skip",
+            "line_policy": "int_or_range_span",
+            "unusable_ground_truth_line_policy": "skip",
         },
         "totals": {
             "ground_truth_entries": len(entries),
             "skipped_entries_line_zero": len(skipped_entries),
+            "skipped_entries_unusable_line": len(skipped_entries),
             "usable_entries": total_usable_entries,
             "usable_advisories": total_usable_reports,
             "findings": len(findings),
@@ -308,15 +341,16 @@ def print_summary(report: dict, verbose: bool) -> None:
     print("VulnGym evaluation")
     print("==================")
     print(
-        f"policy: line_tolerance=±{cfg['line_tolerance']} | "
+        f"policy: line_tolerance=+/-{cfg['line_tolerance']} | "
         f"path={cfg['match_path']} | direction={cfg['direction']} | "
-        f"line=0 policy={cfg['line_zero_policy']}"
+        f"line={cfg['line_policy']} | "
+        f"unusable_line_policy={cfg['unusable_ground_truth_line_policy']}"
     )
     print()
     print(
         f"ground truth:  {tot['usable_advisories']} advisories / "
         f"{tot['usable_entries']} entries (skipped "
-        f"{tot['skipped_entries_line_zero']} entries with line=0)"
+        f"{tot['skipped_entries_unusable_line']} entries with unusable line)"
     )
     print(f"findings:      {tot['findings']} reported by the tool")
     print()
@@ -378,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
         "--line-tolerance",
         type=int,
         default=DEFAULT_TOLERANCE,
-        help="Max |Δline| allowed on entry_point or critical_operation (default: %(default)s).",
+        help="Max line delta allowed on entry_point or critical_operation (default: %(default)s).",
     )
     p.add_argument(
         "--json-out",
@@ -406,7 +440,7 @@ def main(argv: list[str] | None = None) -> int:
         args.json_out.parent.mkdir(parents=True, exist_ok=True)
         with args.json_out.open("w", encoding="utf-8") as f:
             json.dump(report, f, ensure_ascii=False, indent=2)
-        print(f"\nwrote JSON report → {args.json_out}")
+        print(f"\nwrote JSON report -> {args.json_out}")
 
     return 0
 
