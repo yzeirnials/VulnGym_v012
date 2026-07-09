@@ -5,10 +5,22 @@ a single self-contained JSON object (no trailing comma, `\n`-terminated,
 UTF-8). Field order in each row is stable (sorted alphabetically) so
 `diff` is useful across releases.
 
-- `data/reports.jsonl` — 184 rows, one per GitHub Advisory (report-level).
-- `data/entries.jsonl` — 408 rows, one per reachable entry point.
+- `data/reports.jsonl` — 178 rows, one per retained GitHub Advisory (report-level).
+- `data/entries.jsonl` - 393 rows, one per retained human-verified pair-level entry.
+- `data/entry_points.jsonl` - 350 rows, one per deduplicated human-verified reachable entry-point anchor.
+- `data/critical_operations.jsonl` - 356 rows, one per deduplicated human-verified critical-operation anchor.
 
 Join key: `entries.report_id == reports.report_id`.
+
+Cleaned fork note: this branch filters upstream v0.1.4 to entries with `verify == 1`. Reports with no retained verified entries are removed; partially verified reports are re-aggregated so `entry_ids` and `num_entries` refer only to retained entries.
+
+---
+
+## Endpoint-level rows
+
+`data/entry_points.jsonl` and `data/critical_operations.jsonl` are derived views over `data/entries.jsonl`. They are for localization-only evaluation and do not encode the full pair relation between reachable entry point and critical operation.
+
+Both files use one JSON object per deduplicated anchor. Each row contains `anchor_id`, `anchor_kind`, `repo_url`, `commit`, either `entry_point` or `critical_operation`, `source_entry_ids`, `source_report_ids`, `projects`, `source_links`, `vuln_ids`, `vuln_titles`, `vuln_category_l1`, `vuln_category_l2`, `source_endpoint_codes`, and `verify`.
 
 ---
 

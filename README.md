@@ -34,6 +34,7 @@
 ---
 
 ## 📢 What's New
+- **2026-07-09** — 🧹 cleaned fork: rebuilt from upstream v0.1.4 and retained only human-audited `verify = 1` entries, reducing the dataset to **178 reports / 393 entries**; partially verified advisories were re-aggregated to the retained `entry_ids` and `num_entries`.
 - **2026-06-26** — 🔧 v0.1.4 data refresh: human-audited entries grew from **350 → 393 / 408 (96.3 %)**, covering **178 / 184 advisories (96.7 %)**. This release updates only human-audit status flags; row counts, schema, `desc` coverage, and vulnerability-type distribution are unchanged.
 - **2026-06-18** — 🔧 v0.1.3 data refresh: human-audited entries grew from **274 → 350 / 408 (85.8 %)**, covering **163 / 184 advisories (88.6 %)**. In addition, a `desc` field was added to the `entry_point` / `critical_operation` / `trace` nodes of 400 entries, giving a natural-language explanation of each node's role in the vulnerability chain.
 - **2026-05-31** — 🔧 v0.1.2 data refresh: human-audited entries grew from **113 → 274 / 408 (67.2 %)**, covering **137 / 184 advisories (74.5 %)**. Additionally, `entry_point` / `critical_operation` / `trace` annotations were refined on 80 entries for improved accuracy.
@@ -71,11 +72,13 @@ evaluating the real-world vulnerability-hunting capabilities of AI agents:
 
 ## ✨ Dataset overview
 
-This is the **v0.1.4 release** of VulnGym. Data is provided
-as two JSONL files under the `data/` directory:
+This is the **v0.1.4 cleaned-verify1 release** of VulnGym. Data is provided
+as four JSONL files under the `data/` directory:
 
 - `reports.jsonl` — aggregated records at the GitHub Advisory granularity
-- `entries.jsonl` — annotated records at the reachable entry point granularity
+- `entries.jsonl` - verified pair-level records at the reachable entry point granularity
+- `entry_points.jsonl` - deduplicated reachable-entry anchors
+- `critical_operations.jsonl` - deduplicated critical-operation anchors
 
 Each record contains `repo_url` and `commit`, allowing you to check out the
 full vulnerable source tree for the corresponding version.
@@ -84,97 +87,88 @@ full vulnerable source tree for the corresponding version.
 
 | Metric | Value |
 |---|---|
-| Advisories (reports) | **184** |
-| Reachable entry points (entries) | **408** |
+| Advisories (reports) | **178** |
+| Reachable entry points (entries) | **393** |
+| Deduplicated entry-point anchors | **350** |
+| Deduplicated critical-operation anchors | **356** |
 | Distinct projects | 38 |
 | Distinct repositories | 23 |
-| Human-audited entries (`verify = 1`) | **393 / 408 (96.3 %)** |
-| Human-audited advisories (≥ 1 verified entry) | **178 / 184 (96.7 %)** |
+| Human-audited entries (`verify = 1`) | **393 / 393 (100.0 %)** |
+| Human-audited advisories (≥ 1 verified entry) | **178 / 178 (100.0 %)** |
 
 ### Human audit status
 
 Starting in v0.1.1, every row in `entries.jsonl` carries a `verify` field
-(`int`, `0` or `1`):
+(`int`, `0` or `1`).
 
-- `verify == 1` — the entry's `entry_point`, `critical_operation`, and
-  `trace` have been reviewed and confirmed by a human annotator. These
-  rows form a high-confidence ground-truth subset and are recommended
-  for strict, reproducible benchmarking.
-- `verify == 0` — automatically annotated; not yet human-confirmed.
-  Useful for scale and recall studies, but values may still be refined
-  in future releases.
+This cleaned fork has already filtered `data/entries.jsonl` to rows with
+`verify == 1`. `data/reports.jsonl` has also been re-aggregated so that
+`entry_ids` and `num_entries` refer only to retained verified entries. Upstream
+v0.1.4 rows with `verify == 0` are not present in this branch's data files;
+retained and removed rows are recorded in `records/cleaned_verify1_20260709.md`
+and `records/cleaned_verify1_20260709_summary.json`.
 
-Of the **184** advisories, **174** have all of their entries verified and
-**4** are partially verified, for a total of **178** advisories with at
-least one human-audited entry. Future releases will continue to expand
-the verified subset.
+Before filtering, upstream v0.1.4 contained **184 reports /
+408 entries**, with **393**
+verified entries across **178** reports. After
+filtering, this branch retains **178 reports /
+393 entries**. The **4**
+originally partially verified reports have had unverified entries removed and
+their aggregate fields recomputed.
 
 ### Vulnerability type distribution
 
 Every entry carries a two-level classification: `vuln_category_l1`
-(coarse type) and `vuln_category_l2` (fine-grained sub-type). **71.2 %** of
-advisories are business-logic vulnerabilities, classified with a
-**12-class + 1 fallback** taxonomy (see below). The remaining 28.8 %
-cover traditional vulnerability types. Full data model and field
-definitions are in [`SCHEMA.md`](SCHEMA.md).
-
-The initial release (v0.1.0) draws primarily from recent high-star open-source projects and focuses on frequently occurring business-logic vulnerabilities; future releases will continue expanding vulnerability categories and project coverage.
+(coarse type) and `vuln_category_l2` (fine-grained sub-type). In this
+cleaned subset, **131 / 178 (73.6%)** advisories are business-logic
+vulnerabilities; the remaining **47 / 178 (26.4%)** cover traditional vulnerability
+types. Full data model and field definitions are in [`SCHEMA.md`](SCHEMA.md).
 
 > Note: one advisory may map to multiple entries — the counts below
 > are by **advisory (vulnerability)**, not by entry.
 
-**Business-logic advisories (131 / 184, 71.2 %) — `vuln_category_l2` breakdown:**
+**Business-logic advisories (131 / 178, 73.6%) — `vuln_category_l2` breakdown:**
 
 | Sub-category | Advisories | % of BL |
-|---|---|---|
-| BL-AUTHZ-BROKEN — broken authorization logic | 31 | 23.7 % |
-| BL-AUTHZ-MISSING — missing authorization | 23 | 17.6 % |
-| BL-AGENT-CAPABILITY — AI / Agent capability boundary bypass | 20 | 15.3 % |
-| BL-PRIV-ESC — privilege escalation | 13 | 9.9 % |
-| BL-AUTH-BYPASS — authentication bypass | 11 | 8.4 % |
-
-<details>
-<summary>7 more sub-categories (33 advisories, 25.2 % of BL)</summary>
-
-| Sub-category | Advisories | % of BL |
-|---|---|---|
-| BL-ORIGIN-INTEGRITY — origin / signature / integrity check missing | 8 | 6.1 % |
-| BL-WORKFLOW-VIOLATION — workflow / state-machine violation | 7 | 5.3 % |
-| BL-INSECURE-DEFAULT — insecure default configuration | 6 | 4.6 % |
-| BL-RACE-LOGIC — business-layer race condition | 4 | 3.1 % |
-| BL-MULTI-TENANT — multi-tenant / isolation failure | 3 | 2.3 % |
-| BL-MASS-ASSIGNMENT — mass assignment / parameter pollution | 3 | 2.3 % |
-| BL-TRUST-BOUNDARY — implicit trust in internal input | 2 | 1.5 % |
-
-</details>
+| --- | --- | --- |
+| BL-AUTHZ-BROKEN | 31 | 23.7% |
+| BL-AUTHZ-MISSING | 23 | 17.6% |
+| BL-AGENT-CAPABILITY | 20 | 15.3% |
+| BL-PRIV-ESC | 13 | 9.9% |
+| BL-AUTH-BYPASS | 11 | 8.4% |
+| BL-ORIGIN-INTEGRITY | 8 | 6.1% |
+| BL-WORKFLOW-VIOLATION | 7 | 5.3% |
+| BL-INSECURE-DEFAULT | 6 | 4.6% |
+| BL-RACE-LOGIC | 4 | 3.1% |
+| BL-MULTI-TENANT | 3 | 2.3% |
+| BL-MASS-ASSIGNMENT | 3 | 2.3% |
+| BL-TRUST-BOUNDARY | 2 | 1.5% |
 
 <br>
 
-**Traditional vulnerability advisories (53 / 184, 28.8 %) — top `vuln_category_l1`:**
+**Traditional vulnerability advisories (47 / 178, 26.4%) — top `vuln_category_l1`:**
 
 | Category | Advisories | % of Trad. |
-|---|---|---|
-| Code Injection | 12 | 22.6 % |
-| Path Traversal / File ops | 9 | 17.0 % |
-| Command Injection | 8 | 15.1 % |
-| XSS | 5 | 9.4 % |
-| Sandbox Escape | 5 | 9.4 % |
-
-<details>
-<summary>4 more categories (14 advisories, 26.4 % of Trad.)</summary>
-
-| Category | Advisories | % of Trad. |
-|---|---|---|
-| SSRF | 4 | 7.5 % |
-| Authentication Bypass | 3 | 5.7 % |
-| Deserialization | 2 | 3.8 % |
-| Other (Template Injection, RCE, Supply Chain, etc.) | 5 | 9.4 % |
-
-</details>
+| --- | --- | --- |
+| Path Traversal / File ops | 9 | 19.1% |
+| Command Injection | 8 | 17.0% |
+| Code Injection | 7 | 14.9% |
+| XSS | 4 | 8.5% |
+| SSRF | 4 | 8.5% |
+| Deserialization | 2 | 4.3% |
+| Sandbox Escape | 2 | 4.3% |
+| Authentication Bypass | 2 | 4.3% |
+| 注入 | 1 | 2.1% |
+| Template Injection | 1 | 2.1% |
+| Authorization Bypass | 1 | 2.1% |
+| Injection | 1 | 2.1% |
+| Supply Chain | 1 | 2.1% |
+| Injection / Deserialization | 1 | 2.1% |
+| 信息泄露 | 1 | 2.1% |
+| 注入攻击 | 1 | 2.1% |
+| Prototype Pollution | 1 | 2.1% |
 
 > Future releases will continue expanding vulnerability categories and project coverage.
-
-
 
 ## 📈 Baseline evaluation results
 
@@ -192,12 +186,17 @@ VulnGym/
 ├── CITATION.cff
 ├── LICENSE                      # CC-BY-4.0
 ├── data/
-│   ├── reports.jsonl            # 184 rows — one GitHub Advisory per row
-│   └── entries.jsonl            # 408 rows — one entry point per row, with human-audit flag (verify)
+?   ??? reports.jsonl             # 178 rows - one retained GitHub Advisory per row
+?   ??? entries.jsonl             # 393 rows - verified pair-level entries
+?   ??? entry_points.jsonl        # 350 rows - deduplicated reachable-entry anchors
+?   ??? critical_operations.jsonl # 356 rows - deduplicated critical-operation anchors
 └── examples/
     ├── load_dataset.py          # stdlib / pandas / HuggingFace datasets loader
     ├── example_result.jsonl     # illustrative tool-findings submission
-    └── evaluate.py              # coverage / recall evaluator
+    ??? evaluate.py                      # pair-level recall evaluator
+    ??? evaluate_entry_points.py         # entry-point anchor recall evaluator
+    ??? evaluate_critical_operations.py  # critical-operation anchor recall evaluator
+    ??? conversion_table_to_eval_inputs.py # conversion-table exporter
 ```
 
 ---
@@ -254,23 +253,22 @@ ds = load_dataset("json", data_files={
 
 ## 📊 Evaluating your tool
 
-Write your tool's findings to a JSONL file (one finding per line) and run:
+Write your tool's findings to a JSONL file (one finding per line). This cleaned fork provides three recall-only evaluator entry points:
 
 ```bash
+# Strict pair-level path reconstruction: entry_point + critical_operation
 python3 examples/evaluate.py path/to/your_findings.jsonl -v
+
+# Reachable-entry localization only
+python3 examples/evaluate_entry_points.py path/to/your_findings.jsonl -v
+
+# Core defect-location localization only
+python3 examples/evaluate_critical_operations.py path/to/your_findings.jsonl -v
 ```
 
-Each finding must carry at least `repo_url`, `commit`, `entry_point`
-(reachable entry point), and `critical_operation` (core defect location).
-`trace` (cross-module reasoning chain) is optional and ignored by the
-matcher. See `examples/example_result.jsonl` for a working sample.
+For pair-level evaluation, each finding must carry at least `repo_url`, `commit`, `entry_point`, and `critical_operation`. For entry-point-only evaluation, `entry_point` is required. For critical-operation-only evaluation, `critical_operation` is required. `trace` is optional and ignored by all three matchers. See `examples/example_result.jsonl` for a working sample.
 
-The script reports two metrics:
-
-- **Advisory-level recall** (primary) — `covered_advisories /
-  usable_advisories`. An advisory is covered if **at least one** of its
-  entries is matched.
-- **Entry-level recall** (secondary) — `matched_entries / usable_entries`.
+The pair-level script reports advisory-level and entry-level recall. The single-anchor scripts report anchor-level recall, report-level recall, and source-entry coverage.
 
 **Default matching policy**
 
@@ -278,8 +276,8 @@ The script reports two metrics:
 |---|---|
 | Path match | normalized, exact |
 | Line tolerance | `\|Δline\| ≤ 5` on entry_point **and** critical_operation |
-| Direction | strict (entry_point-to-entry_point, critical_operation-to-critical_operation) |
-| `line == 0` in ground truth | excluded from numerator and denominator |
+| Direction | pair-level is strict entry_point-to-entry_point and critical_operation-to-critical_operation; single-anchor evaluators match only their corresponding anchor |
+| Unusable ground-truth line | excluded from numerator and denominator |
 
 All policies are documented and configurable via CLI arguments
 (`--line-tolerance`, etc.).

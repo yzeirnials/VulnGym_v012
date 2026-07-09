@@ -4,6 +4,31 @@ All notable changes to VulnGym are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.4-cleaned-verify1] — 2026-07-09
+
+Experiment fork cleanup — retain only human-audited VulnGym entries for formal
+benchmark runs.
+
+### Changed
+- Filtered `data/entries.jsonl` from **408 → 393**
+  rows by keeping only `verify = 1`.
+- Filtered `data/reports.jsonl` from **184 → 178**
+  rows by removing reports with no retained verified entries.
+- Recomputed `entry_ids` and `num_entries` for **4**
+  originally partially verified reports.
+
+### Added
+- Endpoint-level ground-truth views: `data/entry_points.jsonl` (350 anchors) and `data/critical_operations.jsonl` (356 anchors).
+- Endpoint-level recall evaluators: `examples/evaluate_entry_points.py` and `examples/evaluate_critical_operations.py`.
+- Conversion-table schema/exporter: `examples/conversion_table.schema.json` and `examples/conversion_table_to_eval_inputs.py`.
+
+### Records
+- `records/cleaned_verify1_20260709.md`
+- `records/cleaned_verify1_20260709_summary.json`
+- `records/endpoint_ground_truth_20260709.md`
+- `records/endpoint_ground_truth_20260709_summary.json`
+- `records/conversion_table_schema_20260709.md`
+
 ## [0.1.4] — 2026-06-26
 
 Data refresh — further expansion of human-audited coverage.

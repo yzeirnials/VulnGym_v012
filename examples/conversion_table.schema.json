@@ -1,0 +1,235 @@
+{
+  "$defs": {
+    "candidate_endpoint": {
+      "additionalProperties": true,
+      "properties": {
+        "candidate_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "conversion_method": {
+          "enum": [
+            "direct",
+            "source-resolved",
+            "semantic-assisted",
+            "not-converted"
+          ],
+          "type": "string"
+        },
+        "endpoint": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/endpoint"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_id",
+        "conversion_method"
+      ],
+      "type": "object"
+    },
+    "candidate_pair": {
+      "additionalProperties": true,
+      "properties": {
+        "critical_operation_candidate_id": {
+          "type": "string"
+        },
+        "entry_point_candidate_id": {
+          "type": "string"
+        },
+        "pair_id": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entry_point_candidate_id",
+        "critical_operation_candidate_id"
+      ],
+      "type": "object"
+    },
+    "endpoint": {
+      "additionalProperties": true,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "file": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "line": {
+          "$ref": "#/$defs/line"
+        }
+      },
+      "required": [
+        "file",
+        "line"
+      ],
+      "type": "object"
+    },
+    "line": {
+      "oneOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "pattern": "^\\s*\\d+\\s*-\\s*\\d+\\s*$",
+          "type": "string"
+        },
+        {
+          "pattern": "^\\s*\\d+\\s*$",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "$id": "https://github.com/yzeirnials/VulnGym_v012/blob/cleaned-20260709/examples/conversion_table.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "candidate_critical_operations": {
+      "items": {
+        "$ref": "#/$defs/candidate_endpoint"
+      },
+      "type": "array"
+    },
+    "candidate_entry_points": {
+      "items": {
+        "$ref": "#/$defs/candidate_endpoint"
+      },
+      "type": "array"
+    },
+    "candidate_pairs": {
+      "items": {
+        "$ref": "#/$defs/candidate_pair"
+      },
+      "type": "array"
+    },
+    "candidate_trace": {
+      "items": {
+        "$ref": "#/$defs/endpoint"
+      },
+      "type": "array"
+    },
+    "commit": {
+      "pattern": "^[0-9a-fA-F]{40}$",
+      "type": "string"
+    },
+    "confidence": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ]
+    },
+    "conversion_row_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "conversion_status": {
+      "enum": [
+        "converted",
+        "partially-converted",
+        "not-converted"
+      ],
+      "type": "string"
+    },
+    "finding_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "repo_url": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "review_notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "source_artifact": {
+      "additionalProperties": true,
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "source_categories": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "tool": {
+      "type": "string"
+    },
+    "vuln_category_l1_values": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "vuln_category_l2_values": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "conversion_row_id",
+    "finding_id",
+    "repo_url",
+    "commit",
+    "source_artifact",
+    "candidate_entry_points",
+    "candidate_critical_operations",
+    "conversion_status",
+    "rationale"
+  ],
+  "title": "VulnGym conversion table row",
+  "type": "object"
+}
