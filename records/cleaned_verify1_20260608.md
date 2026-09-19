@@ -1,5 +1,10 @@
 # VulnGym Verify=1 Cleaned Dataset Record
 
+> Historical record of the first, 274-entry cleanup. Its counts, source paths,
+> and execution context are preserved; they are not the current six-batch
+> scope. See [current dataset identity](../data/dataset.json) and
+> [statistics](dataset_statistics.json).
+
 Date: 2026-06-08
 
 ## Scope

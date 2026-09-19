@@ -1,5 +1,10 @@
 # VulnGym Conversion Table Schema — 2026-06-08
 
+> Historical implementation record; source paths and dated context below
+> are preserved. The conversion contract still applies. Current dataset
+> scope and usage are documented in [README](../README.md) and
+> [SCHEMA](../SCHEMA.md).
+
 This record documents the v2 dataset-setting change for the cleaned VulnGym
 fork at `/home/ubuntu/BenchmarkForks/worktrees/VulnGym-cleaned`.
 

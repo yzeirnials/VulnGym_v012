@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Evaluate defect-location localization against VulnGym critical-operation anchors."""
+"""Evaluate defect-location localization against this checkout's anchors.
+
+--ground-truth replaces the default six-batch scope. All usable anchors in
+the selected file contribute to the denominator, regardless of findings.
+"""
 from __future__ import annotations
 
 import argparse
@@ -10,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from evaluate import (
+    ground_truth_metadata,
     line_spans_match,
     load_jsonl,
     normalize_commit,
@@ -154,6 +159,9 @@ def print_summary(report: dict, verbose: bool) -> None:
 
     print(f"VulnGym {ANCHOR_LABEL} evaluation")
     print("=" * (len("VulnGym ") + len(ANCHOR_LABEL) + len(" evaluation")))
+    if "ground_truth" in report:
+        print(f"ground-truth file: {report['ground_truth']['path']}")
+        print(f"denominator: {report['ground_truth']['denominator_policy']}")
     print(
         f"policy: line_tolerance=+/-{cfg['line_tolerance']} | "
         f"path={cfg['match_path']} | line={cfg['line_policy']} | "
@@ -230,6 +238,7 @@ def main(argv: list[str] | None = None) -> int:
     anchors = load_jsonl(args.ground_truth)
     findings = load_jsonl(args.findings)
     report = evaluate_anchors(anchors, findings, args.line_tolerance)
+    report["ground_truth"] = ground_truth_metadata(args.ground_truth, anchors)
     print_summary(report, args.verbose)
 
     if args.json_out:

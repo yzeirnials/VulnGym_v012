@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Minimal loader examples for the VulnGym dataset.
+"""Local loader examples for the VulnGym six-batch dataset.
 
 Run from the repo root:
     python3 examples/load_dataset.py
 
-The dataset ships as two JSONL files under data/:
+The dataset's four ground-truth JSONL files under data/ are:
     data/reports.jsonl   — one row per GitHub Advisory (report-level)
-    data/entries.jsonl   — one row per entry point (can be >1 per advisory)
+    data/entries.jsonl   — one pair-level path (can be >1 per advisory)
+    data/entry_points.jsonl — deduplicated reachable-entry anchors
+    data/critical_operations.jsonl — deduplicated critical-operation anchors
 
 entries.report_id ↔ reports.report_id is the join key.
+All examples read this checkout's local data, including optional HuggingFace
+loading; they do not load the larger upstream dataset from the Hub.
 """
 from __future__ import annotations
 
@@ -33,7 +37,12 @@ def iter_jsonl(path: Path):
 def demo_stdlib() -> None:
     reports = list(iter_jsonl(DATA / "reports.jsonl"))
     entries = list(iter_jsonl(DATA / "entries.jsonl"))
+    entry_points = list(iter_jsonl(DATA / "entry_points.jsonl"))
+    critical_operations = list(iter_jsonl(DATA / "critical_operations.jsonl"))
+    print(f"[stdlib] local data: {DATA}")
     print(f"[stdlib] {len(reports)} reports / {len(entries)} entries")
+    print(f"[stdlib] {len(entry_points)} entry-point anchors / "
+          f"{len(critical_operations)} critical-operation anchors")
 
     # Human-audit subset (verify == 1).
     verified = [e for e in entries if e.get("verify") == 1]
@@ -46,7 +55,7 @@ def demo_stdlib() -> None:
     for e in entries:
         by_report[e["report_id"]].append(e)
 
-    # Show the report with the most entry points.
+    # Show the report with the most pair-level entries.
     biggest = max(reports, key=lambda r: r["num_entries"])
     print(f"[stdlib] biggest report: {biggest['report_id']}  "
           f"num_entries={biggest['num_entries']}  title={biggest['vuln_title']!r}")

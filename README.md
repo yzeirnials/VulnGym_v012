@@ -1,420 +1,264 @@
-<p align="center">
-  <img src="./img/wukong_logo.png" alt="VulnGym" height="60">
-</p>
+# VulnGym — six-batch dataset
 
-<h4 align="center">
-    <p>
-        <a href="./README_zh.md">中文</a> |
-        <a href="#">English</a>
-    </p>
-</h4>
+[中文](README_zh.md) · [Schema](SCHEMA.md) · [Dataset identity](data/dataset.json)
 
-<p align="center">
-  <a href="https://github.com/Tencent/VulnGym/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Tencent/VulnGym?color=gold"></a>
-  <a href="https://github.com/Tencent/VulnGym/network/members"><img alt="GitHub Forks" src="https://img.shields.io/github/forks/Tencent/VulnGym?color=gold"></a>
-  <a href="./LICENSE"><img alt="License" src="https://img.shields.io/badge/License-CC--BY--4.0-blue.svg"></a>
-</p>
+This fork of [Tencent VulnGym](https://github.com/Tencent/VulnGym) retains
+**openclaw-01 and mixed-01 through mixed-05** from the human-verified v0.1.2
+dataset. Each entry identifies a vulnerable repository commit, a reachable
+entry point, a critical operation, and an annotated trace.
 
-<p align="center">
-  <b>A Real-World, Project-Level Vulnerability Benchmark for White-Box Vulnerability-Hunting Agents</b>
-</p>
+The final dataset contains **156 entries, 61 reports, 136 entry-point anchors,
+and 137 critical-operation anchors**, across **55 source snapshots and
+23 repositories**. All retained entries have `verify == 1`.
 
-<p align="center">
-  <a href="https://github.com/Tencent/VulnGym"><img src="https://img.shields.io/badge/⭐-Give VulnGym a Star-yellow?style=flat&logo=github" alt="Give VulnGym a Star"></a>
-  <a href="https://huggingface.co/datasets/tencent/VulnGym"><img src="https://img.shields.io/badge/🤗%20HuggingFace-Dataset-yellow?style=flat" alt="HuggingFace Dataset"></a>
-</p>
+## Dataset and identifiers
 
-**VulnGym** is a project-level benchmark for white-box vulnerability-hunting agents, designed to evaluate an agent's vulnerability detection capabilities within **real-world engineering contexts**, with **verifiable vulnerability trigger paths and code-semantic evidence chains**.
+An **entry** is an annotated entry-point/critical-operation pair. An
+**entry-point anchor** or **critical-operation anchor** is a unique
+`(repo_url, commit, file, line)` location for that role; several entries can
+share an anchor. A **snapshot** is one `(repo_url, commit)` pair. Original
+entry, report, and anchor IDs are preserved and may have gaps.
 
-**Three core design principles:**
-- **🏗️ Real project-level evaluation units** — every sample is bound to a specific vulnerable commit of a real repository, evaluating an agent's ability to discover and locate vulnerabilities inside real multi-file, multi-module engineering projects.
-- **🧠 Comprehensive vulnerability-type coverage** — the benchmark covers both business-logic defects that demand cross-module code-semantic reasoning (e.g., authorization bypass, broken authentication) and traditional security flaws (e.g., injection, path traversal), providing a comprehensive assessment of an agent's ability to discover diverse vulnerability classes.
-- **✅ Verifiable vulnerability paths** — each sample ships with a human-reviewed **reachable entry point** (`entry_point`), **critical operation** (`critical_operation`), and **cross-module reasoning chain** (`trace`), enabling reproducible, explainable, and deterministic evaluation.
+| Batch | Snapshots | Entries | Reports | Entry points | Critical operations | GHSA IDs | CVE IDs |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| openclaw-01 | 6 | 32 | 7 | 18 | 19 | 8 | 4 |
+| mixed-01 | 10 | 27 | 11 | 27 | 27 | 11 | 11 |
+| mixed-02 | 7 | 21 | 10 | 19 | 19 | 10 | 7 |
+| mixed-03 | 9 | 30 | 10 | 27 | 26 | 10 | 6 |
+| mixed-04 | 14 | 34 | 14 | 33 | 34 | 14 | 12 |
+| mixed-05 | 9 | 12 | 9 | 12 | 12 | 9 | 8 |
+| **Total** | **55** | **156** | **61** | **136** | **137** | **62** | **48** |
 
----
+Across entries, entry-point anchors, and critical-operation anchors, each
+granularity is associated with the same **62 distinct GHSA IDs and 48 distinct
+CVE IDs**. IDs are extracted from the union of `vuln_ids`, `report_id`, and
+`source_link`, normalized to uppercase, and deduplicated. Anchor associations
+come from their retained source entries and reports.
 
-## 📢 What's New
-- **2026-06-08** — 🧭 conversion workflow: added a conversion-table schema and exporter to turn raw tool findings into pair-level, entry-point-only, and critical-operation-only evaluator inputs.
-- **2026-06-08** — 🧹 cleaned fork: retained only human-audited `verify = 1` entries, reducing the dataset to **137 reports / 274 entries**; partially verified advisories were re-aggregated to the retained `entry_ids` and `num_entries`.
-- **2026-05-31** — 🔧 v0.1.2 data refresh: human-audited entries grew from **113 → 274 / 408 (67.2 %)**, covering **137 / 184 advisories (74.5 %)**. Additionally, `entry_point` / `critical_operation` / `trace` annotations were refined on 80 entries for improved accuracy.
-- **2026-05-17** — 🔧 v0.1.1 data refresh: added a `verify` field on every entry to mark human-audit status; **113 / 408 entries** (covering **61 / 184 advisories**) are now human-verified. Selected `entry_point` / `critical_operation` / `trace` values were also refined.
-- **2026-05-15** — 🎉 VulnGym v0.1.0 officially open-sourced!
+Identifier counts are not counts of independent vulnerabilities. Thirteen
+reports have no recorded CVE. Report `GHSA-QWMF-95R9-GX9X` also lists
+`GHSA-HFF7-CCV5-52F8`, explaining why 61 reports correspond to 62 GHSA IDs.
+Some `vuln_ids` lists omit their report's GHSA ID or are empty; counting only
+that field would undercount. See [identifier associations](records/identifier_associations.csv)
+and [granularity statistics](records/granularity_statistics.csv).
 
+## Language, vulnerability category, and project size
 
+<!-- DATASET_STATISTICS:START -->
 
-## Table of Contents
+All counted languages are shown below; snapshot coverage can overlap.
 
-- [🔍 Why VulnGym](#-why-vulngym)
-- [✨ Dataset overview](#-dataset-overview)
-- [📈 Baseline evaluation results](#-baseline-evaluation-results)
-- [📦 Repository layout](#-repository-layout)
-- [🚀 Quick start](#-quick-start)
-- [📊 Evaluating your tool](#-evaluating-your-tool)
-- [📖 Citation](#-citation)
-- [🤝 Contribution Guide](#-contribution-guide)
-- [🙏 Acknowledgements](#-acknowledgements)
-- [📄 License](#-license)
+| Language | SLOC | SLOC share | Snapshot coverage | Primary-language entries |
+|---|---:|---:|---:|---:|
+| TypeScript | 22,638,058 | 63.62% | 46 | 94 |
+| Python | 6,782,456 | 19.06% | 43 | 45 |
+| Go | 1,653,170 | 4.65% | 15 | 15 |
+| Vuejs Component | 1,376,675 | 3.87% | 12 | 0 |
+| JSX | 539,647 | 1.52% | 11 | 0 |
+| Java | 523,177 | 1.47% | 5 | 0 |
+| Swift | 485,971 | 1.37% | 7 | 0 |
+| C++ | 297,655 | 0.84% | 8 | 0 |
+| JavaScript | 277,907 | 0.78% | 46 | 0 |
+| C/C++ Header | 164,244 | 0.46% | 5 | 0 |
+| Svelte | 152,074 | 0.43% | 2 | 2 |
+| SCSS | 116,516 | 0.33% | 17 | 0 |
+| CSS | 113,104 | 0.32% | 50 | 0 |
+| Bourne Shell | 100,491 | 0.28% | 53 | 0 |
+| Kotlin | 94,487 | 0.27% | 7 | 0 |
+| HTML | 67,332 | 0.19% | 49 | 0 |
+| Handlebars | 58,872 | 0.17% | 17 | 0 |
+| Jupyter Notebook | 56,907 | 0.16% | 11 | 0 |
+| Protocol Buffers | 23,388 | 0.07% | 15 | 0 |
+| SQL | 14,878 | 0.04% | 15 | 0 |
+| R | 9,824 | 0.03% | 2 | 0 |
+| Bourne Again Shell | 8,068 | 0.02% | 16 | 0 |
+| Dart | 4,566 | 0.01% | 1 | 0 |
+| Jinja Template | 3,945 | 0.01% | 4 | 0 |
+| Groovy | 3,708 | 0.01% | 2 | 0 |
+| Prisma Schema | 2,760 | 0.01% | 2 | 0 |
+| Scala | 1,617 | 0.00% | 2 | 0 |
+| Nunjucks | 1,525 | 0.00% | 1 | 0 |
+| DOS Batch | 1,325 | 0.00% | 32 | 0 |
+| Objective-C | 1,267 | 0.00% | 1 | 0 |
+| PowerShell | 1,247 | 0.00% | 7 | 0 |
+| LESS | 1,211 | 0.00% | 3 | 0 |
+| Rego | 1,039 | 0.00% | 7 | 0 |
+| C | 684 | 0.00% | 4 | 0 |
+| GraphQL | 568 | 0.00% | 2 | 0 |
+| Mako | 502 | 0.00% | 12 | 0 |
+| ANTLR Grammar | 322 | 0.00% | 2 | 0 |
+| Ruby | 224 | 0.00% | 2 | 0 |
+| XSLT | 149 | 0.00% | 1 | 0 |
+| yacc | 63 | 0.00% | 1 | 0 |
+| AppleScript | 56 | 0.00% | 1 | 0 |
+| Elixir Script | 27 | 0.00% | 1 | 0 |
+| PHP | 11 | 0.00% | 1 | 0 |
+| IDL | 8 | 0.00% | 1 | 0 |
+| **Total** | **35,581,725** | **100.00%** | — | **156** |
 
----
+**Project size across 55 pinned snapshots (SLOC)**
 
-## 🔍 Why VulnGym
+| Minimum | P25 | Median | Mean | P75 | Maximum |
+|---:|---:|---:|---:|---:|---:|
+| 50,846 | 194,707.50 | 404,139 | 646,940.45 | 943,666 | 2,112,892 |
 
-Existing vulnerability benchmarks have the following limitations when
-evaluating the real-world vulnerability-hunting capabilities of AI agents:
+**Original L1 vulnerability categories**: entry shares use 156 entries; report shares use 61 reports.
 
-| Limitation | Manifestation |
-|---|---|
-| **Insufficient evaluation granularity** | Most benchmarks use functions or diff snippets as the evaluation unit, failing to reflect an agent's ability to locate vulnerabilities within complete engineering projects |
-| **Narrow vulnerability types** | Over-emphasis on pattern-matchable CWE flaws such as SQL injection and buffer overflow, with little coverage of categories requiring deep contextual reasoning |
-| **Coarse-grained ground truth** | Typically binary labels (vulnerable / not vulnerable) or patch diffs, unable to precisely verify whether the agent locates the correct entry point and defect site |
+| Original L1 label | English display | Entries | Entry share | Reports | Report share |
+|---|---|---:|---:|---:|---:|
+| 业务逻辑 | Business logic | 95 | 60.90% | 36 | 59.02% |
+| 代码注入 | Code injection | 12 | 7.69% | 4 | 6.56% |
+| XSS | Cross-site scripting (XSS) | 9 | 5.77% | 4 | 6.56% |
+| 反序列化漏洞 | Deserialization vulnerability | 7 | 4.49% | 1 | 1.64% |
+| 反序列化 | Deserialization | 5 | 3.21% | 1 | 1.64% |
+| 命令注入 | Command injection | 4 | 2.56% | 2 | 3.28% |
+| SSRF | Server-side request forgery (SSRF) | 3 | 1.92% | 3 | 4.92% |
+| 供应链攻击 | Supply chain attack | 3 | 1.92% | 1 | 1.64% |
+| 原型链污染 | Prototype pollution | 3 | 1.92% | 1 | 1.64% |
+| 模板注入 | Template injection | 3 | 1.92% | 1 | 1.64% |
+| 注入与反序列化 | Injection and deserialization | 3 | 1.92% | 1 | 1.64% |
+| 文件操作安全 | File operation security | 2 | 1.28% | 1 | 1.64% |
+| 权限绕过 | Authorization bypass | 2 | 1.28% | 1 | 1.64% |
+| 沙箱逃逸 | Sandbox escape | 2 | 1.28% | 1 | 1.64% |
+| 注入类 | Injection | 1 | 0.64% | 1 | 1.64% |
+| 路径穿越 | Path traversal | 1 | 0.64% | 1 | 1.64% |
+| 路径遍历 / 任意文件读取 | Path traversal / arbitrary file read | 1 | 0.64% | 1 | 1.64% |
 
+Original labels remain separate; English names are display translations only. Complete L1/L2 and per-batch entry/report distributions are in [category statistics](records/category_statistics.csv). Further results are in [dataset statistics](records/dataset_statistics.json), [language statistics](records/language_statistics.csv), [snapshot sizes](records/snapshot_statistics.csv), and [repository sizes](records/repository_statistics.csv).
 
-## ✨ Dataset overview
+<!-- DATASET_STATISTICS:END -->
 
-This is the **v0.1.2 release** of VulnGym. Data is provided
-as two JSONL files under the `data/` directory:
+Language and size are measured at each vulnerable commit. Size means physical
+source lines of code (SLOC), excluding comments and blank lines. The primary
+language is the language with the most SLOC in a snapshot; entry-level
+language counts inherit that snapshot label. It does not necessarily identify
+the language at the vulnerable anchor. Multilingual snapshot counts can overlap.
 
-- `reports.jsonl` — aggregated records at the GitHub Advisory granularity
-- `entries.jsonl` — annotated records at the reachable entry point granularity
+Measurements use pinned **cloc 2.10**, tracked regular files, and the explicit
+[source-size policy](scripts/source_size_policy.json). Tests and examples are
+included; documentation, data/configuration languages, dependencies, and
+identified generated/vendor files are excluded. Generated-file detection is
+heuristic. Snapshot totals count different versions of a repository separately.
+Categories retain the original bilingual L1/L2 labels; report distributions
+count distinct report/category memberships rather than relabeling annotations.
 
-Each record contains `repo_url` and `commit`, allowing you to check out the
-full vulnerable source tree for the corresponding version.
+## Quick start
 
-### Data scale
-
-| Metric | Value |
-|---|---|
-| Advisories (reports) | **137** |
-| Reachable entry points (entries) | **274** |
-| Distinct projects | 30 |
-| Distinct repositories | 23 |
-| Human-audited entries (`verify = 1`) | **274 / 274 (100.0 %)** |
-| Human-audited advisories (≥ 1 verified entry) | **137 / 137 (100.0 %)** |
-
-### Human audit status
-
-Starting in v0.1.1, every row in `entries.jsonl` carries a `verify` field
-(`int`, `0` or `1`).
-
-This cleaned fork has already filtered `data/entries.jsonl` to rows with
-`verify == 1`. `data/reports.jsonl` has also been re-aggregated so that
-`entry_ids` and `num_entries` refer only to retained verified entries. Upstream
-v0.1.2 rows with `verify == 0` are not present in this branch's data files;
-retained and removed rows are recorded in `records/cleaned_verify1_20260608.md`
-and `records/cleaned_verify1_20260608_summary.json`.
-
-Before filtering, upstream v0.1.2 contained **184 reports /
-408 entries**, with **274**
-verified entries across **137** reports. After
-filtering, this branch retains **137 reports /
-274 entries**. The **29**
-originally partially verified reports have had unverified entries removed and
-their aggregate fields recomputed.
-
-### Vulnerability type distribution
-
-Every entry carries a two-level classification: `vuln_category_l1`
-(coarse type) and `vuln_category_l2` (fine-grained sub-type). In this
-cleaned subset, **105 / 137 (76.6%)** advisories are business-logic
-vulnerabilities; the remaining **32 / 137 (23.4%)** cover traditional vulnerability
-types. Full data model and field definitions are in [`SCHEMA.md`](SCHEMA.md).
-
-> Note: one advisory may map to multiple entries — the counts below
-> are by **advisory (vulnerability)**, not by entry.
-
-**Business-logic advisories (105 / 137, 76.6%) — `vuln_category_l2` breakdown:**
-
-| Sub-category | Advisories | % of BL |
-| --- | --- | --- |
-| BL-AUTHZ-BROKEN | 23 | 21.9% |
-| BL-AUTHZ-MISSING | 18 | 17.1% |
-| BL-AGENT-CAPABILITY | 17 | 16.2% |
-| BL-PRIV-ESC | 12 | 11.4% |
-| BL-AUTH-BYPASS | 8 | 7.6% |
-| BL-ORIGIN-INTEGRITY | 7 | 6.7% |
-| BL-WORKFLOW-VIOLATION | 6 | 5.7% |
-| BL-INSECURE-DEFAULT | 5 | 4.8% |
-| BL-RACE-LOGIC | 4 | 3.8% |
-| BL-MASS-ASSIGNMENT | 2 | 1.9% |
-| BL-TRUST-BOUNDARY | 2 | 1.9% |
-| BL-MULTI-TENANT | 1 | 1.0% |
-
-<br>
-
-**Traditional vulnerability advisories (32 / 137, 23.4%) — top `vuln_category_l1`:**
-
-| Category | Advisories | % of Trad. |
-| --- | --- | --- |
-| Path Traversal / File ops | 8 | 25.0% |
-| XSS | 4 | 12.5% |
-| Code Injection | 4 | 12.5% |
-| Command Injection | 3 | 9.4% |
-| SSRF | 3 | 9.4% |
-| Deserialization | 2 | 6.2% |
-| Template Injection | 1 | 3.1% |
-| Authorization Bypass | 1 | 3.1% |
-| Injection | 1 | 3.1% |
-| Sandbox Escape | 1 | 3.1% |
-| Authentication Bypass | 1 | 3.1% |
-| Supply Chain | 1 | 3.1% |
-| Injection / Deserialization | 1 | 3.1% |
-| Prototype Pollution | 1 | 3.1% |
-
-> Future releases will continue expanding vulnerability categories and project coverage.
-
-### Endpoint-Level Ground Truth
-
-In addition to pair-level `data/entries.jsonl`, this cleaned fork derives two
-single-anchor ground-truth files from the same verified entries:
-
-- `data/entry_points.jsonl` — deduplicated reachable-entry anchors
-- `data/critical_operations.jsonl` — deduplicated core defect-operation anchors
-
-Every anchor keeps `source_entry_ids` and `source_report_ids` so it can be
-traced back to the original pair-level entries. The current cleaned subset
-contains **236** entry-point anchors and **241** critical-operation anchors.
-
-## 📈 Baseline evaluation results
-
-> 🚧 **Coming soon** — We are systematically evaluating mainstream tools and AI agents. Results will be published alongside the technical report.
-
-
-## 📦 Repository layout
-
-```
-VulnGym/
-├── README.md                    # English version
-├── README_zh.md                 # 中文版
-├── SCHEMA.md                    # field reference & validation invariants
-├── CHANGELOG.md
-├── CITATION.cff
-├── LICENSE                      # CC-BY-4.0
-├── data/
-│   ├── reports.jsonl             # 137 rows — one retained GitHub Advisory per row
-│   ├── entries.jsonl             # 274 rows — pair-level verified entries
-│   ├── entry_points.jsonl        # 236 rows — deduplicated reachable-entry anchors
-│   └── critical_operations.jsonl # 241 rows — deduplicated critical-operation anchors
-└── examples/
-    ├── load_dataset.py
-    ├── example_result.jsonl
-    ├── evaluate.py                      # pair-level recall evaluator
-    ├── evaluate_entry_points.py         # entry_point anchor recall evaluator
-    ├── evaluate_critical_operations.py  # critical_operation anchor recall evaluator
-    ├── conversion_table.schema.json     # conversion-table JSON Schema
-    ├── conversion_table_to_eval_inputs.py # exporter from conversion table to evaluator inputs
-    └── example_conversion_table.jsonl   # sample conversion-table rows
-```
-
----
-
-## 🚀 Quick start
+Clone the six-batch branch explicitly. For an existing local checkout, start
+with the Python commands.
 
 ```bash
-git clone https://github.com/Tencent/VulnGym.git
-cd VulnGym
+git clone --branch codex/six-batch-dataset https://github.com/yzeirnials/VulnGym_v012.git
+cd VulnGym_v012
+python3 scripts/subset_dataset.py --validate
 python3 examples/load_dataset.py
 ```
 
-Or load directly in Python:
+Validation and evaluation use the Python standard library. The loader also
+demonstrates optional pandas and HuggingFace `datasets` loading from these
+local files. Tencent's HuggingFace dataset has a different scope.
 
-```python
-import json
-with open("data/entries.jsonl", encoding="utf-8") as f:
-    entries = [json.loads(line) for line in f if line.strip()]
+| File | Role |
+|---|---|
+| `data/entries.jsonl` | 156 pair-level ground-truth entries |
+| `data/reports.jsonl` | 61 reports with retained `entry_ids` and `num_entries` |
+| `data/entry_points.jsonl` | 136 deduplicated entry-point anchors |
+| `data/critical_operations.jsonl` | 137 deduplicated critical-operation anchors |
+| `data/entries_desc.jsonl` | 156 matching entries with preserved explanatory `desc` annotations |
+| `data/batch_manifest.jsonl` | 55 snapshot rows defining the six batches |
+| `data/dataset.json` | Dataset identity, source commits, counts, and file bindings |
 
-xss = [e for e in entries if e["vuln_category_l1"] == "XSS"]
-print(len(xss), "XSS entries")
-print(xss[0]["entry_point"], "→", xss[0]["critical_operation"])
+Source repositories are referenced by `repo_url` and `commit`; they are not
+bundled in this dataset. Keep ground-truth annotations out of tool prompts and
+configuration when measuring ground-truth-blind detection.
 
-# Restrict to the human-audited high-confidence subset
-verified = [e for e in entries if e["verify"] == 1]
-print(len(verified), "human-audited entries")
-```
+## Evaluate findings
 
-Pandas:
-
-```python
-import pandas as pd
-reports = pd.read_json("data/reports.jsonl", lines=True)
-entries = pd.read_json("data/entries.jsonl", lines=True)
-```
-
-HuggingFace `datasets`:
-
-VulnGym is also published on the HuggingFace Hub: [tencent/VulnGym](https://huggingface.co/datasets/tencent/VulnGym).
-
-```python
-from datasets import load_dataset
-
-# Load directly from the HuggingFace Hub
-ds = load_dataset("tencent/VulnGym")
-
-# Or load from local JSONL files
-ds = load_dataset("json", data_files={
-    "reports": "data/reports.jsonl",
-    "entries": "data/entries.jsonl",
-})
-```
-
-
-## 📊 Evaluating your tool
-
-Write your tool's raw findings to a conversion-table JSONL file first. The
-conversion table preserves how each original finding was mapped into VulnGym's
-`entry_point` and `critical_operation` concepts, including direct,
-source-resolved, semantic-assisted, partial, and failed conversions. See
-`examples/conversion_table.schema.json` and
-`examples/example_conversion_table.jsonl`.
-
-Convert that table into evaluator-ready inputs:
+Record native findings in the [conversion-table format](examples/conversion_table.schema.json),
+then export and score the three roles:
 
 ```bash
 python3 examples/conversion_table_to_eval_inputs.py examples/example_conversion_table.jsonl --out-dir /tmp/vulngym_eval_inputs
+python3 examples/evaluate.py /tmp/vulngym_eval_inputs/pair_findings.jsonl --json-out /tmp/vulngym_pair.json
+python3 examples/evaluate_entry_points.py /tmp/vulngym_eval_inputs/entry_point_findings.jsonl --json-out /tmp/vulngym_ep.json
+python3 examples/evaluate_critical_operations.py /tmp/vulngym_eval_inputs/critical_operation_findings.jsonl --json-out /tmp/vulngym_co.json
 ```
 
-The exporter writes:
+The JSONL files under `examples/` are illustrative fixtures, not tool results.
+Explicit candidate pairs are preserved; a row is automatically paired only
+when it has exactly one usable candidate for each role. Multiple candidates
+are never expanded into an implicit Cartesian product.
 
-- `/tmp/vulngym_eval_inputs/pair_findings.jsonl`
-- `/tmp/vulngym_eval_inputs/entry_point_findings.jsonl`
-- `/tmp/vulngym_eval_inputs/critical_operation_findings.jsonl`
-- `/tmp/vulngym_eval_inputs/conversion_manifest.json`
-- `/tmp/vulngym_eval_inputs/conversion_skipped.jsonl`
+Evaluators default to this checkout's complete six-batch ground truth,
+independent of the working directory. Pair evaluation accepts `--entries`;
+anchor evaluation accepts `--ground-truth` to select a different GT file.
+Reports include the actual GT path and scope. Findings never narrow the
+denominator. For the complete dataset, all **156 pairs / 61 reports, 136 EP
+anchors, and 137 CO anchors** have usable lines.
 
-Pair-level export is conservative: explicit `candidate_pairs` are honored, and
-rows without explicit pairs are auto-paired only when they contain exactly one
-usable `entry_point` candidate and one usable `critical_operation` candidate.
-The script does not generate a Cartesian product for multi-candidate rows.
+Matching uses the same repository and commit, normalized exact paths, strict
+endpoint roles, and a default `--line-tolerance 5`; integer lines and line
+ranges are supported. Unusable GT lines are excluded. `trace` is not matched.
+These are **recall/coverage metrics**; no precision or F1 is computed. The pair
+evaluator reports advisory coverage when any of an advisory's entries matches;
+anchor evaluation also reports source-entry and report coverage.
 
-The cleaned fork provides three recall-only evaluator entry points:
+## Reproduce the subset and statistics
 
+With the Git history available, reproduce the selected data in a new directory:
 
 ```bash
-# Strict pair-level path reconstruction: entry_point + critical_operation
-python3 examples/evaluate.py path/to/your_findings.jsonl -v
-
-# Reachable-entry localization only
-python3 examples/evaluate_entry_points.py path/to/your_findings.jsonl -v
-
-# Core defect-location localization only
-python3 examples/evaluate_critical_operations.py path/to/your_findings.jsonl -v
+python3 scripts/subset_dataset.py --output-dir ../VulnGym-six-batches-reproduced
+python3 scripts/subset_dataset.py --batch-id mixed-05 --output-dir ../VulnGym-mixed-05
+python3 scripts/build_endpoint_ground_truth.py --check
+python3 -m unittest discover -s tests
 ```
 
-For pair-level evaluation, each finding must carry at least `repo_url`,
-`commit`, `entry_point` (reachable entry point), and `critical_operation`
-(core defect location). For entry-point-only evaluation, `entry_point` is
-required. For critical-operation-only evaluation, `critical_operation` is
-required. `trace` (cross-module reasoning chain) is optional and ignored by all
-three matchers. See `examples/example_result.jsonl` for the evaluator-ready shape and `examples/example_conversion_table.jsonl` for the recommended conversion-table shape.
+`--batch-id` is repeatable. The generator reads the pinned source commits and
+the retained manifest, preserves IDs and endpoint locations, and recalculates
+report and anchor associations. Output directories must be new. The historical
+cleaning and anchor scripts default to read-only checks and do not rewrite docs.
 
-The pair-level script reports:
+Rebuild statistics using the included source measurements:
 
-- **Advisory-level recall** (primary) — `covered_advisories /
-  usable_advisories`. An advisory is covered if **at least one** of its
-  entries is matched.
-- **Entry-level recall** (secondary) — `matched_entries / usable_entries`.
-
-The single-anchor scripts report:
-
-- **Anchor-level recall** (primary) — matched `entry_point` or
-  `critical_operation` anchors over usable anchors.
-- **Report-level recall** (supplemental) — reports covered through matched
-  anchors.
-- **Source-entry coverage** (supplemental) — original pair-level entries covered
-  through matched anchors.
-
-**Default matching policy**
-
-| Aspect | Default |
-|---|---|
-| Path match | normalized, exact |
-| Line tolerance | `int` or `"start-end"` span; default tolerance `+/-5` |
-| Direction | pair-level is strict entry_point-to-entry_point and critical_operation-to-critical_operation; single-anchor evaluators match only their corresponding anchor |
-| Unusable ground-truth line | excluded from numerator and denominator |
-
-All policies are documented and configurable via CLI arguments
-(`--line-tolerance`, etc.).
-
-> **Note:** The current evaluator **only computes recall / coverage** and
-> cannot penalize over-reporting. The resulting numbers should be
-> interpreted as coverage metrics, not a full precision-aware benchmark.
-
-
-## 📖 Citation
-
-> 📚 **A companion paper is in preparation.** Until it is released, please cite VulnGym using the dataset entry below; we will update this section once the paper is publicly available.
-
-```bibtex
-@misc{vulngym2026,
-  title        = {VulnGym: A Real-World, Project-Level Vulnerability Benchmark
-                  for White-Box Vulnerability-Hunting Agents},
-  author       = {{Tencent Wukong Code Security Team and contributors}},
-  year         = {2026},
-  version      = {0.1.2},
-  howpublished = {\url{https://github.com/Tencent/VulnGym}},
-  note         = {Dataset. A companion paper is in preparation; please check
-                  the repository for the latest citation.}
-}
+```bash
+python3 scripts/dataset_stats.py --source-sizes records/source_sizes.json --output-dir records --update-readmes
 ```
 
-Once the paper is public, the entry below will be filled in and should be preferred:
+Omit `--update-readmes` to regenerate only the JSON and CSV artifacts.
 
-```bibtex
-@inproceedings{vulngym2026paper,
-  title     = {TBA — A companion paper for VulnGym is in preparation.},
-  author    = {{To be announced}},
-  year      = {TBA},
-  note      = {Placeholder; will be replaced once the paper is publicly available.}
-}
+To measure source code again, prepare clean Git checkouts at all 55 manifest
+commits and install Perl plus the official cloc 2.10 script. Its required
+SHA-256 and filtering rules are fixed in the source-size policy:
+
+```bash
+python3 scripts/measure_source_sizes.py --source-root /path/to/source-cache --cloc /path/to/cloc-2.10.pl
 ```
 
-See `CITATION.cff` for the machine-readable form.
+The cache uses `<host-and-repo-with-nonalphanumeric-runs-replaced-by-__>__<commit>`
+directory names. Alternatively, use `--source-map /path/to/local-map.jsonl`,
+whose rows contain `repo_url`, `commit`, and `cache_path`. Machine-specific maps
+stay local. Measurement reads tracked source without building or executing it.
 
----
+## Provenance and historical material
 
-## 🤝 Contribution Guide
+Tencent VulnGym v0.1.2 originally contained 408 entries / 184 reports. The
+first cleaning retained 274 verified entries / 137 reports. This second
+selection retains the six batches above, using source commit
+`90002144d4a8b3654fb1bf68052889b9c2de44aa`; explanatory annotations come from
+`4c4ac5659329008d9ea44ac5ec7855eae6909c2e`.
 
-VulnGym aims to be an **open, reproducible, and continuously evolving**
-community benchmark. Contributions from both academia and industry are
-warmly welcomed:
+[CHANGELOG.md](CHANGELOG.md) and the dated `20260608` records preserve earlier
+cleanup history. Their counts and any historical benchmark material refer to
+their original scopes, not to six-batch evaluation results. This repository
+does not claim a newly measured six-batch tool baseline. The
+[earlier README](https://github.com/yzeirnials/VulnGym_v012/blob/90002144d4a8b3654fb1bf68052889b9c2de44aa/README.md)
+preserves the original release overview.
 
-- 🧠 **Dataset contributions** — new advisories, additional reachable
-  entry points for existing advisories, corrections to `entry_point` /
-  `critical_operation` / `trace`.
-- 🔧 **Evaluator improvements** — precision / F1, per-category
-  breakdowns, statistical significance (bootstrap CI), alternative
-  matching policies.
-- 📊 **Evaluation result submissions** — submit your tool's evaluation
-  results via PR to be included in the baseline comparison.
-- 💬 **Discussions & feedback** — file an
-  [Issue](https://github.com/Tencent/VulnGym/issues) or start a
-  [Discussion](https://github.com/Tencent/VulnGym/discussions).
+## Attribution and license
 
-Please read `SCHEMA.md` before proposing data changes — all invariants
-listed there are enforced at release time.
-
----
-
-## 🙏 Acknowledgements
-
-VulnGym is jointly built by the **Tencent Wukong Security Team**
-together with the following academic partners (listed in no particular
-order, final order TBD):
-- ARISE Lab, The Chinese University of Hong Kong
-- Systems Software & Security Lab, Fudan University
-- JC STEM Lab of Intelligent Cybersecurity, The University of Hong Kong
-- Narwhal-Lab, Peking University
-- Network Threat Analysis Lab, Institute of Information Engineering, Chinese Academy of Sciences
-
-Many thanks to all partners for their outstanding contributions to
-VulnGym.
-
----
-
-## 📄 License
-
-The dataset is released under **CC-BY-4.0** — see [`LICENSE`](LICENSE).
-You may use it for commercial and academic purposes with attribution.
-Source code paths and commit hashes referenced in `entry_point` /
-`critical_operation` / `trace` fields belong to their respective upstream
-projects under their original licenses; consult the referenced
-repositories before reusing any quoted code fragment.
+The original dataset is credited to the **Tencent Wukong Code Security Team
+and VulnGym contributors**. Cite the original dataset using [CITATION.cff](CITATION.cff)
+and identify this fork, the six-batch selection, and the revision used in your
+experiment. Dataset annotations are licensed under [CC-BY-4.0](LICENSE).
+Referenced source projects retain their own licenses.

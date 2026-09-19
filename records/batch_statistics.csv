@@ -1,0 +1,7 @@
+batch_id,entries,reports,entry_points,critical_operations,snapshots,repositories,ghsa,cve
+mixed-01,27,11,27,27,10,1,11,11
+mixed-02,21,10,19,19,7,1,10,7
+mixed-03,30,10,27,26,9,3,10,6
+mixed-04,34,14,33,34,14,9,14,12
+mixed-05,12,9,12,12,9,8,9,8
+openclaw-01,32,7,18,19,6,1,8,4

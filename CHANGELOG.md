@@ -1,8 +1,28 @@
 # Changelog
 
 All notable changes to VulnGym are documented here.
-The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/).
+Earlier release sections are retained as historical source records; their
+counts and scope do not describe the current six-batch dataset.
+
+## Six-batch subset — 2026-09-19
+
+- Retained `openclaw-01` and `mixed-01` through `mixed-05`: **274 → 156
+  entries**, **137 → 61 reports**, **236 → 136 entry-point anchors**, and
+  **241 → 137 critical-operation anchors** across 55 snapshots / 23 repositories.
+- Preserved original IDs, vulnerable commits, locations, and annotations;
+  recomputed retained report membership and anchor source metadata.
+- Filtered the existing explanatory `entries_desc.jsonl` to the same 156 entries.
+- Added a standalone batch manifest, dataset identity, reproducible subset
+  generation, source-size measurement policy, and language/category/size and
+  GHSA/CVE statistics. Identifier associations total 62 distinct GHSA IDs and
+  48 distinct CVE IDs; these are not independent-vulnerability counts.
+- Updated both READMEs, schema documentation, and loader examples. Evaluators
+  now report the actual GT file and scope while preserving matching behavior.
+- Historical cleaning/build scripts default to read-only checks. Compatibility
+  and data-integrity tests cover generation, source association, and evaluators.
+
+Current authorities: `data/dataset.json`, `data/batch_manifest.jsonl`, and
+`records/dataset_statistics.json`. This change does not add tool baseline results.
 
 ## [0.1.2-cleaned-verify1] — 2026-06-08
 

@@ -1,0 +1,245 @@
+batch_id,level,unit,category,count,denominator,percentage
+ALL,l1,entry,业务逻辑,95,156,60.8974358974359
+ALL,l1,entry,代码注入,12,156,7.6923076923076925
+ALL,l1,entry,XSS,9,156,5.769230769230769
+ALL,l1,entry,反序列化漏洞,7,156,4.487179487179487
+ALL,l1,entry,反序列化,5,156,3.2051282051282053
+ALL,l1,entry,命令注入,4,156,2.5641025641025643
+ALL,l1,entry,SSRF,3,156,1.9230769230769231
+ALL,l1,entry,供应链攻击,3,156,1.9230769230769231
+ALL,l1,entry,原型链污染,3,156,1.9230769230769231
+ALL,l1,entry,模板注入,3,156,1.9230769230769231
+ALL,l1,entry,注入与反序列化,3,156,1.9230769230769231
+ALL,l1,entry,文件操作安全,2,156,1.2820512820512822
+ALL,l1,entry,权限绕过,2,156,1.2820512820512822
+ALL,l1,entry,沙箱逃逸,2,156,1.2820512820512822
+ALL,l1,entry,注入类,1,156,0.6410256410256411
+ALL,l1,entry,路径穿越,1,156,0.6410256410256411
+ALL,l1,entry,路径遍历 / 任意文件读取,1,156,0.6410256410256411
+ALL,l1,report,业务逻辑,36,61,59.01639344262295
+ALL,l1,report,XSS,4,61,6.557377049180328
+ALL,l1,report,代码注入,4,61,6.557377049180328
+ALL,l1,report,SSRF,3,61,4.918032786885246
+ALL,l1,report,命令注入,2,61,3.278688524590164
+ALL,l1,report,供应链攻击,1,61,1.639344262295082
+ALL,l1,report,原型链污染,1,61,1.639344262295082
+ALL,l1,report,反序列化,1,61,1.639344262295082
+ALL,l1,report,反序列化漏洞,1,61,1.639344262295082
+ALL,l1,report,文件操作安全,1,61,1.639344262295082
+ALL,l1,report,权限绕过,1,61,1.639344262295082
+ALL,l1,report,模板注入,1,61,1.639344262295082
+ALL,l1,report,沙箱逃逸,1,61,1.639344262295082
+ALL,l1,report,注入与反序列化,1,61,1.639344262295082
+ALL,l1,report,注入类,1,61,1.639344262295082
+ALL,l1,report,路径穿越,1,61,1.639344262295082
+ALL,l1,report,路径遍历 / 任意文件读取,1,61,1.639344262295082
+ALL,l2,entry,BL-AUTHZ-MISSING(授权缺失),41,156,26.28205128205128
+ALL,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),21,156,13.461538461538462
+ALL,l2,entry,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),11,156,7.051282051282051
+ALL,l2,entry,BL-AUTH-BYPASS(身份认证绕过),10,156,6.410256410256411
+ALL,l2,entry,不可信数据反序列化,7,156,4.487179487179487
+ALL,l2,entry,Stored XSS,6,156,3.8461538461538463
+ALL,l2,entry,表达式沙箱逃逸,6,156,3.8461538461538463
+ALL,l2,entry,BL-INSECURE-DEFAULT(不安全默认配置),5,156,3.2051282051282053
+ALL,l2,entry,不可信数据反序列化 / 远程代码执行,5,156,3.2051282051282053
+ALL,l2,entry,BL-MASS-ASSIGNMENT(参数/属性污染),3,156,1.9230769230769231
+ALL,l2,entry,Prototype Pollution,3,156,1.9230769230769231
+ALL,l2,entry,不安全反序列化,3,156,1.9230769230769231
+ALL,l2,entry,任意模块导入,3,156,1.9230769230769231
+ALL,l2,entry,参数注入,3,156,1.9230769230769231
+ALL,l2,entry,存储型XSS,3,156,1.9230769230769231
+ALL,l2,entry,嵌入恶意代码,3,156,1.9230769230769231
+ALL,l2,entry,服务端模板注入 (SSTI),3,156,1.9230769230769231
+ALL,l2,entry,BL-RACE-LOGIC(业务层竞争条件),2,156,1.2820512820512822
+ALL,l2,entry,TOCTOU / 符号链接跟随 / 路径穿越,2,156,1.2820512820512822
+ALL,l2,entry,不安全的临时文件/目录权限,2,156,1.2820512820512822
+ALL,l2,entry,代码注入 / VM 沙箱逃逸,2,156,1.2820512820512822
+ALL,l2,entry,表达式注入（Expression Injection）,2,156,1.2820512820512822
+ALL,l2,entry,BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失),1,156,0.6410256410256411
+ALL,l2,entry,BL-WORKFLOW-VIOLATION(业务流程/状态机违规),1,156,0.6410256410256411
+ALL,l2,entry,Content-Type 混淆导致的路径穿越,1,156,0.6410256410256411
+ALL,l2,entry,DNS重绑定（DNS Rebinding）,1,156,0.6410256410256411
+ALL,l2,entry,OS命令注入,1,156,0.6410256410256411
+ALL,l2,entry,OS命令注入（Shell注入）,1,156,0.6410256410256411
+ALL,l2,entry,SQL 注入 / 任意文件写入,1,156,0.6410256410256411
+ALL,l2,entry,任意文件写入,1,156,0.6410256410256411
+ALL,l2,entry,服务端请求伪造,1,156,0.6410256410256411
+ALL,l2,entry,路径穿越辅助 SSRF,1,156,0.6410256410256411
+ALL,l2,report,BL-AUTHZ-MISSING(授权缺失),13,61,21.311475409836067
+ALL,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),9,61,14.754098360655737
+ALL,l2,report,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),4,61,6.557377049180328
+ALL,l2,report,BL-AUTH-BYPASS(身份认证绕过),4,61,6.557377049180328
+ALL,l2,report,Stored XSS,3,61,4.918032786885246
+ALL,l2,report,BL-MASS-ASSIGNMENT(参数/属性污染),2,61,3.278688524590164
+ALL,l2,report,BL-INSECURE-DEFAULT(不安全默认配置),1,61,1.639344262295082
+ALL,l2,report,BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失),1,61,1.639344262295082
+ALL,l2,report,BL-RACE-LOGIC(业务层竞争条件),1,61,1.639344262295082
+ALL,l2,report,BL-WORKFLOW-VIOLATION(业务流程/状态机违规),1,61,1.639344262295082
+ALL,l2,report,Content-Type 混淆导致的路径穿越,1,61,1.639344262295082
+ALL,l2,report,DNS重绑定（DNS Rebinding）,1,61,1.639344262295082
+ALL,l2,report,OS命令注入,1,61,1.639344262295082
+ALL,l2,report,OS命令注入（Shell注入）,1,61,1.639344262295082
+ALL,l2,report,Prototype Pollution,1,61,1.639344262295082
+ALL,l2,report,SQL 注入 / 任意文件写入,1,61,1.639344262295082
+ALL,l2,report,TOCTOU / 符号链接跟随 / 路径穿越,1,61,1.639344262295082
+ALL,l2,report,不可信数据反序列化,1,61,1.639344262295082
+ALL,l2,report,不可信数据反序列化 / 远程代码执行,1,61,1.639344262295082
+ALL,l2,report,不安全反序列化,1,61,1.639344262295082
+ALL,l2,report,不安全的临时文件/目录权限,1,61,1.639344262295082
+ALL,l2,report,代码注入 / VM 沙箱逃逸,1,61,1.639344262295082
+ALL,l2,report,任意文件写入,1,61,1.639344262295082
+ALL,l2,report,任意模块导入,1,61,1.639344262295082
+ALL,l2,report,参数注入,1,61,1.639344262295082
+ALL,l2,report,存储型XSS,1,61,1.639344262295082
+ALL,l2,report,嵌入恶意代码,1,61,1.639344262295082
+ALL,l2,report,服务端模板注入 (SSTI),1,61,1.639344262295082
+ALL,l2,report,服务端请求伪造,1,61,1.639344262295082
+ALL,l2,report,表达式沙箱逃逸,1,61,1.639344262295082
+ALL,l2,report,表达式注入（Expression Injection）,1,61,1.639344262295082
+ALL,l2,report,路径穿越辅助 SSRF,1,61,1.639344262295082
+mixed-01,l1,entry,XSS,8,27,29.62962962962963
+mixed-01,l1,entry,代码注入,8,27,29.62962962962963
+mixed-01,l1,entry,原型链污染,3,27,11.11111111111111
+mixed-01,l1,entry,命令注入,3,27,11.11111111111111
+mixed-01,l1,entry,沙箱逃逸,2,27,7.407407407407407
+mixed-01,l1,entry,业务逻辑,1,27,3.7037037037037037
+mixed-01,l1,entry,注入类,1,27,3.7037037037037037
+mixed-01,l1,entry,路径遍历 / 任意文件读取,1,27,3.7037037037037037
+mixed-01,l1,report,XSS,3,11,27.272727272727273
+mixed-01,l1,report,代码注入,2,11,18.181818181818183
+mixed-01,l1,report,业务逻辑,1,11,9.090909090909092
+mixed-01,l1,report,原型链污染,1,11,9.090909090909092
+mixed-01,l1,report,命令注入,1,11,9.090909090909092
+mixed-01,l1,report,沙箱逃逸,1,11,9.090909090909092
+mixed-01,l1,report,注入类,1,11,9.090909090909092
+mixed-01,l1,report,路径遍历 / 任意文件读取,1,11,9.090909090909092
+mixed-01,l2,entry,表达式沙箱逃逸,6,27,22.22222222222222
+mixed-01,l2,entry,Stored XSS,5,27,18.51851851851852
+mixed-01,l2,entry,Prototype Pollution,3,27,11.11111111111111
+mixed-01,l2,entry,参数注入,3,27,11.11111111111111
+mixed-01,l2,entry,存储型XSS,3,27,11.11111111111111
+mixed-01,l2,entry,代码注入 / VM 沙箱逃逸,2,27,7.407407407407407
+mixed-01,l2,entry,表达式注入（Expression Injection）,2,27,7.407407407407407
+mixed-01,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),1,27,3.7037037037037037
+mixed-01,l2,entry,Content-Type 混淆导致的路径穿越,1,27,3.7037037037037037
+mixed-01,l2,entry,SQL 注入 / 任意文件写入,1,27,3.7037037037037037
+mixed-01,l2,report,Stored XSS,2,11,18.181818181818183
+mixed-01,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),1,11,9.090909090909092
+mixed-01,l2,report,Content-Type 混淆导致的路径穿越,1,11,9.090909090909092
+mixed-01,l2,report,Prototype Pollution,1,11,9.090909090909092
+mixed-01,l2,report,SQL 注入 / 任意文件写入,1,11,9.090909090909092
+mixed-01,l2,report,代码注入 / VM 沙箱逃逸,1,11,9.090909090909092
+mixed-01,l2,report,参数注入,1,11,9.090909090909092
+mixed-01,l2,report,存储型XSS,1,11,9.090909090909092
+mixed-01,l2,report,表达式沙箱逃逸,1,11,9.090909090909092
+mixed-01,l2,report,表达式注入（Expression Injection）,1,11,9.090909090909092
+mixed-02,l1,entry,业务逻辑,20,21,95.23809523809524
+mixed-02,l1,entry,SSRF,1,21,4.761904761904762
+mixed-02,l1,report,业务逻辑,9,10,90.0
+mixed-02,l1,report,SSRF,1,10,10.0
+mixed-02,l2,entry,BL-AUTHZ-MISSING(授权缺失),8,21,38.095238095238095
+mixed-02,l2,entry,BL-INSECURE-DEFAULT(不安全默认配置),5,21,23.80952380952381
+mixed-02,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),3,21,14.285714285714286
+mixed-02,l2,entry,BL-MASS-ASSIGNMENT(参数/属性污染),3,21,14.285714285714286
+mixed-02,l2,entry,BL-WORKFLOW-VIOLATION(业务流程/状态机违规),1,21,4.761904761904762
+mixed-02,l2,entry,服务端请求伪造,1,21,4.761904761904762
+mixed-02,l2,report,BL-AUTHZ-MISSING(授权缺失),3,10,30.0
+mixed-02,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),2,10,20.0
+mixed-02,l2,report,BL-MASS-ASSIGNMENT(参数/属性污染),2,10,20.0
+mixed-02,l2,report,BL-INSECURE-DEFAULT(不安全默认配置),1,10,10.0
+mixed-02,l2,report,BL-WORKFLOW-VIOLATION(业务流程/状态机违规),1,10,10.0
+mixed-02,l2,report,服务端请求伪造,1,10,10.0
+mixed-03,l1,entry,业务逻辑,13,30,43.333333333333336
+mixed-03,l1,entry,反序列化漏洞,7,30,23.333333333333332
+mixed-03,l1,entry,反序列化,5,30,16.666666666666668
+mixed-03,l1,entry,注入与反序列化,3,30,10.0
+mixed-03,l1,entry,命令注入,1,30,3.3333333333333335
+mixed-03,l1,entry,路径穿越,1,30,3.3333333333333335
+mixed-03,l1,report,业务逻辑,5,10,50.0
+mixed-03,l1,report,反序列化,1,10,10.0
+mixed-03,l1,report,反序列化漏洞,1,10,10.0
+mixed-03,l1,report,命令注入,1,10,10.0
+mixed-03,l1,report,注入与反序列化,1,10,10.0
+mixed-03,l1,report,路径穿越,1,10,10.0
+mixed-03,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),9,30,30.0
+mixed-03,l2,entry,不可信数据反序列化,7,30,23.333333333333332
+mixed-03,l2,entry,不可信数据反序列化 / 远程代码执行,5,30,16.666666666666668
+mixed-03,l2,entry,BL-AUTHZ-MISSING(授权缺失),3,30,10.0
+mixed-03,l2,entry,不安全反序列化,3,30,10.0
+mixed-03,l2,entry,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),1,30,3.3333333333333335
+mixed-03,l2,entry,OS命令注入,1,30,3.3333333333333335
+mixed-03,l2,entry,任意文件写入,1,30,3.3333333333333335
+mixed-03,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),2,10,20.0
+mixed-03,l2,report,BL-AUTHZ-MISSING(授权缺失),2,10,20.0
+mixed-03,l2,report,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),1,10,10.0
+mixed-03,l2,report,OS命令注入,1,10,10.0
+mixed-03,l2,report,不可信数据反序列化,1,10,10.0
+mixed-03,l2,report,不可信数据反序列化 / 远程代码执行,1,10,10.0
+mixed-03,l2,report,不安全反序列化,1,10,10.0
+mixed-03,l2,report,任意文件写入,1,10,10.0
+mixed-04,l1,entry,业务逻辑,21,34,61.76470588235294
+mixed-04,l1,entry,代码注入,4,34,11.764705882352942
+mixed-04,l1,entry,供应链攻击,3,34,8.823529411764707
+mixed-04,l1,entry,模板注入,3,34,8.823529411764707
+mixed-04,l1,entry,权限绕过,2,34,5.882352941176471
+mixed-04,l1,entry,SSRF,1,34,2.9411764705882355
+mixed-04,l1,report,业务逻辑,8,14,57.142857142857146
+mixed-04,l1,report,代码注入,2,14,14.285714285714286
+mixed-04,l1,report,SSRF,1,14,7.142857142857143
+mixed-04,l1,report,供应链攻击,1,14,7.142857142857143
+mixed-04,l1,report,权限绕过,1,14,7.142857142857143
+mixed-04,l1,report,模板注入,1,14,7.142857142857143
+mixed-04,l2,entry,BL-AUTHZ-MISSING(授权缺失),17,34,50.0
+mixed-04,l2,entry,任意模块导入,3,34,8.823529411764707
+mixed-04,l2,entry,嵌入恶意代码,3,34,8.823529411764707
+mixed-04,l2,entry,服务端模板注入 (SSTI),3,34,8.823529411764707
+mixed-04,l2,entry,BL-RACE-LOGIC(业务层竞争条件),2,34,5.882352941176471
+mixed-04,l2,entry,不安全的临时文件/目录权限,2,34,5.882352941176471
+mixed-04,l2,entry,BL-AUTH-BYPASS(身份认证绕过),1,34,2.9411764705882355
+mixed-04,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),1,34,2.9411764705882355
+mixed-04,l2,entry,DNS重绑定（DNS Rebinding）,1,34,2.9411764705882355
+mixed-04,l2,entry,OS命令注入（Shell注入）,1,34,2.9411764705882355
+mixed-04,l2,report,BL-AUTHZ-MISSING(授权缺失),5,14,35.714285714285715
+mixed-04,l2,report,BL-AUTH-BYPASS(身份认证绕过),1,14,7.142857142857143
+mixed-04,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),1,14,7.142857142857143
+mixed-04,l2,report,BL-RACE-LOGIC(业务层竞争条件),1,14,7.142857142857143
+mixed-04,l2,report,DNS重绑定（DNS Rebinding）,1,14,7.142857142857143
+mixed-04,l2,report,OS命令注入（Shell注入）,1,14,7.142857142857143
+mixed-04,l2,report,不安全的临时文件/目录权限,1,14,7.142857142857143
+mixed-04,l2,report,任意模块导入,1,14,7.142857142857143
+mixed-04,l2,report,嵌入恶意代码,1,14,7.142857142857143
+mixed-04,l2,report,服务端模板注入 (SSTI),1,14,7.142857142857143
+mixed-05,l1,entry,业务逻辑,8,12,66.66666666666667
+mixed-05,l1,entry,文件操作安全,2,12,16.666666666666668
+mixed-05,l1,entry,SSRF,1,12,8.333333333333334
+mixed-05,l1,entry,XSS,1,12,8.333333333333334
+mixed-05,l1,report,业务逻辑,6,9,66.66666666666667
+mixed-05,l1,report,SSRF,1,9,11.11111111111111
+mixed-05,l1,report,XSS,1,9,11.11111111111111
+mixed-05,l1,report,文件操作安全,1,9,11.11111111111111
+mixed-05,l2,entry,BL-AUTHZ-MISSING(授权缺失),3,12,25.0
+mixed-05,l2,entry,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),2,12,16.666666666666668
+mixed-05,l2,entry,TOCTOU / 符号链接跟随 / 路径穿越,2,12,16.666666666666668
+mixed-05,l2,entry,BL-AUTH-BYPASS(身份认证绕过),1,12,8.333333333333334
+mixed-05,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),1,12,8.333333333333334
+mixed-05,l2,entry,BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失),1,12,8.333333333333334
+mixed-05,l2,entry,Stored XSS,1,12,8.333333333333334
+mixed-05,l2,entry,路径穿越辅助 SSRF,1,12,8.333333333333334
+mixed-05,l2,report,BL-AUTHZ-MISSING(授权缺失),2,9,22.22222222222222
+mixed-05,l2,report,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),1,9,11.11111111111111
+mixed-05,l2,report,BL-AUTH-BYPASS(身份认证绕过),1,9,11.11111111111111
+mixed-05,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),1,9,11.11111111111111
+mixed-05,l2,report,BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失),1,9,11.11111111111111
+mixed-05,l2,report,Stored XSS,1,9,11.11111111111111
+mixed-05,l2,report,TOCTOU / 符号链接跟随 / 路径穿越,1,9,11.11111111111111
+mixed-05,l2,report,路径穿越辅助 SSRF,1,9,11.11111111111111
+openclaw-01,l1,entry,业务逻辑,32,32,100.0
+openclaw-01,l1,report,业务逻辑,7,7,100.0
+openclaw-01,l2,entry,BL-AUTHZ-MISSING(授权缺失),10,32,31.25
+openclaw-01,l2,entry,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),8,32,25.0
+openclaw-01,l2,entry,BL-AUTH-BYPASS(身份认证绕过),8,32,25.0
+openclaw-01,l2,entry,BL-AUTHZ-BROKEN(授权逻辑错误),6,32,18.75
+openclaw-01,l2,report,BL-AGENT-CAPABILITY(AI/Agent能力边界绕过),2,7,28.571428571428573
+openclaw-01,l2,report,BL-AUTH-BYPASS(身份认证绕过),2,7,28.571428571428573
+openclaw-01,l2,report,BL-AUTHZ-BROKEN(授权逻辑错误),2,7,28.571428571428573
+openclaw-01,l2,report,BL-AUTHZ-MISSING(授权缺失),1,7,14.285714285714286
