@@ -1,5 +1,10 @@
 # VulnGym Endpoint-Level Ground Truth Record
 
+> Historical record for the original 274-entry / 236-EP / 241-CO dataset.
+> Counts and source paths below retain that historical context. Current
+> six-batch scope is defined by [dataset identity](../data/dataset.json) and
+> [statistics](dataset_statistics.json).
+
 Date: 2026-06-08
 
 ## Scope

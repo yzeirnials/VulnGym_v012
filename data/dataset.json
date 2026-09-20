@@ -1,0 +1,36 @@
+{
+  "counts": {
+    "batches": 6,
+    "critical_operations": 137,
+    "entries": 156,
+    "entries_desc": 156,
+    "entry_points": 136,
+    "reports": 61,
+    "repositories": 23,
+    "snapshots": 55
+  },
+  "dataset_id": "vulngym-six-batches",
+  "descriptions_source_commit": "4c4ac5659329008d9ea44ac5ec7855eae6909c2e",
+  "files_sha256": {
+    "data/batch_manifest.jsonl": "848d0d966c87df74f92d5423d01236fc69b7ce5f8675ae2bff150a2047cb0f37",
+    "data/critical_operations.jsonl": "d2ed8a734b8dada051bda3750720dd0a36e43990ed4b5885569d35054fe46374",
+    "data/entries.jsonl": "dc058bf28947f771efddf6ab3548e421c8997cfe350d80e7c378c061daa8667e",
+    "data/entries_desc.jsonl": "8ce84d53d81c8c8b587f6bbe9f87ebdee8a167f0f767e599ce855c9db4f2cdc3",
+    "data/entry_points.jsonl": "384cad8a9e005d788dd28b35d4eeffab315332ff8303158d1737db9820c79bed",
+    "data/reports.jsonl": "d3e7c2fe7ed22b2ad0b36fe14c8fa4c5c88ffc6e219eebbcc2c71422003bf6b9"
+  },
+  "generator": "scripts/subset_dataset.py",
+  "schema_version": 1,
+  "selected_batch_ids": [
+    "openclaw-01",
+    "mixed-01",
+    "mixed-02",
+    "mixed-03",
+    "mixed-04",
+    "mixed-05"
+  ],
+  "selection_manifest": "data/batch_manifest.jsonl",
+  "selection_policy": "Exact entry IDs from the selected repo/commit batch rows; preserve source IDs and locations.",
+  "source_dataset_commit": "90002144d4a8b3654fb1bf68052889b9c2de44aa",
+  "source_repository": "https://github.com/yzeirnials/VulnGym_v012"
+}

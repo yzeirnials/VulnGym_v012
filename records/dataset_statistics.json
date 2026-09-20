@@ -1,0 +1,3420 @@
+{
+  "schema_version": 1,
+  "counts": {
+    "entries": 156,
+    "reports": 61,
+    "entry_points": 136,
+    "critical_operations": 137,
+    "snapshots": 55,
+    "repositories": 23,
+    "ghsa": 62,
+    "cve": 48
+  },
+  "batches": [
+    {
+      "batch_id": "mixed-01",
+      "entries": 27,
+      "reports": 11,
+      "entry_points": 27,
+      "critical_operations": 27,
+      "snapshots": 10,
+      "repositories": 1,
+      "ghsa": 11,
+      "cve": 11
+    },
+    {
+      "batch_id": "mixed-02",
+      "entries": 21,
+      "reports": 10,
+      "entry_points": 19,
+      "critical_operations": 19,
+      "snapshots": 7,
+      "repositories": 1,
+      "ghsa": 10,
+      "cve": 7
+    },
+    {
+      "batch_id": "mixed-03",
+      "entries": 30,
+      "reports": 10,
+      "entry_points": 27,
+      "critical_operations": 26,
+      "snapshots": 9,
+      "repositories": 3,
+      "ghsa": 10,
+      "cve": 6
+    },
+    {
+      "batch_id": "mixed-04",
+      "entries": 34,
+      "reports": 14,
+      "entry_points": 33,
+      "critical_operations": 34,
+      "snapshots": 14,
+      "repositories": 9,
+      "ghsa": 14,
+      "cve": 12
+    },
+    {
+      "batch_id": "mixed-05",
+      "entries": 12,
+      "reports": 9,
+      "entry_points": 12,
+      "critical_operations": 12,
+      "snapshots": 9,
+      "repositories": 8,
+      "ghsa": 9,
+      "cve": 8
+    },
+    {
+      "batch_id": "openclaw-01",
+      "entries": 32,
+      "reports": 7,
+      "entry_points": 18,
+      "critical_operations": 19,
+      "snapshots": 6,
+      "repositories": 1,
+      "ghsa": 8,
+      "cve": 4
+    }
+  ],
+  "granularities": [
+    {
+      "granularity": "entries",
+      "records": 156,
+      "ghsa": 62,
+      "cve": 48
+    },
+    {
+      "granularity": "entry_points",
+      "records": 136,
+      "ghsa": 62,
+      "cve": 48
+    },
+    {
+      "granularity": "critical_operations",
+      "records": 137,
+      "ghsa": 62,
+      "cve": 48
+    }
+  ],
+  "identifiers": {
+    "ghsa": [
+      "GHSA-265W-RF2W-CJH4",
+      "GHSA-2P9H-RQJW-GM92",
+      "GHSA-2X8M-83VC-6WV4",
+      "GHSA-345P-7CG4-V4C7",
+      "GHSA-3XX2-MQJM-HG9X",
+      "GHSA-48M6-CH88-55MJ",
+      "GHSA-4M3H-WP5W-5HQH",
+      "GHSA-4X5P-F36R-MXXR",
+      "GHSA-58JC-RCG5-95F3",
+      "GHSA-5F53-522J-J454",
+      "GHSA-5H2M-4Q8J-PQPJ",
+      "GHSA-69FQ-XP46-6X23",
+      "GHSA-6F7G-V4PP-R667",
+      "GHSA-6QV9-48XG-FC7F",
+      "GHSA-7429-HXCV-268M",
+      "GHSA-75HX-XJ24-MQRW",
+      "GHSA-7FF8-XJH3-MGH6",
+      "GHSA-7GRX-3XCX-2XV5",
+      "GHSA-7PPG-37FH-VCR6",
+      "GHSA-7QHF-V65M-G5F3",
+      "GHSA-8C4J-F57C-35CF",
+      "GHSA-8X34-9Q3V-H7G8",
+      "GHSA-9379-MWVR-7WXX",
+      "GHSA-9G95-QF3F-GGRW",
+      "GHSA-C5CP-VX83-JHQX",
+      "GHSA-CCJ6-79J6-CQ5Q",
+      "GHSA-CWC3-P92J-G7QM",
+      "GHSA-F6MR-38G8-39RG",
+      "GHSA-FJH6-8679-9PCH",
+      "GHSA-FVCW-9W9R-PXC7",
+      "GHSA-FXCW-H3QJ-8M8P",
+      "GHSA-G2J9-7RJ2-GM6C",
+      "GHSA-GP3Q-WPQ4-5C5H",
+      "GHSA-H6GW-8F77-MMMP",
+      "GHSA-H9G4-589H-68XV",
+      "GHSA-HFF7-CCV5-52F8",
+      "GHSA-HV53-3329-VMRM",
+      "GHSA-J8G8-J7FC-43V6",
+      "GHSA-JJHC-V7C2-5HH6",
+      "GHSA-JJPJ-P2WH-QF23",
+      "GHSA-JM6W-M3J8-898G",
+      "GHSA-JV6R-27WW-4GW4",
+      "GHSA-M4JW-WGMF-889X",
+      "GHSA-MHJQ-8C7M-3F7P",
+      "GHSA-MQ4R-H2GH-QV7X",
+      "GHSA-MXRG-77HM-89HV",
+      "GHSA-Q2HG-643C-GW8H",
+      "GHSA-Q56X-G2FJ-4RJ6",
+      "GHSA-QPQ4-PW7F-PP8W",
+      "GHSA-QWMF-95R9-GX9X",
+      "GHSA-R277-3XC5-C79V",
+      "GHSA-RG7C-G689-FR3X",
+      "GHSA-V4PR-FM98-W9PG",
+      "GHSA-V7V2-M736-CF3C",
+      "GHSA-V98V-FF95-F3CP",
+      "GHSA-VPCF-GVG4-6QWR",
+      "GHSA-VR7G-88FQ-VHQ3",
+      "GHSA-VV7Q-7JX5-F767",
+      "GHSA-W7XJ-8FX7-WFCH",
+      "GHSA-WCXR-59V9-RXR8",
+      "GHSA-WVHQ-WP8G-C7VQ",
+      "GHSA-XH72-V6V9-MWHC"
+    ],
+    "cve": [
+      "CVE-2025-10279",
+      "CVE-2025-61914",
+      "CVE-2025-63389",
+      "CVE-2025-64495",
+      "CVE-2025-64513",
+      "CVE-2025-65106",
+      "CVE-2025-68613",
+      "CVE-2025-69196",
+      "CVE-2026-0545",
+      "CVE-2026-21445",
+      "CVE-2026-21858",
+      "CVE-2026-24157",
+      "CVE-2026-24159",
+      "CVE-2026-24780",
+      "CVE-2026-25053",
+      "CVE-2026-25054",
+      "CVE-2026-25056",
+      "CVE-2026-25536",
+      "CVE-2026-26190",
+      "CVE-2026-26929",
+      "CVE-2026-27495",
+      "CVE-2026-27577",
+      "CVE-2026-27578",
+      "CVE-2026-28468",
+      "CVE-2026-30820",
+      "CVE-2026-30821",
+      "CVE-2026-30822",
+      "CVE-2026-30823",
+      "CVE-2026-30824",
+      "CVE-2026-30855",
+      "CVE-2026-30858",
+      "CVE-2026-30911",
+      "CVE-2026-31829",
+      "CVE-2026-32027",
+      "CVE-2026-32045",
+      "CVE-2026-32871",
+      "CVE-2026-32918",
+      "CVE-2026-33231",
+      "CVE-2026-33309",
+      "CVE-2026-33484",
+      "CVE-2026-33634",
+      "CVE-2026-33696",
+      "CVE-2026-33722",
+      "CVE-2026-34046",
+      "CVE-2026-34222",
+      "CVE-2026-35030",
+      "CVE-2026-41273",
+      "CVE-2026-4810"
+    ]
+  },
+  "categories": [
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 95,
+      "denominator": 156,
+      "percentage": 60.8974358974359
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "代码注入",
+      "count": 12,
+      "denominator": 156,
+      "percentage": 7.6923076923076925
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "XSS",
+      "count": 9,
+      "denominator": 156,
+      "percentage": 5.769230769230769
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "反序列化漏洞",
+      "count": 7,
+      "denominator": 156,
+      "percentage": 4.487179487179487
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "反序列化",
+      "count": 5,
+      "denominator": 156,
+      "percentage": 3.2051282051282053
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "命令注入",
+      "count": 4,
+      "denominator": 156,
+      "percentage": 2.5641025641025643
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "SSRF",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "供应链攻击",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "原型链污染",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "模板注入",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "注入与反序列化",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "文件操作安全",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "权限绕过",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "沙箱逃逸",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "注入类",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "路径穿越",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "entry",
+      "category": "路径遍历 / 任意文件读取",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 36,
+      "denominator": 61,
+      "percentage": 59.01639344262295
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "XSS",
+      "count": 4,
+      "denominator": 61,
+      "percentage": 6.557377049180328
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "代码注入",
+      "count": 4,
+      "denominator": 61,
+      "percentage": 6.557377049180328
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "SSRF",
+      "count": 3,
+      "denominator": 61,
+      "percentage": 4.918032786885246
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "命令注入",
+      "count": 2,
+      "denominator": 61,
+      "percentage": 3.278688524590164
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "供应链攻击",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "原型链污染",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "反序列化",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "反序列化漏洞",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "文件操作安全",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "权限绕过",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "模板注入",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "沙箱逃逸",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "注入与反序列化",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "注入类",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "路径穿越",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l1",
+      "unit": "report",
+      "category": "路径遍历 / 任意文件读取",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 41,
+      "denominator": 156,
+      "percentage": 26.28205128205128
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 21,
+      "denominator": 156,
+      "percentage": 13.461538461538462
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 11,
+      "denominator": 156,
+      "percentage": 7.051282051282051
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 10,
+      "denominator": 156,
+      "percentage": 6.410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不可信数据反序列化",
+      "count": 7,
+      "denominator": 156,
+      "percentage": 4.487179487179487
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Stored XSS",
+      "count": 6,
+      "denominator": 156,
+      "percentage": 3.8461538461538463
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "表达式沙箱逃逸",
+      "count": 6,
+      "denominator": 156,
+      "percentage": 3.8461538461538463
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-INSECURE-DEFAULT(不安全默认配置)",
+      "count": 5,
+      "denominator": 156,
+      "percentage": 3.2051282051282053
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不可信数据反序列化 / 远程代码执行",
+      "count": 5,
+      "denominator": 156,
+      "percentage": 3.2051282051282053
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-MASS-ASSIGNMENT(参数/属性污染)",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Prototype Pollution",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不安全反序列化",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "任意模块导入",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "参数注入",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "存储型XSS",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "嵌入恶意代码",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "服务端模板注入 (SSTI)",
+      "count": 3,
+      "denominator": 156,
+      "percentage": 1.9230769230769231
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-RACE-LOGIC(业务层竞争条件)",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "TOCTOU / 符号链接跟随 / 路径穿越",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不安全的临时文件/目录权限",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "代码注入 / VM 沙箱逃逸",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "表达式注入（Expression Injection）",
+      "count": 2,
+      "denominator": 156,
+      "percentage": 1.2820512820512822
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失)",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-WORKFLOW-VIOLATION(业务流程/状态机违规)",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Content-Type 混淆导致的路径穿越",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "DNS重绑定（DNS Rebinding）",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "OS命令注入",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "OS命令注入（Shell注入）",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "SQL 注入 / 任意文件写入",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "任意文件写入",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "服务端请求伪造",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "entry",
+      "category": "路径穿越辅助 SSRF",
+      "count": 1,
+      "denominator": 156,
+      "percentage": 0.6410256410256411
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 13,
+      "denominator": 61,
+      "percentage": 21.311475409836067
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 9,
+      "denominator": 61,
+      "percentage": 14.754098360655737
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 4,
+      "denominator": 61,
+      "percentage": 6.557377049180328
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 4,
+      "denominator": 61,
+      "percentage": 6.557377049180328
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "Stored XSS",
+      "count": 3,
+      "denominator": 61,
+      "percentage": 4.918032786885246
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-MASS-ASSIGNMENT(参数/属性污染)",
+      "count": 2,
+      "denominator": 61,
+      "percentage": 3.278688524590164
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-INSECURE-DEFAULT(不安全默认配置)",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失)",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-RACE-LOGIC(业务层竞争条件)",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-WORKFLOW-VIOLATION(业务流程/状态机违规)",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "Content-Type 混淆导致的路径穿越",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "DNS重绑定（DNS Rebinding）",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "OS命令注入",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "OS命令注入（Shell注入）",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "Prototype Pollution",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "SQL 注入 / 任意文件写入",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "TOCTOU / 符号链接跟随 / 路径穿越",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "不可信数据反序列化",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "不可信数据反序列化 / 远程代码执行",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "不安全反序列化",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "不安全的临时文件/目录权限",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "代码注入 / VM 沙箱逃逸",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "任意文件写入",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "任意模块导入",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "参数注入",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "存储型XSS",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "嵌入恶意代码",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "服务端模板注入 (SSTI)",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "服务端请求伪造",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "表达式沙箱逃逸",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "表达式注入（Expression Injection）",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "ALL",
+      "level": "l2",
+      "unit": "report",
+      "category": "路径穿越辅助 SSRF",
+      "count": 1,
+      "denominator": 61,
+      "percentage": 1.639344262295082
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "XSS",
+      "count": 8,
+      "denominator": 27,
+      "percentage": 29.62962962962963
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "代码注入",
+      "count": 8,
+      "denominator": 27,
+      "percentage": 29.62962962962963
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "原型链污染",
+      "count": 3,
+      "denominator": 27,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "命令注入",
+      "count": 3,
+      "denominator": 27,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "沙箱逃逸",
+      "count": 2,
+      "denominator": 27,
+      "percentage": 7.407407407407407
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 1,
+      "denominator": 27,
+      "percentage": 3.7037037037037037
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "注入类",
+      "count": 1,
+      "denominator": 27,
+      "percentage": 3.7037037037037037
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "路径遍历 / 任意文件读取",
+      "count": 1,
+      "denominator": 27,
+      "percentage": 3.7037037037037037
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "XSS",
+      "count": 3,
+      "denominator": 11,
+      "percentage": 27.272727272727273
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "代码注入",
+      "count": 2,
+      "denominator": 11,
+      "percentage": 18.181818181818183
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "原型链污染",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "命令注入",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "沙箱逃逸",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "注入类",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "路径遍历 / 任意文件读取",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "表达式沙箱逃逸",
+      "count": 6,
+      "denominator": 27,
+      "percentage": 22.22222222222222
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Stored XSS",
+      "count": 5,
+      "denominator": 27,
+      "percentage": 18.51851851851852
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Prototype Pollution",
+      "count": 3,
+      "denominator": 27,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "参数注入",
+      "count": 3,
+      "denominator": 27,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "存储型XSS",
+      "count": 3,
+      "denominator": 27,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "代码注入 / VM 沙箱逃逸",
+      "count": 2,
+      "denominator": 27,
+      "percentage": 7.407407407407407
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "表达式注入（Expression Injection）",
+      "count": 2,
+      "denominator": 27,
+      "percentage": 7.407407407407407
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 1,
+      "denominator": 27,
+      "percentage": 3.7037037037037037
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Content-Type 混淆导致的路径穿越",
+      "count": 1,
+      "denominator": 27,
+      "percentage": 3.7037037037037037
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "SQL 注入 / 任意文件写入",
+      "count": 1,
+      "denominator": 27,
+      "percentage": 3.7037037037037037
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "Stored XSS",
+      "count": 2,
+      "denominator": 11,
+      "percentage": 18.181818181818183
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "Content-Type 混淆导致的路径穿越",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "Prototype Pollution",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "SQL 注入 / 任意文件写入",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "代码注入 / VM 沙箱逃逸",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "参数注入",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "存储型XSS",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "表达式沙箱逃逸",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "表达式注入（Expression Injection）",
+      "count": 1,
+      "denominator": 11,
+      "percentage": 9.090909090909092
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 20,
+      "denominator": 21,
+      "percentage": 95.23809523809524
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l1",
+      "unit": "entry",
+      "category": "SSRF",
+      "count": 1,
+      "denominator": 21,
+      "percentage": 4.761904761904762
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 9,
+      "denominator": 10,
+      "percentage": 90.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l1",
+      "unit": "report",
+      "category": "SSRF",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 8,
+      "denominator": 21,
+      "percentage": 38.095238095238095
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-INSECURE-DEFAULT(不安全默认配置)",
+      "count": 5,
+      "denominator": 21,
+      "percentage": 23.80952380952381
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 3,
+      "denominator": 21,
+      "percentage": 14.285714285714286
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-MASS-ASSIGNMENT(参数/属性污染)",
+      "count": 3,
+      "denominator": 21,
+      "percentage": 14.285714285714286
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-WORKFLOW-VIOLATION(业务流程/状态机违规)",
+      "count": 1,
+      "denominator": 21,
+      "percentage": 4.761904761904762
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "entry",
+      "category": "服务端请求伪造",
+      "count": 1,
+      "denominator": 21,
+      "percentage": 4.761904761904762
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 3,
+      "denominator": 10,
+      "percentage": 30.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 2,
+      "denominator": 10,
+      "percentage": 20.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-MASS-ASSIGNMENT(参数/属性污染)",
+      "count": 2,
+      "denominator": 10,
+      "percentage": 20.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-INSECURE-DEFAULT(不安全默认配置)",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-WORKFLOW-VIOLATION(业务流程/状态机违规)",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-02",
+      "level": "l2",
+      "unit": "report",
+      "category": "服务端请求伪造",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 13,
+      "denominator": 30,
+      "percentage": 43.333333333333336
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "entry",
+      "category": "反序列化漏洞",
+      "count": 7,
+      "denominator": 30,
+      "percentage": 23.333333333333332
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "entry",
+      "category": "反序列化",
+      "count": 5,
+      "denominator": 30,
+      "percentage": 16.666666666666668
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "entry",
+      "category": "注入与反序列化",
+      "count": 3,
+      "denominator": 30,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "entry",
+      "category": "命令注入",
+      "count": 1,
+      "denominator": 30,
+      "percentage": 3.3333333333333335
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "entry",
+      "category": "路径穿越",
+      "count": 1,
+      "denominator": 30,
+      "percentage": 3.3333333333333335
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 5,
+      "denominator": 10,
+      "percentage": 50.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "report",
+      "category": "反序列化",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "report",
+      "category": "反序列化漏洞",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "report",
+      "category": "命令注入",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "report",
+      "category": "注入与反序列化",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l1",
+      "unit": "report",
+      "category": "路径穿越",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 9,
+      "denominator": 30,
+      "percentage": 30.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不可信数据反序列化",
+      "count": 7,
+      "denominator": 30,
+      "percentage": 23.333333333333332
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不可信数据反序列化 / 远程代码执行",
+      "count": 5,
+      "denominator": 30,
+      "percentage": 16.666666666666668
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 3,
+      "denominator": 30,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不安全反序列化",
+      "count": 3,
+      "denominator": 30,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 1,
+      "denominator": 30,
+      "percentage": 3.3333333333333335
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "OS命令注入",
+      "count": 1,
+      "denominator": 30,
+      "percentage": 3.3333333333333335
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "entry",
+      "category": "任意文件写入",
+      "count": 1,
+      "denominator": 30,
+      "percentage": 3.3333333333333335
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 2,
+      "denominator": 10,
+      "percentage": 20.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 2,
+      "denominator": 10,
+      "percentage": 20.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "OS命令注入",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "不可信数据反序列化",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "不可信数据反序列化 / 远程代码执行",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "不安全反序列化",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-03",
+      "level": "l2",
+      "unit": "report",
+      "category": "任意文件写入",
+      "count": 1,
+      "denominator": 10,
+      "percentage": 10.0
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 21,
+      "denominator": 34,
+      "percentage": 61.76470588235294
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "entry",
+      "category": "代码注入",
+      "count": 4,
+      "denominator": 34,
+      "percentage": 11.764705882352942
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "entry",
+      "category": "供应链攻击",
+      "count": 3,
+      "denominator": 34,
+      "percentage": 8.823529411764707
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "entry",
+      "category": "模板注入",
+      "count": 3,
+      "denominator": 34,
+      "percentage": 8.823529411764707
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "entry",
+      "category": "权限绕过",
+      "count": 2,
+      "denominator": 34,
+      "percentage": 5.882352941176471
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "entry",
+      "category": "SSRF",
+      "count": 1,
+      "denominator": 34,
+      "percentage": 2.9411764705882355
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 8,
+      "denominator": 14,
+      "percentage": 57.142857142857146
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "report",
+      "category": "代码注入",
+      "count": 2,
+      "denominator": 14,
+      "percentage": 14.285714285714286
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "report",
+      "category": "SSRF",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "report",
+      "category": "供应链攻击",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "report",
+      "category": "权限绕过",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l1",
+      "unit": "report",
+      "category": "模板注入",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 17,
+      "denominator": 34,
+      "percentage": 50.0
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "任意模块导入",
+      "count": 3,
+      "denominator": 34,
+      "percentage": 8.823529411764707
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "嵌入恶意代码",
+      "count": 3,
+      "denominator": 34,
+      "percentage": 8.823529411764707
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "服务端模板注入 (SSTI)",
+      "count": 3,
+      "denominator": 34,
+      "percentage": 8.823529411764707
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-RACE-LOGIC(业务层竞争条件)",
+      "count": 2,
+      "denominator": 34,
+      "percentage": 5.882352941176471
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "不安全的临时文件/目录权限",
+      "count": 2,
+      "denominator": 34,
+      "percentage": 5.882352941176471
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 1,
+      "denominator": 34,
+      "percentage": 2.9411764705882355
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 1,
+      "denominator": 34,
+      "percentage": 2.9411764705882355
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "DNS重绑定（DNS Rebinding）",
+      "count": 1,
+      "denominator": 34,
+      "percentage": 2.9411764705882355
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "entry",
+      "category": "OS命令注入（Shell注入）",
+      "count": 1,
+      "denominator": 34,
+      "percentage": 2.9411764705882355
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 5,
+      "denominator": 14,
+      "percentage": 35.714285714285715
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-RACE-LOGIC(业务层竞争条件)",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "DNS重绑定（DNS Rebinding）",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "OS命令注入（Shell注入）",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "不安全的临时文件/目录权限",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "任意模块导入",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "嵌入恶意代码",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-04",
+      "level": "l2",
+      "unit": "report",
+      "category": "服务端模板注入 (SSTI)",
+      "count": 1,
+      "denominator": 14,
+      "percentage": 7.142857142857143
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 8,
+      "denominator": 12,
+      "percentage": 66.66666666666667
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "entry",
+      "category": "文件操作安全",
+      "count": 2,
+      "denominator": 12,
+      "percentage": 16.666666666666668
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "entry",
+      "category": "SSRF",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "entry",
+      "category": "XSS",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 6,
+      "denominator": 9,
+      "percentage": 66.66666666666667
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "report",
+      "category": "SSRF",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "report",
+      "category": "XSS",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l1",
+      "unit": "report",
+      "category": "文件操作安全",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 3,
+      "denominator": 12,
+      "percentage": 25.0
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 2,
+      "denominator": 12,
+      "percentage": 16.666666666666668
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "TOCTOU / 符号链接跟随 / 路径穿越",
+      "count": 2,
+      "denominator": 12,
+      "percentage": 16.666666666666668
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失)",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "Stored XSS",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "entry",
+      "category": "路径穿越辅助 SSRF",
+      "count": 1,
+      "denominator": 12,
+      "percentage": 8.333333333333334
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 2,
+      "denominator": 9,
+      "percentage": 22.22222222222222
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-ORIGIN-INTEGRITY(来源/签名/完整性校验缺失)",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "Stored XSS",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "TOCTOU / 符号链接跟随 / 路径穿越",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "mixed-05",
+      "level": "l2",
+      "unit": "report",
+      "category": "路径穿越辅助 SSRF",
+      "count": 1,
+      "denominator": 9,
+      "percentage": 11.11111111111111
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l1",
+      "unit": "entry",
+      "category": "业务逻辑",
+      "count": 32,
+      "denominator": 32,
+      "percentage": 100.0
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l1",
+      "unit": "report",
+      "category": "业务逻辑",
+      "count": 7,
+      "denominator": 7,
+      "percentage": 100.0
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 10,
+      "denominator": 32,
+      "percentage": 31.25
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 8,
+      "denominator": 32,
+      "percentage": 25.0
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 8,
+      "denominator": 32,
+      "percentage": 25.0
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "entry",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 6,
+      "denominator": 32,
+      "percentage": 18.75
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AGENT-CAPABILITY(AI/Agent能力边界绕过)",
+      "count": 2,
+      "denominator": 7,
+      "percentage": 28.571428571428573
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTH-BYPASS(身份认证绕过)",
+      "count": 2,
+      "denominator": 7,
+      "percentage": 28.571428571428573
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-BROKEN(授权逻辑错误)",
+      "count": 2,
+      "denominator": 7,
+      "percentage": 28.571428571428573
+    },
+    {
+      "batch_id": "openclaw-01",
+      "level": "l2",
+      "unit": "report",
+      "category": "BL-AUTHZ-MISSING(授权缺失)",
+      "count": 1,
+      "denominator": 7,
+      "percentage": 14.285714285714286
+    }
+  ],
+  "languages": [
+    {
+      "language": "TypeScript",
+      "sloc": 22638058,
+      "source_files": 144739,
+      "source_bytes": 783866629,
+      "snapshot_count": 46,
+      "primary_snapshot_count": 28,
+      "primary_entry_count": 94,
+      "sloc_percentage": 63.62271081573476,
+      "primary_entry_percentage": 60.256410256410255
+    },
+    {
+      "language": "Python",
+      "sloc": 6782456,
+      "source_files": 45740,
+      "source_bytes": 389284836,
+      "snapshot_count": 43,
+      "primary_snapshot_count": 19,
+      "primary_entry_count": 45,
+      "sloc_percentage": 19.06162784406883,
+      "primary_entry_percentage": 28.846153846153847
+    },
+    {
+      "language": "Go",
+      "sloc": 1653170,
+      "source_files": 8121,
+      "source_bytes": 64330652,
+      "snapshot_count": 15,
+      "primary_snapshot_count": 6,
+      "primary_entry_count": 15,
+      "sloc_percentage": 4.646121007342955,
+      "primary_entry_percentage": 9.615384615384615
+    },
+    {
+      "language": "Vuejs Component",
+      "sloc": 1376675,
+      "source_files": 7394,
+      "source_bytes": 42117802,
+      "snapshot_count": 12,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 3.8690507556898943,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "JSX",
+      "sloc": 539647,
+      "source_files": 2462,
+      "source_bytes": 35226173,
+      "snapshot_count": 11,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 1.5166409160882448,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Java",
+      "sloc": 523177,
+      "source_files": 117,
+      "source_bytes": 26720282,
+      "snapshot_count": 5,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 1.4703531096370397,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Swift",
+      "sloc": 485971,
+      "source_files": 3212,
+      "source_bytes": 20063747,
+      "snapshot_count": 7,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 1.3657881960472686,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "C++",
+      "sloc": 297655,
+      "source_files": 753,
+      "source_bytes": 13750461,
+      "snapshot_count": 8,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.8365389817385188,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "JavaScript",
+      "sloc": 277907,
+      "source_files": 2008,
+      "source_bytes": 56302315,
+      "snapshot_count": 46,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.7810385809007292,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "C/C++ Header",
+      "sloc": 164244,
+      "source_files": 775,
+      "source_bytes": 7968630,
+      "snapshot_count": 5,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.4615965077578448,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Svelte",
+      "sloc": 152074,
+      "source_files": 1018,
+      "source_bytes": 5075080,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 2,
+      "primary_entry_count": 2,
+      "sloc_percentage": 0.42739355666427076,
+      "primary_entry_percentage": 1.2820512820512822
+    },
+    {
+      "language": "SCSS",
+      "sloc": 116516,
+      "source_files": 899,
+      "source_bytes": 3337784,
+      "snapshot_count": 17,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.32746023415109865,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "CSS",
+      "sloc": 113104,
+      "source_files": 318,
+      "source_bytes": 3796106,
+      "snapshot_count": 50,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.31787104194639243,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Bourne Shell",
+      "sloc": 100491,
+      "source_files": 1841,
+      "source_bytes": 4807556,
+      "snapshot_count": 53,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.2824230697078346,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Kotlin",
+      "sloc": 94487,
+      "source_files": 578,
+      "source_bytes": 3659838,
+      "snapshot_count": 7,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.2655492391108076,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "HTML",
+      "sloc": 67332,
+      "source_files": 263,
+      "source_bytes": 5751481,
+      "snapshot_count": 49,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.18923197231162908,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Handlebars",
+      "sloc": 58872,
+      "source_files": 140,
+      "source_bytes": 5141228,
+      "snapshot_count": 17,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.16545572200335987,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Jupyter Notebook",
+      "sloc": 56907,
+      "source_files": 274,
+      "source_bytes": 21599085,
+      "snapshot_count": 11,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.1599332241480704,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Protocol Buffers",
+      "sloc": 23388,
+      "source_files": 109,
+      "source_bytes": 1211423,
+      "snapshot_count": 15,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.06573037141959812,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "SQL",
+      "sloc": 14878,
+      "source_files": 386,
+      "source_bytes": 874279,
+      "snapshot_count": 15,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.041813599537402976,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "R",
+      "sloc": 9824,
+      "source_files": 128,
+      "source_bytes": 434340,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.02760967884496887,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Bourne Again Shell",
+      "sloc": 8068,
+      "source_files": 68,
+      "source_bytes": 287794,
+      "snapshot_count": 16,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.022674561168689825,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Dart",
+      "sloc": 4566,
+      "source_files": 79,
+      "source_bytes": 203562,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.012832430130916924,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Jinja Template",
+      "sloc": 3945,
+      "source_files": 138,
+      "source_bytes": 278052,
+      "snapshot_count": 4,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.011087152182756738,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Groovy",
+      "sloc": 3708,
+      "source_files": 34,
+      "source_bytes": 206754,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.010421079922347778,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Prisma Schema",
+      "sloc": 2760,
+      "source_files": 6,
+      "source_bytes": 125614,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.007756790880711939,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Scala",
+      "sloc": 1617,
+      "source_files": 22,
+      "source_bytes": 85796,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0045444677007649295,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Nunjucks",
+      "sloc": 1525,
+      "source_files": 18,
+      "source_bytes": 70602,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.004285908004741198,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "DOS Batch",
+      "sloc": 1325,
+      "source_files": 60,
+      "source_bytes": 45729,
+      "snapshot_count": 32,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0037238217090374342,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Objective-C",
+      "sloc": 1267,
+      "source_files": 4,
+      "source_bytes": 55994,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0035608166832833427,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "PowerShell",
+      "sloc": 1247,
+      "source_files": 9,
+      "source_bytes": 53545,
+      "snapshot_count": 7,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0035046080537129666,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "LESS",
+      "sloc": 1211,
+      "source_files": 5,
+      "source_bytes": 26736,
+      "snapshot_count": 3,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.003403432520486289,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Rego",
+      "sloc": 1039,
+      "source_files": 52,
+      "source_bytes": 44030,
+      "snapshot_count": 7,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.002920038306181052,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "C",
+      "sloc": 684,
+      "source_files": 6,
+      "source_bytes": 22646,
+      "snapshot_count": 4,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0019223351313068717,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "GraphQL",
+      "sloc": 568,
+      "source_files": 2,
+      "source_bytes": 12929,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0015963250797986887,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Mako",
+      "sloc": 502,
+      "source_files": 19,
+      "source_bytes": 17832,
+      "snapshot_count": 12,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0014108366022164468,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "ANTLR Grammar",
+      "sloc": 322,
+      "source_files": 2,
+      "source_bytes": 16726,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0009049589360830595,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Ruby",
+      "sloc": 224,
+      "source_files": 9,
+      "source_bytes": 11866,
+      "snapshot_count": 2,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.0006295366511882153,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "XSLT",
+      "sloc": 149,
+      "source_files": 3,
+      "source_bytes": 7380,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.00041875429029930393,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "yacc",
+      "sloc": 63,
+      "source_files": 1,
+      "source_bytes": 1260,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.00017705718314668556,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "AppleScript",
+      "sloc": 56,
+      "source_files": 1,
+      "source_bytes": 1828,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 0.00015738416279705383,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "Elixir Script",
+      "sloc": 27,
+      "source_files": 1,
+      "source_bytes": 1068,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 7.58816499200081e-05,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "PHP",
+      "sloc": 11,
+      "source_files": 2,
+      "source_bytes": 1674,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 3.0914746263707e-05,
+      "primary_entry_percentage": 0.0
+    },
+    {
+      "language": "IDL",
+      "sloc": 8,
+      "source_files": 1,
+      "source_bytes": 247,
+      "snapshot_count": 1,
+      "primary_snapshot_count": 0,
+      "primary_entry_count": 0,
+      "sloc_percentage": 2.2483451828150545e-05,
+      "primary_entry_percentage": 0.0
+    }
+  ],
+  "project_size": {
+    "unit": "physical source lines of code (excluding comments and blank lines)",
+    "population": "unique (repo_url, commit) snapshots",
+    "sloc": {
+      "count": 55,
+      "min": 50846,
+      "p25": 194707.5,
+      "median": 404139,
+      "mean": 646940.4545454546,
+      "p75": 943666.0,
+      "max": 2112892
+    },
+    "snapshot_sloc_sum": 35581725
+  },
+  "repositories": [
+    {
+      "repo_url": "https://github.com/BerriAI/litellm",
+      "snapshots": 1,
+      "entries": 1,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 625842,
+      "sloc_p25": 625842.0,
+      "sloc_median": 625842,
+      "sloc_mean": 625842,
+      "sloc_p75": 625842.0,
+      "sloc_max": 625842
+    },
+    {
+      "repo_url": "https://github.com/FlowiseAI/Flowise",
+      "snapshots": 7,
+      "entries": 21,
+      "primary_languages": [
+        "TypeScript"
+      ],
+      "sloc_min": 210658,
+      "sloc_p25": 212067.0,
+      "sloc_median": 212900,
+      "sloc_mean": 213282.2857142857,
+      "sloc_p75": 212991.5,
+      "sloc_max": 219301
+    },
+    {
+      "repo_url": "https://github.com/NVIDIA/NeMo",
+      "snapshots": 3,
+      "entries": 15,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 402726,
+      "sloc_p25": 405674.5,
+      "sloc_median": 408623,
+      "sloc_mean": 406679,
+      "sloc_p75": 408655.5,
+      "sloc_max": 408688
+    },
+    {
+      "repo_url": "https://github.com/PrefectHQ/fastmcp",
+      "snapshots": 1,
+      "entries": 1,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 111986,
+      "sloc_p25": 111986.0,
+      "sloc_median": 111986,
+      "sloc_mean": 111986,
+      "sloc_p75": 111986.0,
+      "sloc_max": 111986
+    },
+    {
+      "repo_url": "https://github.com/Significant-Gravitas/AutoGPT",
+      "snapshots": 1,
+      "entries": 2,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 245242,
+      "sloc_p25": 245242.0,
+      "sloc_median": 245242,
+      "sloc_mean": 245242,
+      "sloc_p75": 245242.0,
+      "sloc_max": 245242
+    },
+    {
+      "repo_url": "https://github.com/Tencent/WeKnora",
+      "snapshots": 2,
+      "entries": 5,
+      "primary_languages": [
+        "Go"
+      ],
+      "sloc_min": 112983,
+      "sloc_p25": 118536.75,
+      "sloc_median": 124090.5,
+      "sloc_mean": 124090.5,
+      "sloc_p75": 129644.25,
+      "sloc_max": 135198
+    },
+    {
+      "repo_url": "https://github.com/apache/airflow",
+      "snapshots": 3,
+      "entries": 5,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 879566,
+      "sloc_p25": 895422.5,
+      "sloc_median": 911279,
+      "sloc_mean": 904302.6666666666,
+      "sloc_p75": 916671.0,
+      "sloc_max": 922063
+    },
+    {
+      "repo_url": "https://github.com/aquasecurity/trivy",
+      "snapshots": 1,
+      "entries": 3,
+      "primary_languages": [
+        "Go"
+      ],
+      "sloc_min": 224740,
+      "sloc_p25": 224740.0,
+      "sloc_median": 224740,
+      "sloc_mean": 224740,
+      "sloc_p75": 224740.0,
+      "sloc_max": 224740
+    },
+    {
+      "repo_url": "https://github.com/czlonkowski/n8n-mcp",
+      "snapshots": 1,
+      "entries": 2,
+      "primary_languages": [
+        "TypeScript"
+      ],
+      "sloc_min": 159043,
+      "sloc_p25": 159043.0,
+      "sloc_median": 159043,
+      "sloc_mean": 159043,
+      "sloc_p75": 159043.0,
+      "sloc_max": 159043
+    },
+    {
+      "repo_url": "https://github.com/google/adk-python",
+      "snapshots": 1,
+      "entries": 3,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 191256,
+      "sloc_p25": 191256.0,
+      "sloc_median": 191256,
+      "sloc_mean": 191256,
+      "sloc_p75": 191256.0,
+      "sloc_max": 191256
+    },
+    {
+      "repo_url": "https://github.com/jlowin/fastmcp",
+      "snapshots": 1,
+      "entries": 1,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 72812,
+      "sloc_p25": 72812.0,
+      "sloc_median": 72812,
+      "sloc_mean": 72812,
+      "sloc_p75": 72812.0,
+      "sloc_max": 72812
+    },
+    {
+      "repo_url": "https://github.com/langchain-ai/langchain",
+      "snapshots": 1,
+      "entries": 3,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 194999,
+      "sloc_p25": 194999.0,
+      "sloc_median": 194999,
+      "sloc_mean": 194999,
+      "sloc_p75": 194999.0,
+      "sloc_max": 194999
+    },
+    {
+      "repo_url": "https://github.com/langflow-ai/langflow",
+      "snapshots": 4,
+      "entries": 7,
+      "primary_languages": [
+        "Python",
+        "TypeScript"
+      ],
+      "sloc_min": 102417,
+      "sloc_p25": 171416.25,
+      "sloc_median": 299277.5,
+      "sloc_mean": 276639.25,
+      "sloc_p75": 404500.5,
+      "sloc_max": 405585
+    },
+    {
+      "repo_url": "https://github.com/milvus-io/milvus",
+      "snapshots": 2,
+      "entries": 5,
+      "primary_languages": [
+        "Go"
+      ],
+      "sloc_min": 862479,
+      "sloc_p25": 888176.5,
+      "sloc_median": 913874.0,
+      "sloc_mean": 913874,
+      "sloc_p75": 939571.5,
+      "sloc_max": 965269
+    },
+    {
+      "repo_url": "https://github.com/mlflow/mlflow",
+      "snapshots": 2,
+      "entries": 6,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 702836,
+      "sloc_p25": 768736.25,
+      "sloc_median": 834636.5,
+      "sloc_mean": 834636.5,
+      "sloc_p75": 900536.75,
+      "sloc_max": 966437
+    },
+    {
+      "repo_url": "https://github.com/modelcontextprotocol/typescript-sdk",
+      "snapshots": 1,
+      "entries": 2,
+      "primary_languages": [
+        "TypeScript"
+      ],
+      "sloc_min": 50846,
+      "sloc_p25": 50846.0,
+      "sloc_median": 50846,
+      "sloc_mean": 50846,
+      "sloc_p75": 50846.0,
+      "sloc_max": 50846
+    },
+    {
+      "repo_url": "https://github.com/n8n-io/n8n",
+      "snapshots": 10,
+      "entries": 27,
+      "primary_languages": [
+        "TypeScript"
+      ],
+      "sloc_min": 1221398,
+      "sloc_p25": 1438374.0,
+      "sloc_median": 1552412.5,
+      "sloc_mean": 1583735.2,
+      "sloc_p75": 1766005.5,
+      "sloc_max": 1913675
+    },
+    {
+      "repo_url": "https://github.com/nltk/nltk",
+      "snapshots": 1,
+      "entries": 1,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 78631,
+      "sloc_p25": 78631.0,
+      "sloc_median": 78631,
+      "sloc_mean": 78631,
+      "sloc_p75": 78631.0,
+      "sloc_max": 78631
+    },
+    {
+      "repo_url": "https://github.com/ollama/ollama",
+      "snapshots": 1,
+      "entries": 2,
+      "primary_languages": [
+        "Go"
+      ],
+      "sloc_min": 156163,
+      "sloc_p25": 156163.0,
+      "sloc_median": 156163,
+      "sloc_mean": 156163,
+      "sloc_p75": 156163.0,
+      "sloc_max": 156163
+    },
+    {
+      "repo_url": "https://github.com/onnx/onnx",
+      "snapshots": 1,
+      "entries": 2,
+      "primary_languages": [
+        "Python"
+      ],
+      "sloc_min": 138067,
+      "sloc_p25": 138067.0,
+      "sloc_median": 138067,
+      "sloc_mean": 138067,
+      "sloc_p75": 138067.0,
+      "sloc_max": 138067
+    },
+    {
+      "repo_url": "https://github.com/open-webui/open-webui",
+      "snapshots": 2,
+      "entries": 2,
+      "primary_languages": [
+        "Svelte"
+      ],
+      "sloc_min": 194210,
+      "sloc_p25": 204807.25,
+      "sloc_median": 215404.5,
+      "sloc_mean": 215404.5,
+      "sloc_p75": 226001.75,
+      "sloc_max": 236599
+    },
+    {
+      "repo_url": "https://github.com/openclaw/openclaw",
+      "snapshots": 6,
+      "entries": 32,
+      "primary_languages": [
+        "TypeScript"
+      ],
+      "sloc_min": 662432,
+      "sloc_p25": 771600.5,
+      "sloc_median": 846088.5,
+      "sloc_mean": 1059753.5,
+      "sloc_p75": 1069708.75,
+      "sloc_max": 2112892
+    },
+    {
+      "repo_url": "https://github.com/paperclipai/paperclip",
+      "snapshots": 2,
+      "entries": 8,
+      "primary_languages": [
+        "TypeScript"
+      ],
+      "sloc_min": 191659,
+      "sloc_p25": 202763.5,
+      "sloc_median": 213868.0,
+      "sloc_mean": 213868,
+      "sloc_p75": 224972.5,
+      "sloc_max": 236077
+    }
+  ],
+  "methodology": {
+    "identifier_fields": [
+      "vuln_ids",
+      "report_id",
+      "source_link"
+    ],
+    "identifier_normalization": "Case-insensitive matching; uppercase unique GHSA/CVE identifier sets; no IDs inferred from titles or code.",
+    "anchor_identifiers": "Union of identifiers on associated retained entries and their reports.",
+    "identifier_limitations": "Identifier counts are not independent vulnerability counts; one report may reference multiple GHSA IDs, and CVE and GHSA can identify the same advisory.",
+    "categories": "Original L1/L2 labels are preserved. Entry counts count rows; report counts count distinct (report_id, category) memberships. Percentages use the scope's entry count or distinct report count, so report percentages can sum above 100 if a report has multiple labels.",
+    "language": "Measured code SLOC per language at each pinned snapshot; primary language has most code SLOC, with alphabetical language-name tie breaking.",
+    "language_entry_counts": "Each entry inherits its snapshot's primary language; this is not the language of its vulnerable anchor.",
+    "language_snapshot_coverage": "A language covers a snapshot only when its code SLOC is positive; multilingual coverage counts need not sum to the snapshot count.",
+    "percentiles": "Linear interpolation at (n - 1) * p (inclusive endpoints).",
+    "project_identity": "Exact repo_url; repeated commits are distinct snapshots of the same repository.",
+    "size_limitations": "snapshot_sloc_sum and language SLOC sum count multiple revisions of a project; neither is deduplicated project source volume.",
+    "source_measurement": {
+      "cloc_version": "2.10",
+      "policy": {
+        "cloc_sha256": "bf59272455172108072a0a106379f7509fd4349bdcfd85203bac038ccd286d83",
+        "cloc_version": "2.10",
+        "count_duplicate_file_contents": true,
+        "excluded_directory_names": [
+          ".git",
+          ".venv",
+          "venv",
+          "node_modules",
+          "bower_components",
+          "site-packages",
+          "vendor",
+          "vendors",
+          "third_party",
+          "third-party",
+          "thirdparty",
+          "__pycache__",
+          "__generated__",
+          "generated",
+          ".next",
+          ".nuxt",
+          ".svelte-kit",
+          ".turbo",
+          "coverage",
+          "htmlcov",
+          "dist",
+          "build",
+          "target",
+          "doc",
+          "docs",
+          "documentation"
+        ],
+        "excluded_file_patterns": [
+          "*.min.js",
+          "*.min.css",
+          "*.map",
+          "*_pb2.py",
+          "*_pb2_grpc.py",
+          "*.pb.go",
+          "*.generated.*",
+          "*.g.dart",
+          "*.freezed.dart",
+          "*.designer.cs",
+          "*.config.js",
+          "*.config.cjs",
+          "*.config.mjs",
+          "*.config.ts",
+          "*.config.cts",
+          "*.config.mts",
+          "*.conf.js",
+          "*.conf.ts",
+          ".eslintrc.js",
+          ".eslintrc.cjs",
+          ".prettierrc.js",
+          ".prettierrc.cjs"
+        ],
+        "generated_header_bytes": 4096,
+        "generated_header_pattern": "(?im)^\\s*(?://|#|/\\*|\\*|<!--)\\s*(?:code generated[^\\n]*do not edit|this file (?:is|was) generated by|(?:this file (?:is|was) )?(?:<?auto[- ]?generated|automatically generated)|@generated)\\b",
+        "git_attributes_excluded": [
+          "linguist-generated",
+          "linguist-vendored"
+        ],
+        "include_tests_and_examples": true,
+        "included_languages": [
+          "ANTLR Grammar",
+          "AppleScript",
+          "Assembly",
+          "Bourne Again Shell",
+          "Bourne Shell",
+          "C",
+          "C#",
+          "C++",
+          "CUDA",
+          "C/C++ Header",
+          "Clojure",
+          "CoffeeScript",
+          "CSS",
+          "Cython",
+          "Dart",
+          "DOS Batch",
+          "Elixir",
+          "Elixir Script",
+          "Elm",
+          "Erlang",
+          "Fish Shell",
+          "Go",
+          "GraphQL",
+          "Groovy",
+          "Handlebars",
+          "Haskell",
+          "HTML",
+          "IDL",
+          "Java",
+          "JavaScript",
+          "Jinja Template",
+          "Jsonnet",
+          "JSX",
+          "Julia",
+          "Jupyter Notebook",
+          "Kotlin",
+          "LESS",
+          "Lisp",
+          "Lua",
+          "Mako",
+          "Nim",
+          "Nunjucks",
+          "Objective-C",
+          "Objective-C++",
+          "OCaml",
+          "Pascal",
+          "Perl",
+          "PHP",
+          "PowerShell",
+          "Prisma Schema",
+          "Protocol Buffers",
+          "Pug",
+          "Python",
+          "R",
+          "Racket",
+          "Razor",
+          "Rego",
+          "Ruby",
+          "Rust",
+          "Sass",
+          "Scala",
+          "Scheme",
+          "SCSS",
+          "Solidity",
+          "SQL",
+          "Svelte",
+          "Swift",
+          "Tcl/Tk",
+          "Thrift",
+          "TypeScript",
+          "Vuejs Component",
+          "WebAssembly",
+          "XSLT",
+          "yacc",
+          "Zig"
+        ],
+        "notes": [
+          "Only regular files tracked by the exact source commit are eligible; symlinks and submodules are not followed.",
+          "Programming, template and style languages in the explicit allowlist count toward SLOC; documentation, data and configuration languages do not.",
+          "Test, example and benchmark source files are included unless another explicit exclusion applies.",
+          "Vendored/generated exclusions use path rules, Git attributes, an anchored generated-file header and cloc --no-autogen. These are heuristic rules, not a claim that every generated file is identifiable.",
+          "SLOC is cloc physical code lines excluding blank and comment lines. Each tracked path counts separately, even when contents are identical."
+        ],
+        "policy_version": 1
+      }
+    }
+  },
+  "provenance": {
+    "inputs_sha256": {
+      "data/batch_manifest.jsonl": "848d0d966c87df74f92d5423d01236fc69b7ce5f8675ae2bff150a2047cb0f37",
+      "data/critical_operations.jsonl": "d2ed8a734b8dada051bda3750720dd0a36e43990ed4b5885569d35054fe46374",
+      "data/dataset.json": "c8fb637ff4da80b16bc52b0ffb993abdf310b6cd34eaccc1bb2f39ab5d88267e",
+      "data/entries.jsonl": "dc058bf28947f771efddf6ab3548e421c8997cfe350d80e7c378c061daa8667e",
+      "data/entry_points.jsonl": "384cad8a9e005d788dd28b35d4eeffab315332ff8303158d1737db9820c79bed",
+      "data/reports.jsonl": "d3e7c2fe7ed22b2ad0b36fe14c8fa4c5c88ffc6e219eebbcc2c71422003bf6b9",
+      "source_sizes": "217e8b8b423f989d3e5bd667f6105db443ff0873884912a91c26c88d26674388"
+    }
+  }
+}

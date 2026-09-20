@@ -66,6 +66,10 @@ Output
 A human-readable summary is written to stdout. When --json-out is supplied,
 a structured report is also written to that path, including per-advisory
 and per-finding detail.
+
+The default ground truth is this checkout's six-batch dataset. An explicit
+--entries path replaces that scope. Denominators always include all usable
+ground-truth rows in the selected file, regardless of the findings supplied.
 """
 from __future__ import annotations
 
@@ -139,10 +143,31 @@ def load_jsonl(path: Path) -> list[dict]:
             if not line:
                 continue
             try:
-                rows.append(json.loads(line))
+                row = json.loads(line)
             except json.JSONDecodeError as e:
                 raise SystemExit(f"{path}:{i}: invalid JSON: {e}") from None
+            if not isinstance(row, dict):
+                raise SystemExit(f"{path}:{i}: each JSONL row must be an object")
+            rows.append(row)
     return rows
+
+
+def ground_truth_metadata(path: Path, rows: list[dict]) -> dict[str, Any]:
+    """Describe the file actually evaluated without assuming a fixed cohort."""
+    snapshots = {
+        (normalize_repo(row.get("repo_url", "")), normalize_commit(row.get("commit", "")))
+        for row in rows
+    }
+    return {
+        "path": str(path.resolve()),
+        "rows": len(rows),
+        "repositories": len({repo for repo, _ in snapshots}),
+        "snapshots": len(snapshots),
+        "denominator_policy": (
+            "All usable ground-truth rows in this file; findings do not narrow "
+            "the denominator. Rows with unusable lines are excluded."
+        ),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -340,6 +365,9 @@ def print_summary(report: dict, verbose: bool) -> None:
 
     print("VulnGym evaluation")
     print("==================")
+    if "ground_truth" in report:
+        print(f"ground-truth file: {report['ground_truth']['path']}")
+        print(f"denominator: {report['ground_truth']['denominator_policy']}")
     print(
         f"policy: line_tolerance=+/-{cfg['line_tolerance']} | "
         f"path={cfg['match_path']} | direction={cfg['direction']} | "
@@ -434,6 +462,7 @@ def main(argv: list[str] | None = None) -> int:
     findings = load_jsonl(args.findings)
 
     report = evaluate(entries, findings, tolerance=args.line_tolerance)
+    report["ground_truth"] = ground_truth_metadata(args.entries, entries)
     print_summary(report, verbose=args.verbose)
 
     if args.json_out:

@@ -9,7 +9,7 @@ abstract: >-
 version: "0.1.2"
 date-released: "2026-05-31"
 license: CC-BY-4.0
-repository-code: "https://github.com/<org>/VulnGym"
+repository-code: "https://github.com/Tencent/VulnGym"
 keywords:
   - vulnerability
   - dataset

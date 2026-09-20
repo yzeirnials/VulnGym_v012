@@ -1,394 +1,243 @@
-<p align="center">
-  <img src="./img/wukong_logo.png" alt="VulnGym" height="60">
-</p>
+# VulnGym 六批次数据集
 
-<h4 align="center">
-    <p>
-        <a href="#">中文</a> |
-        <a href="./README.md">English</a>
-    </p>
-</h4>
+[English](README.md) · [数据格式](SCHEMA.md) · [机器可读版本信息](data/dataset.json)
 
-<p align="center">
-  <a href="https://github.com/Tencent/VulnGym/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Tencent/VulnGym?color=gold"></a>
-  <a href="https://github.com/Tencent/VulnGym/network/members"><img alt="GitHub Forks" src="https://img.shields.io/github/forks/Tencent/VulnGym?color=gold"></a>
-  <a href="./LICENSE"><img alt="License" src="https://img.shields.io/badge/License-CC--BY--4.0-blue.svg"></a>
-</p>
+本仓库基于 [Tencent VulnGym](https://github.com/Tencent/VulnGym) v0.1.2
+的人工验证数据，仅保留 **openclaw-01 与 mixed-01 至 mixed-05**。
+每条 entry 绑定漏洞仓库的指定 commit，以及可达入口、关键操作和标注 trace。
 
-<p align="center">
-  <b>面向白盒漏洞检测 Agent 的真实工程级漏洞评测基准</b>
-</p>
+最终数据集包含 **156 条 entry、61 条 report、136 个 entry-point anchor、
+137 个 critical-operation anchor**，覆盖 **55 个源码快照、23 个仓库**。
+所有保留 entry 均为 `verify == 1`。
 
-<p align="center">
-  <a href="https://github.com/Tencent/VulnGym"><img src="https://img.shields.io/badge/⭐-给 VulnGym 点个 Star-yellow?style=flat&logo=github" alt="Give VulnGym a Star"></a>
-  <a href="https://huggingface.co/datasets/tencent/VulnGym"><img src="https://img.shields.io/badge/🤗%20HuggingFace-数据集-yellow?style=flat" alt="HuggingFace Dataset"></a>
-</p>
+## 数据规模与漏洞标识
 
-**VulnGym** 是面向白盒漏洞检测 Agent 的项目级评测基准，支持在**真实工程上下文**中评估 Agent 的漏洞识别能力，并提供**可验证的漏洞触发路径与业务语义证据链**。
+**entry** 是一组入口与关键操作的配对标注。**entry-point anchor** 和
+**critical-operation anchor** 分别按该角色的
+`(repo_url, commit, file, line)` 去重；多条 entry 可以共享一个 anchor。
+**源码快照**指一个 `(repo_url, commit)`。原始 entry、report、anchor ID
+均保留，因此编号允许不连续。
 
-**三个核心设计理念：**
-- **🏗️ 真实项目级评测单元** — 每个样本绑定到含漏洞的特定版本代码仓库，评测 Agent 在真实多文件、多模块工程中的漏洞发现与定位能力
-- **🧠 全面的漏洞类型覆盖** — 评测体系同时涵盖需要跨模块代码语义理解的业务逻辑漏洞（如权限绕过、认证缺失等）与传统安全漏洞（如注入、路径穿越等），旨在全面评估 Agent 对不同类型漏洞的发现能力
-- **✅ 可验证的漏洞路径** — 每个样本提供人工审核的**漏洞入口（entry point）**、**敏感代码操作（critical operation）** 和**跨模块推理链路（trace）**，实现可复现、可解释的确定性评测
+| Batch | 快照 | Entries | Reports | Entry points | Critical operations | GHSA IDs | CVE IDs |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| openclaw-01 | 6 | 32 | 7 | 18 | 19 | 8 | 4 |
+| mixed-01 | 10 | 27 | 11 | 27 | 27 | 11 | 11 |
+| mixed-02 | 7 | 21 | 10 | 19 | 19 | 10 | 7 |
+| mixed-03 | 9 | 30 | 10 | 27 | 26 | 10 | 6 |
+| mixed-04 | 14 | 34 | 14 | 33 | 34 | 14 | 12 |
+| mixed-05 | 9 | 12 | 9 | 12 | 12 | 9 | 8 |
+| **合计** | **55** | **156** | **61** | **136** | **137** | **62** | **48** |
 
----
+entry、entry-point、critical-operation 三种粒度分别关联的去重标识数均为
+**62 个 GHSA、48 个 CVE**。统计从 `vuln_ids`、`report_id`、`source_link`
+三个字段取并集，统一大写后去重；anchor 的标识关联来自保留的 source entries
+及其 reports。
 
-## 📢 最新动态
-- **2026-06-08** — 🧭 conversion workflow：新增 conversion-table schema 与 exporter，用于将原始工具 findings 转成 pair-level、entry-point-only、critical-operation-only 三种 evaluator 输入。
-- **2026-06-08** — 🧹 cleaned fork：仅保留 `verify = 1` 的人工审计入口，数据集规模调整为 **137 reports / 274 entries**；部分 verified 的 advisory 已按保留 entry 重新计算 `entry_ids` 和 `num_entries`。
-- **2026-05-31** — 🔧 v0.1.2 数据更新：人工审计通过数量大幅提升，已审计 entry 从 **113 条增至 274 / 408 条 (67.2%)**，覆盖 advisory 从 **61 条增至 137 / 184 条 (74.5%)**。此外，对 80 条 entry 的 `entry_point` / `critical_operation` / `trace` 标注进行了精度优化。
-- **2026-05-17** — 🔧 v0.1.1 数据更新：为每条 entry 新增 `verify` 字段以标记人工审计状态；目前已有 **113 / 408 条 entry**（覆盖 **61 / 184 条 advisory**）通过人工审计。同时对部分 `entry_point` / `critical_operation` / `trace` 字段值做了优化。
-- **2026-05-15** — 🎉 VulnGym v0.1.0 版本正式开源！
+这些标识数不能直接当作独立漏洞数。13 条 report 没有记录 CVE；
+`GHSA-QWMF-95R9-GX9X` 同时列出 `GHSA-HFF7-CCV5-52F8`，因此 61 条 report
+对应 62 个 GHSA。部分 `vuln_ids` 缺少本条 report 的 GHSA 或为空，只统计该字段
+会漏计。完整明细见 [标识关联表](records/identifier_associations.csv) 和
+[粒度统计表](records/granularity_statistics.csv)。
 
+## 语言、漏洞类别与项目规模
 
+<!-- DATASET_STATISTICS:START -->
 
-## 目录
+所有计入统计的语言如下；覆盖快照数允许重叠。
 
-- [🔍 为什么需要 VulnGym](#-为什么需要-vulngym)
-- [✨ 数据集概览](#-数据集概览)
-- [📈 基线评测结果](#-基线评测结果)
-- [📦 目录结构](#-目录结构)
-- [🚀 快速开始](#-快速开始)
-- [📊 评测你的工具](#-评测你的工具)
-- [📖 引用](#-引用)
-- [🤝 贡献指南](#-贡献指南)
-- [🙏 致谢](#-致谢)
-- [📄 许可协议](#-许可协议)
+| 语言 | SLOC | SLOC 占比 | 覆盖快照 | 主语言 Entries |
+|---|---:|---:|---:|---:|
+| TypeScript | 22,638,058 | 63.62% | 46 | 94 |
+| Python | 6,782,456 | 19.06% | 43 | 45 |
+| Go | 1,653,170 | 4.65% | 15 | 15 |
+| Vuejs Component | 1,376,675 | 3.87% | 12 | 0 |
+| JSX | 539,647 | 1.52% | 11 | 0 |
+| Java | 523,177 | 1.47% | 5 | 0 |
+| Swift | 485,971 | 1.37% | 7 | 0 |
+| C++ | 297,655 | 0.84% | 8 | 0 |
+| JavaScript | 277,907 | 0.78% | 46 | 0 |
+| C/C++ Header | 164,244 | 0.46% | 5 | 0 |
+| Svelte | 152,074 | 0.43% | 2 | 2 |
+| SCSS | 116,516 | 0.33% | 17 | 0 |
+| CSS | 113,104 | 0.32% | 50 | 0 |
+| Bourne Shell | 100,491 | 0.28% | 53 | 0 |
+| Kotlin | 94,487 | 0.27% | 7 | 0 |
+| HTML | 67,332 | 0.19% | 49 | 0 |
+| Handlebars | 58,872 | 0.17% | 17 | 0 |
+| Jupyter Notebook | 56,907 | 0.16% | 11 | 0 |
+| Protocol Buffers | 23,388 | 0.07% | 15 | 0 |
+| SQL | 14,878 | 0.04% | 15 | 0 |
+| R | 9,824 | 0.03% | 2 | 0 |
+| Bourne Again Shell | 8,068 | 0.02% | 16 | 0 |
+| Dart | 4,566 | 0.01% | 1 | 0 |
+| Jinja Template | 3,945 | 0.01% | 4 | 0 |
+| Groovy | 3,708 | 0.01% | 2 | 0 |
+| Prisma Schema | 2,760 | 0.01% | 2 | 0 |
+| Scala | 1,617 | 0.00% | 2 | 0 |
+| Nunjucks | 1,525 | 0.00% | 1 | 0 |
+| DOS Batch | 1,325 | 0.00% | 32 | 0 |
+| Objective-C | 1,267 | 0.00% | 1 | 0 |
+| PowerShell | 1,247 | 0.00% | 7 | 0 |
+| LESS | 1,211 | 0.00% | 3 | 0 |
+| Rego | 1,039 | 0.00% | 7 | 0 |
+| C | 684 | 0.00% | 4 | 0 |
+| GraphQL | 568 | 0.00% | 2 | 0 |
+| Mako | 502 | 0.00% | 12 | 0 |
+| ANTLR Grammar | 322 | 0.00% | 2 | 0 |
+| Ruby | 224 | 0.00% | 2 | 0 |
+| XSLT | 149 | 0.00% | 1 | 0 |
+| yacc | 63 | 0.00% | 1 | 0 |
+| AppleScript | 56 | 0.00% | 1 | 0 |
+| Elixir Script | 27 | 0.00% | 1 | 0 |
+| PHP | 11 | 0.00% | 1 | 0 |
+| IDL | 8 | 0.00% | 1 | 0 |
+| **合计** | **35,581,725** | **100.00%** | — | **156** |
 
----
+**55 个固定快照的项目规模（SLOC）**
 
-## 🔍 为什么需要 VulnGym
+| 最小值 | P25 | 中位数 | 均值 | P75 | 最大值 |
+|---:|---:|---:|---:|---:|---:|
+| 50,846 | 194,707.50 | 404,139 | 646,940.45 | 943,666 | 2,112,892 |
 
-现有漏洞评测集在评估 AI Agent 的真实漏洞挖掘能力时，存在以下局限：
+**原始 L1 漏洞类别**：Entry 占比以 156 条 entry 为分母，Report 占比以 61 条 report 为分母。
 
-| 局限 | 表现 |
-|---|---|
-| **评测粒度不足** | 多以函数或 diff 片段为评测单元，难以反映 Agent 在完整工程项目中定位漏洞的能力 |
-| **漏洞类型单一** | 偏重 SQL 注入、缓冲区溢出等模式化 CWE 漏洞，较少涉及需要深度上下文推理的类别 |
-| **Ground Truth 粗粒度** | 多为二分类标签（有漏洞 / 无漏洞）或 patch diff，无法精确验证 Agent 是否定位到了正确的入口和缺陷点 |
+| 原始 L1 类别 | Entries | Entry 占比 | Reports | Report 占比 |
+|---|---:|---:|---:|---:|
+| 业务逻辑 | 95 | 60.90% | 36 | 59.02% |
+| 代码注入 | 12 | 7.69% | 4 | 6.56% |
+| XSS | 9 | 5.77% | 4 | 6.56% |
+| 反序列化漏洞 | 7 | 4.49% | 1 | 1.64% |
+| 反序列化 | 5 | 3.21% | 1 | 1.64% |
+| 命令注入 | 4 | 2.56% | 2 | 3.28% |
+| SSRF | 3 | 1.92% | 3 | 4.92% |
+| 供应链攻击 | 3 | 1.92% | 1 | 1.64% |
+| 原型链污染 | 3 | 1.92% | 1 | 1.64% |
+| 模板注入 | 3 | 1.92% | 1 | 1.64% |
+| 注入与反序列化 | 3 | 1.92% | 1 | 1.64% |
+| 文件操作安全 | 2 | 1.28% | 1 | 1.64% |
+| 权限绕过 | 2 | 1.28% | 1 | 1.64% |
+| 沙箱逃逸 | 2 | 1.28% | 1 | 1.64% |
+| 注入类 | 1 | 0.64% | 1 | 1.64% |
+| 路径穿越 | 1 | 0.64% | 1 | 1.64% |
+| 路径遍历 / 任意文件读取 | 1 | 0.64% | 1 | 1.64% |
 
+原始标签分别计数，不合并同义标签。完整 L1/L2、各批次 entry/report 分布见 [漏洞类别统计](records/category_statistics.csv)。更多结果见 [统计汇总](records/dataset_statistics.json)、[语言统计](records/language_statistics.csv)、[快照规模明细](records/snapshot_statistics.csv) 和 [仓库规模明细](records/repository_statistics.csv)。
 
-## ✨ 数据集概览
+<!-- DATASET_STATISTICS:END -->
 
-当前为 VulnGym 的 **v0.1.2 版本**。数据以两个 JSONL 文件提供于 `data/` 目录下：
+语言与规模在漏洞对应的 commit 上测量。规模采用剔除空行、注释行后的物理源码行数
+（SLOC）。快照中 SLOC 最多的语言作为主要语言，entry 的语言分布继承所在快照的
+主要语言；这不一定是漏洞 anchor 所在文件的语言。一个快照可覆盖多种语言。
 
-- `reports.jsonl` — 以 GitHub Advisory 为粒度的聚合记录
-- `entries.jsonl` — 以外部可达入口（entry point）为粒度的标注记录
+测量使用固定的 **cloc 2.10**，仅读取 Git 跟踪的普通文件，并遵循
+[源码统计规则](scripts/source_size_policy.json)：纳入测试与示例代码，排除文档、
+数据与配置语言、依赖以及识别出的生成代码和第三方代码。生成文件识别采用启发式规则。
+快照 SLOC 总和会分别计算同一仓库的不同版本。漏洞类别保留原始双语 L1/L2 标签；
+report 分布按不同的 report/category 关联计数，不重写原标注。
 
-每条记录包含 `repo_url` 和 `commit`，可据此拉取对应漏洞版本的完整源码树。
+## 快速开始
 
-### 数据规模
-
-| 指标 | 数值 |
-|---|---|
-| Advisory 数（reports） | **137** |
-| 可达入口数（entries） | **274** |
-| 涉及项目数 | 30 |
-| 涉及仓库数 | 23 |
-| 人工审计通过的入口（`verify = 1`） | **274 / 274 (100.0%)** |
-| 人工审计通过的 advisory（至少一条入口已审计） | **137 / 137 (100.0%)** |
-
-### 人工审计状态
-
-自 v0.1.1 起，`entries.jsonl` 中每条记录均包含 `verify` 字段（`int`，取值 `0` 或 `1`）。
-
-当前 cleaned fork 已经将 `data/entries.jsonl` 过滤为仅包含 `verify == 1` 的人工审计入口；
-`data/reports.jsonl` 也已重新聚合，使 `entry_ids` 和 `num_entries` 仅指向保留的 verified entries。
-上游 v0.1.2 中 `verify == 0` 的入口不包含在本分支的数据文件中，删除和保留明细记录在
-`records/cleaned_verify1_20260608.md` 与 `records/cleaned_verify1_20260608_summary.json`。
-
-过滤前，上游 v0.1.2 包含 **184 reports / 408 entries**，
-其中 **274** 条 entry、**137** 条 report 至少包含一条 verified entry。
-过滤后，本分支保留 **137 reports / 274 entries**。
-其中 **29** 条原本部分 verified 的 report 已删除未验证 entry 并重算聚合字段。
-
-### 漏洞类型分布
-
-每条数据包含两级分类字段：`vuln_category_l1`（粗粒度类型）和
-`vuln_category_l2`（细粒度子类型）。在当前 cleaned subset 中，**105 / 137 (76.6%)** 的漏洞为业务逻辑类，其余 **32 / 137 (23.4%)** 覆盖传统漏洞类型。完整数据模型与字段定义详见 [`SCHEMA.md`](SCHEMA.md)。
-
-> 注：一个漏洞（Advisory）可能对应多个入口（Entry）——下表按 **漏洞数** 统计，而非入口数。
-
-**业务逻辑类 (105 / 137, 76.6%) — `vuln_category_l2` 分布：**
-
-| 二级分类 | 漏洞数 | 占比 |
-| --- | --- | --- |
-| BL-AUTHZ-BROKEN | 23 | 21.9% |
-| BL-AUTHZ-MISSING | 18 | 17.1% |
-| BL-AGENT-CAPABILITY | 17 | 16.2% |
-| BL-PRIV-ESC | 12 | 11.4% |
-| BL-AUTH-BYPASS | 8 | 7.6% |
-| BL-ORIGIN-INTEGRITY | 7 | 6.7% |
-| BL-WORKFLOW-VIOLATION | 6 | 5.7% |
-| BL-INSECURE-DEFAULT | 5 | 4.8% |
-| BL-RACE-LOGIC | 4 | 3.8% |
-| BL-MASS-ASSIGNMENT | 2 | 1.9% |
-| BL-TRUST-BOUNDARY | 2 | 1.9% |
-| BL-MULTI-TENANT | 1 | 1.0% |
-
-<br>
-
-**传统漏洞类 (32 / 137, 23.4%) — 主要 `vuln_category_l1` 分布：**
-
-| 类别 | 漏洞数 | 占比 |
-| --- | --- | --- |
-| 路径穿越/文件操作 | 8 | 25.0% |
-| XSS | 4 | 12.5% |
-| 代码注入 | 4 | 12.5% |
-| 命令注入 | 3 | 9.4% |
-| SSRF | 3 | 9.4% |
-| 反序列化 | 2 | 6.2% |
-| 模板注入 | 1 | 3.1% |
-| 权限绕过 | 1 | 3.1% |
-| 注入类 | 1 | 3.1% |
-| 沙箱逃逸 | 1 | 3.1% |
-| 认证绕过 | 1 | 3.1% |
-| 供应链 | 1 | 3.1% |
-| 注入与反序列化 | 1 | 3.1% |
-| 原型链污染 | 1 | 3.1% |
-
-> 后续版本将持续扩展更多漏洞类别与项目覆盖
-
-### 单点粒度 Ground Truth
-
-除 pair-level `data/entries.jsonl` 外，本 cleaned fork 还从同一批 verified entries
-派生了两个单点粒度 ground-truth 文件：
-
-- `data/entry_points.jsonl` — 去重后的可达入口 anchor
-- `data/critical_operations.jsonl` — 去重后的核心缺陷操作 anchor
-
-这两个文件中的每个 anchor 都保留 `source_entry_ids` 和 `source_report_ids`，
-用于回溯到原始 pair-level entries。当前规模为 **236** 个 entry-point anchors
-和 **241** 个 critical-operation anchors。
-
-## 📈 基线评测结果
-
-> 🚧 **即将发布** — 我们正在对主流工具和 AI Agent 进行系统评测，结果将随技术报告一并公布。
-
-
-## 📦 目录结构
-
-```
-VulnGym/
-├── README.md                    # 英文版
-├── README_zh.md                 # 当前文件
-├── SCHEMA.md                    # 字段参考与校验不变量
-├── CHANGELOG.md
-├── CITATION.cff
-├── LICENSE                      # CC-BY-4.0
-├── data/
-│   ├── reports.jsonl             # 137 行 —— 每行一条保留的 GitHub Advisory
-│   ├── entries.jsonl             # 274 行 —— pair-level verified entries
-│   ├── entry_points.jsonl        # 236 行 —— 去重后的入口 anchor
-│   └── critical_operations.jsonl # 241 行 —— 去重后的核心操作 anchor
-└── examples/
-    ├── load_dataset.py
-    ├── example_result.jsonl
-    ├── evaluate.py                      # pair-level 召回评测
-    ├── evaluate_entry_points.py         # entry_point anchor 召回评测
-    ├── evaluate_critical_operations.py  # critical_operation anchor 召回评测
-    ├── conversion_table.schema.json     # conversion-table JSON Schema
-    ├── conversion_table_to_eval_inputs.py # 从 conversion table 导出 evaluator 输入
-    └── example_conversion_table.jsonl   # conversion-table 示例
-```
-
----
-
-## 🚀 快速开始
+显式克隆六批次分支；已有本地 checkout 可直接运行 Python 命令。
 
 ```bash
-git clone https://github.com/Tencent/VulnGym.git
-cd VulnGym
+git clone --branch codex/six-batch-dataset https://github.com/yzeirnials/VulnGym_v012.git
+cd VulnGym_v012
+python3 scripts/subset_dataset.py --validate
 python3 examples/load_dataset.py
 ```
 
-或者直接在 Python 中加载：
+验证与评测脚本仅依赖 Python 标准库。loader 也提供可选的 pandas、HuggingFace
+`datasets` 示例，读取的都是本地文件。Tencent 的 HuggingFace 数据集范围不同。
 
-```python
-import json
-with open("data/entries.jsonl", encoding="utf-8") as f:
-    entries = [json.loads(line) for line in f if line.strip()]
+| 文件 | 用途 |
+|---|---|
+| `data/entries.jsonl` | 156 条 pair-level ground truth |
+| `data/reports.jsonl` | 61 条 report，`entry_ids`、`num_entries` 已按保留成员重算 |
+| `data/entry_points.jsonl` | 136 个去重入口 anchor |
+| `data/critical_operations.jsonl` | 137 个去重关键操作 anchor |
+| `data/entries_desc.jsonl` | 与 156 条 entry 一一对应，保留已有的 `desc` 解释标注 |
+| `data/batch_manifest.jsonl` | 55 条快照记录，定义六批次成员 |
+| `data/dataset.json` | 数据集身份、来源 commit、计数与文件绑定 |
 
-xss = [e for e in entries if e["vuln_category_l1"] == "XSS"]
-print(len(xss), "条 XSS entries")
-print(xss[0]["entry_point"], "→", xss[0]["critical_operation"])
+源码仓库通过 `repo_url`、`commit` 引用，未打包进本数据集。进行 GT-blind 检测评测时，
+应将 ground-truth 标注与工具提示词、配置隔离。
 
-# 仅取人工审计通过的高置信子集
-verified = [e for e in entries if e["verify"] == 1]
-print(len(verified), "条人工审计通过的 entries")
-```
+## 评测工具结果
 
-Pandas：
-
-```python
-import pandas as pd
-reports = pd.read_json("data/reports.jsonl", lines=True)
-entries = pd.read_json("data/entries.jsonl", lines=True)
-```
-
-HuggingFace `datasets`：
-
-VulnGym 也已发布至 HuggingFace Hub：[tencent/VulnGym](https://huggingface.co/datasets/tencent/VulnGym)。
-
-```python
-from datasets import load_dataset
-
-# 直接从 HuggingFace Hub 加载
-ds = load_dataset("tencent/VulnGym")
-
-# 或者从本地 JSONL 文件加载
-ds = load_dataset("json", data_files={
-    "reports": "data/reports.jsonl",
-    "entries": "data/entries.jsonl",
-})
-```
-
-
-## 📊 评测你的工具
-
-先将工具的原始 finding 规范化为 conversion-table JSONL。这个中间表用于保留
-每条原始 finding 如何映射到 VulnGym 的 `entry_point` 和
-`critical_operation`，包括 direct、source-resolved、semantic-assisted、
-partial 和 failed conversion。格式参考
-`examples/conversion_table.schema.json` 与
-`examples/example_conversion_table.jsonl`。
-
-将 conversion table 转成 evaluator 可直接读取的输入：
+先用 [conversion-table 格式](examples/conversion_table.schema.json) 记录工具原始发现，
+再导出三种输入并分别评测：
 
 ```bash
 python3 examples/conversion_table_to_eval_inputs.py examples/example_conversion_table.jsonl --out-dir /tmp/vulngym_eval_inputs
+python3 examples/evaluate.py /tmp/vulngym_eval_inputs/pair_findings.jsonl --json-out /tmp/vulngym_pair.json
+python3 examples/evaluate_entry_points.py /tmp/vulngym_eval_inputs/entry_point_findings.jsonl --json-out /tmp/vulngym_ep.json
+python3 examples/evaluate_critical_operations.py /tmp/vulngym_eval_inputs/critical_operation_findings.jsonl --json-out /tmp/vulngym_co.json
 ```
 
-导出文件：
+`examples/` 下的 JSONL 是演示数据，不代表真实工具结果。转换器保留显式 candidate
+pairs；只有恰好一个可用入口候选与一个可用关键操作候选时才自动配对，多候选不会
+隐式展开为笛卡尔积。
 
-- `/tmp/vulngym_eval_inputs/pair_findings.jsonl`
-- `/tmp/vulngym_eval_inputs/entry_point_findings.jsonl`
-- `/tmp/vulngym_eval_inputs/critical_operation_findings.jsonl`
-- `/tmp/vulngym_eval_inputs/conversion_manifest.json`
-- `/tmp/vulngym_eval_inputs/conversion_skipped.jsonl`
+默认 GT 是当前 checkout 的完整六批次数据，不受启动目录影响。pair evaluator
+用 `--entries`，两个 anchor evaluator 用 `--ground-truth` 指定其他 GT 文件。
+报告记录实际 GT 路径与范围，findings 的覆盖范围不会缩小分母。完整数据集的
+**156 条 pair / 61 条 report、136 个 EP、137 个 CO** 均有可用行号。
 
-pair-level 导出采用保守策略：显式 `candidate_pairs` 会被保留；没有显式
-pair 时，只有恰好 1 个可用 `entry_point` candidate 和 1 个可用
-`critical_operation` candidate 的行会被自动配对。脚本不会对多候选行生成
-笛卡尔积。
+匹配要求仓库与 commit 一致、规范化后路径精确相等、入口和关键操作角色方向一致；
+默认 `--line-tolerance 5`，支持整数和区间行号。不可用 GT 行号从分母排除，
+`trace` 不参与匹配。评测仅提供 **recall/coverage**，不计算 precision 或 F1。
+pair evaluator 的 report 覆盖率只需命中该 report 的任一 entry；anchor 评测另给出来源
+entry 与 report 的覆盖率。
 
-当前 cleaned fork 提供三个 recall-only evaluator：
+## 复现子集与统计
 
+在保留 Git 历史的 checkout 中，将相同数据生成到新目录：
 
 ```bash
-# 严格 pair-level 路径重建：entry_point + critical_operation
-python3 examples/evaluate.py path/to/your_findings.jsonl -v
-
-# 仅评估可达入口定位
-python3 examples/evaluate_entry_points.py path/to/your_findings.jsonl -v
-
-# 仅评估核心缺陷位置定位
-python3 examples/evaluate_critical_operations.py path/to/your_findings.jsonl -v
+python3 scripts/subset_dataset.py --output-dir ../VulnGym-six-batches-reproduced
+python3 scripts/subset_dataset.py --batch-id mixed-05 --output-dir ../VulnGym-mixed-05
+python3 scripts/build_endpoint_ground_truth.py --check
+python3 -m unittest discover -s tests
 ```
 
-pair-level 评估要求每条 finding 至少包含 `repo_url`、`commit`、`entry_point`
-（外部可达入口）和 `critical_operation`（核心缺陷位置）。entry-point-only 评估只要求
-`entry_point`；critical-operation-only 评估只要求 `critical_operation`。`trace`
-（跨模块推理链路）可选，三个 matcher 都不使用 `trace`。evaluator-ready 格式参考
-`examples/example_result.jsonl`；推荐的 conversion-table 格式参考
-`examples/example_conversion_table.jsonl`。
+`--batch-id` 可重复指定。生成器读取固定来源 commit 与保留 manifest，保留 ID 和
+endpoint 位置，重算 report 与 anchor 来源关联；输出目录必须不存在。旧清洗与
+anchor 脚本默认只读检查，不再重写 README、SCHEMA、CHANGELOG 或历史 records。
 
-pair-level 脚本报告：
+使用已提供的源码测量结果重建统计：
 
-- **Advisory-level recall**（主指标）— `covered_advisories /
-  usable_advisories`。如果某个 advisory 至少有一条 entry 被匹配，则视为覆盖。
-- **Entry-level recall**（辅助指标）— `matched_entries / usable_entries`。
-
-两个单点粒度脚本报告：
-
-- **Anchor-level recall**（主指标）— 命中的 `entry_point` 或 `critical_operation`
-  anchors / usable anchors。
-- **Report-level recall**（补充指标）— 通过 matched anchors 覆盖到的 reports。
-- **Source-entry coverage**（补充指标）— 通过 matched anchors 覆盖到的原始
-  pair-level entries。
-
-**默认匹配策略**
-
-| 维度 | 默认值 |
-|---|---|
-| 路径匹配 | 归一化后严格相等 |
-| 行号容差 | `int` 或 `"start-end"` span；默认容差 `+/-5` |
-| 方向 | pair-level 严格匹配 entry_point 对 entry_point、critical_operation 对 critical_operation；单点评估只匹配对应 anchor |
-| 不可用 ground truth line | 同时从分子分母中剔除 |
-
-所有策略均有文档说明，并可通过 CLI 参数调整（`--line-tolerance` 等）。
-
-> **注意：** 当前评测器**只计算召回率 / 覆盖率**，无法惩罚过度上报，
-> 因此其数值应理解为覆盖率指标，而非完整的 precision-aware benchmark。
-
-
-## 📖 引用
-
-> 📚 **配套论文正在撰写中**。论文公开发布前，请使用以下数据集 BibTeX 条目引用 VulnGym；论文发布后我们会更新此处。
-
-```bibtex
-@misc{vulngym2026,
-  title        = {VulnGym: A Real-World, Project-Level Vulnerability Benchmark
-                  for White-Box Vulnerability-Hunting Agents},
-  author       = {{Tencent Wukong Code Security Team and contributors}},
-  year         = {2026},
-  version      = {0.1.2},
-  howpublished = {\url{https://github.com/Tencent/VulnGym}},
-  note         = {Dataset. A companion paper is in preparation; please check
-                  the repository for the latest citation.}
-}
+```bash
+python3 scripts/dataset_stats.py --source-sizes records/source_sizes.json --output-dir records --update-readmes
 ```
 
-论文公开后，以下条目将被补全并作为推荐引用：
+省略 `--update-readmes` 时，仅重新生成 JSON 与 CSV，不修改 README。
 
-```bibtex
-@inproceedings{vulngym2026paper,
-  title     = {TBA — A companion paper for VulnGym is in preparation.},
-  author    = {{To be announced}},
-  year      = {TBA},
-  note      = {Placeholder; will be replaced once the paper is publicly available.}
-}
+重新测量源码时，先准备 manifest 中 55 个 commit 的干净 Git checkout，安装 Perl
+及官方 cloc 2.10 脚本。允许的脚本 SHA-256 与过滤规则固定在源码统计规则中：
+
+```bash
+python3 scripts/measure_source_sizes.py --source-root /path/to/source-cache --cloc /path/to/cloc-2.10.pl
 ```
 
-机器可读版本详见 `CITATION.cff`。
+缓存目录命名为 `<主机与仓库路径的连续非字母数字字符替换为__>__<commit>`。
+也可用 `--source-map /path/to/local-map.jsonl` 指定路径，每行含 `repo_url`、
+`commit`、`cache_path`；机器专用映射留在本地。测量读取源码，不编译或执行项目。
 
----
+## 来源与历史记录
 
-## 🤝 贡献指南
+Tencent VulnGym v0.1.2 最初包含 408 条 entry / 184 条 report；首次清洗保留
+274 条人工验证 entry / 137 条 report。本次从
+`90002144d4a8b3654fb1bf68052889b9c2de44aa` 按上述六批次再次筛选至 156 条 entry；
+解释标注来源为 `4c4ac5659329008d9ea44ac5ec7855eae6909c2e`。
 
-VulnGym 致力于成为**开放、可复现、持续演进**的社区评测基准，
-欢迎学术界与产业界共同参与：
+[CHANGELOG.md](CHANGELOG.md) 和日期为 `20260608` 的 records 保留原清洗历史。
+其中旧计数与历史 benchmark 材料只适用于各自的原始范围，不是本六批次的工具评测结果。
+本次仓库整理没有生成新的工具 baseline。完整原版本说明见
+[历史 README](https://github.com/yzeirnials/VulnGym_v012/blob/90002144d4a8b3654fb1bf68052889b9c2de44aa/README_zh.md)。
 
-- 🧠 **数据贡献** — 新增 advisory、为已有 advisory 补充外部可达入口、
-  修正 `entry_point` / `critical_operation` / `trace`
-- 🔧 **评测器改进** — precision / F1、按类别拆分、
-  统计显著性（bootstrap CI）、新增匹配策略等
-- 📊 **评测结果提交** — 欢迎通过 PR 提交你的工具评测结果，纳入基线对比
-- 💬 **讨论与反馈** — 欢迎通过
-  [Issues](https://github.com/Tencent/VulnGym/issues) 或
-  [Discussions](https://github.com/Tencent/VulnGym/discussions) 交流
+## 署名与许可
 
-提交数据变更前请先阅读 `SCHEMA.md`，其中列出的所有不变量都会在发布前被强校验。
-
----
-
-## 🙏 致谢
-
-VulnGym 由**腾讯悟空安全团队**联合以下学术单位共同建设（排名不分先后，顺序待定）：
-
-- 香港中文大学 ARISE Lab
-- 复旦大学系统软件与安全实验室
-- 香港大学 JC STEM Lab of Intelligent Cybersecurity
-- 北京大学 Narwhal-Lab
-- 中国科学院信息工程研究所网络威胁分析研究室
-
-感谢各方对 VulnGym 的卓越贡献！
-
----
-
-## 📄 许可协议
-
-数据集以 **CC-BY-4.0** 协议开源，详见 [`LICENSE`](LICENSE)，
-允许商业与学术使用，惟需署名。`entry_point` / `critical_operation` / `trace` 字段中引用的
-代码片段、路径与 commit 哈希归其上游项目所有，遵循各自原始开源协议，
-再利用前请查阅对应上游仓库。
+原始数据集归功于 **Tencent Wukong Code Security Team 与 VulnGym 贡献者**。
+引用原数据集时使用 [CITATION.cff](CITATION.cff)，并在实验中额外注明本 fork、
+六批次选择范围与使用的具体版本。数据标注遵循 [CC-BY-4.0](LICENSE)；引用的各源码
+项目仍遵循各自许可证。

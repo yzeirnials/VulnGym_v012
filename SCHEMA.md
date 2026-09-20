@@ -1,18 +1,52 @@
-# SCHEMA.md — VulnGym data format reference (v0.1.2)
+# SCHEMA.md — VulnGym six-batch data format
 
-The dataset ships two line-delimited JSON files under `data/`. Every line is
+The dataset retains the v0.1.2 annotation format and ships four primary
+ground-truth tables plus two supporting JSONL files under `data/`. Every line is
 a single self-contained JSON object (no trailing comma, `\n`-terminated,
 UTF-8). Field order in each row is stable (sorted alphabetically) so
 `diff` is useful across releases.
 
-- `data/reports.jsonl` — 137 rows, one per retained GitHub Advisory (report-level).
-- `data/entries.jsonl` — 274 rows, one per retained human-verified pair-level entry.
-- `data/entry_points.jsonl` — 236 rows, one per deduplicated human-verified reachable entry-point anchor.
-- `data/critical_operations.jsonl` — 241 rows, one per deduplicated human-verified critical-operation anchor.
+- `data/reports.jsonl` — 61 rows, one per retained report-level advisory record.
+- `data/entries.jsonl` — 156 rows, one per retained human-verified pair-level entry.
+- `data/entry_points.jsonl` — 136 rows, one per deduplicated reachable entry-point anchor.
+- `data/critical_operations.jsonl` — 137 rows, one per deduplicated critical-operation anchor.
+- `data/entries_desc.jsonl` — 156 rows, the same entries with preserved explanatory `desc` annotations.
+- `data/batch_manifest.jsonl` — 55 rows, one per retained `(repo_url, commit)` snapshot.
+- `data/dataset.json` — one JSON object containing identity, source commits, scope, counts, and file bindings.
 
 Join key: `entries.report_id == reports.report_id`.
 
-Cleaned fork note: this branch filters upstream v0.1.2 to entries with `verify == 1`. Reports with no retained verified entries are removed; partially verified reports are re-aggregated so `entry_ids` and `num_entries` refer only to retained entries.
+This subset contains only `openclaw-01` and `mixed-01` through `mixed-05`
+from the previously cleaned, 274-entry source. All entries have `verify == 1`.
+Reports without retained entries are removed; `entry_ids` and `num_entries`
+refer only to retained members. Original annotations and IDs remain unchanged.
+Entry and anchor numbering may have gaps after selection.
+
+## Supporting files and dataset scope
+
+`entries_desc.jsonl` uses the same entry IDs and annotation content as
+`entries.jsonl`, with an optional explanatory `desc` string added to endpoint
+and trace objects. Removing these `desc` fields reproduces the corresponding
+primary entry. These explanations are ground-truth annotations and are not
+additional entries, findings, or independently validated vulnerabilities.
+
+Each `batch_manifest.jsonl` row has `batch_id`, `repo_url`, `commit`, and
+`entry_ids`. Every retained entry belongs to exactly one manifest row, and
+each snapshot belongs to one batch. The manifest defines membership rather
+than inferring it from project names or entry-number ranges.
+
+`dataset.json` records `dataset_id`, `schema_version`, `source_repository`,
+`source_dataset_commit`, `descriptions_source_commit`, `selection_manifest`,
+`selected_batch_ids`, `selection_policy`, `counts`, `files_sha256`, and
+`generator`. The source dataset commit is
+`90002144d4a8b3654fb1bf68052889b9c2de44aa`; the descriptions source commit is
+`4c4ac5659329008d9ea44ac5ec7855eae6909c2e`. File hashes bind the six JSONL
+inputs; the metadata file does not hash itself.
+
+The current complete scope is 6 batches, 55 snapshots, and 23 repositories.
+`python3 scripts/subset_dataset.py --validate` checks membership, retained
+source references, and dataset bindings. A generated single-batch subset has
+its own metadata and counts rather than inheriting these full-scope totals.
 
 ---
 
@@ -26,7 +60,7 @@ Both files use one JSON object per deduplicated anchor. Each row contains:
 
 | field | type | description |
 |---|---|---|
-| `anchor_id` | `string` | Stable id within the file, e.g. `entry-point-00001`. |
+| `anchor_id` | `string` | Original stable id, e.g. `entry-point-00001`; selection preserves IDs and permits gaps. |
 | `anchor_kind` | `string` | Either `entry_point` or `critical_operation`. |
 | `repo_url` | `string` | Same repository key used by pair-level evaluation. |
 | `commit` | `string` | Vulnerable commit SHA. |
@@ -45,6 +79,34 @@ The endpoint files are for localization-only evaluation. They do not encode the
 full pair relation between reachable entry point and critical operation; use
 `data/entries.jsonl` and `examples/evaluate.py` for strict pair-level path
 reconstruction.
+
+Anchors are deduplicated separately by role using
+`(repo_url, commit, file, str(line))`; code text does not enter this key.
+After selection, `source_entry_ids`, `source_report_ids`, and all aggregate
+metadata contain only retained associations. Counts of source entries must
+not be confused with counts of distinct anchors.
+
+## Derived statistics and evaluator scope
+
+`records/dataset_statistics.json` and its CSV tables summarize the retained
+data. GHSA/CVE counts union `vuln_ids`, `report_id`, and `source_link` with
+case-insensitive identifier matching and uppercase deduplication. Anchor
+identifier sets are derived from associated retained entries and reports.
+The complete dataset has 61 reports, 62 distinct GHSA IDs, and 48 distinct
+CVE IDs; a report can carry multiple identifiers or no CVE. These are not
+independent-vulnerability counts and do not alter the annotation fields.
+
+Language, source size, and category summaries follow the methodology embedded
+in the statistics JSON and `scripts/source_size_policy.json`. Original
+bilingual category labels are preserved.
+
+The evaluator CLIs add a `ground_truth` object to JSON reports with the actual
+file `path`, raw `rows`, distinct `repositories`, distinct `snapshots`, and
+`denominator_policy`. Existing `config`, `totals`, `recall`, and match-detail
+fields retain their semantics. All usable GT rows in the selected file
+contribute to the denominator; findings do not restrict scope. Pair evaluation
+uses `--entries`; single-anchor evaluation uses `--ground-truth`. Default
+paths resolve against this checkout, independently of the working directory.
 
 ---
 
@@ -208,7 +270,8 @@ maps to `(n, n)`; a string `"a-b"` splits on `-` to `(int(a), int(b))`.
 
 ## `reports.jsonl` row
 
-Aggregates one or more entries that share a `source_link`. The repeated
+Aggregates one or more entries that share a `source_link`. At original
+upstream export, the repeated
 fields (`project`, `repo_url`, `commit`, `vuln_title`, `source_link`,
 `origin`, `vuln_ids`) are the canonical value for the advisory, computed as
 follows:
@@ -219,6 +282,9 @@ follows:
   `entry_id`). In practice every advisory in v0.1.0 is internally
   consistent; the export script would log a warning if it were not.
 - `vuln_ids` — union of the per-entry lists, re-normalized.
+
+The six-batch selection preserves these original report metadata fields and
+recomputes only `entry_ids` and `num_entries` for retained members.
 
 | field | type | description |
 |---|---|---|
@@ -256,7 +322,8 @@ follows:
 
 Every release must satisfy these before tagging:
 
-1. Row counts match the numbers in `README.md` and `CHANGELOG.md`.
+1. Row counts match `data/dataset.json` and the current README scope;
+   historical changelog sections keep their original counts.
 2. Every `entry.report_id` appears in `reports.jsonl` and vice versa.
 3. `report.entry_ids` equals the sorted set of `entry_id`s grouped by
    `report_id` in `entries.jsonl`.
@@ -266,8 +333,9 @@ Every release must satisfy these before tagging:
    `https://github.com/`.
 6. `source_link` contains `github.com/advisories/` and its embedded GHSA id
    equals `report_id`.
-7. `entry_point`, `critical_operation`, and every `trace[i]` have exactly the keys
-   `{file, line, code}`. `line` is either a **positive integer** (`≥ 1`) or a
+7. In the primary `entries.jsonl`, `entry_point`, `critical_operation`, and
+   every `trace[i]` have exactly the keys `{file, line, code}`. The supporting
+   `entries_desc.jsonl` permits an additional `desc` string. `line` is either a **positive integer** (`≥ 1`) or a
    **range string** `"a-b"` where `a` and `b` are integers with `1 ≤ a ≤ b`.
    The value `0` is **not** permitted.
 8. No row contains any of the internal fields we intentionally omit
@@ -275,7 +343,14 @@ Every release must satisfy these before tagging:
    `is_active`, `created_at`, `generality`,
    `detection_type`, `ground_truth`, `taint_source`, `taint_sink`,
    `vuln_category_l3`).
-9. Every `entry` row has a `verify` field whose value is exactly `0` or `1`.
+9. Every retained entry has `verify == 1`. The underlying upstream field
+   retains its integer `0` / `1` semantics.
+10. Manifest entry IDs equal the retained entry-ID set without duplicate
+    assignments; report and anchor source references remain inside that set.
+11. Both anchor tables cover every retained entry, preserve source anchor
+    IDs and locations, and contain no duplicate role/location keys.
+12. `entries_desc.jsonl` has exactly the same entry IDs and underlying
+    annotation content as `entries.jsonl` after removing `desc` fields.
 
 ---
 
